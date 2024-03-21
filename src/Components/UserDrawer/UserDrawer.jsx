@@ -71,30 +71,33 @@ export default function UserDrawer() {
 
   const handleDrawerOpen = () => {
     setOpen(true);
-    console.log("open");
+  
   };
 
   const handleDrawerClose = () => {
     setOpen(false);
-    console.log("close");
+
   };
 
   return (
-    <Box>
+    <Box sx={{
+      height:"100%",
+     
+    }}>
       <Drawer
         variant="permanent"
         open={open}
-        sx={{ position: "relative", mt: 2 }}
-        PaperProps={{ sx: { position: "relative" } }}
+        sx={{ position: "relative", mt: 2, height:"100%",marginLeft:"10px",borderRadius:"10px" }}
+        PaperProps={{ sx: { position: "relative", height:"100%", bgcolor:"#6495ED" } }}
       >
         <Box sx={{ display: "flex", alignItems: "center", width: "100%" }}>
           {!open ? (
-            <IconButton onClick={handleDrawerOpen}>
-              <ChevronLeftIcon />
+            <IconButton onClick={handleDrawerOpen} >
+              <ChevronLeftIcon sx={{ color: "white" }}/>
             </IconButton>
           ) : (
             <IconButton onClick={handleDrawerClose}>
-              <ChevronRightIcon />
+              <ChevronRightIcon  sx={{ color: "white" }} />
             </IconButton>
           )}
         </Box>
@@ -118,13 +121,14 @@ export default function UserDrawer() {
                         minWidth: 0,
                         mr: open ? 3 : "auto",
                         justifyContent: "center",
+                        color: "white" 
                       }}
                     >
                       {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
                     </ListItemIcon>
                     <ListItemText
                       primary={text}
-                      sx={{ opacity: open ? 1 : 0 }}
+                      sx={{ opacity: open ? 1 : 0, color:"white" }}
                     />
                   </ListItemButton>
                 </Link>

@@ -26,8 +26,8 @@ export default function Header() {
 
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar sx={{position:'relative'}} >
+    <Box sx={{ flexGrow: 1}}>
+      <AppBar sx={{position:'relative', width:"100%", bgcolor:"#6495ED"}} >
         <Toolbar>
         
 

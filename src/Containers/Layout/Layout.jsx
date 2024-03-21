@@ -4,6 +4,8 @@ import MainBody from "./../MainBody/MainBody";
 import { Outlet } from "react-router-dom";
 import { Box } from "@mui/material";
 import UserDrawer from "../../Components/UserDrawer/UserDrawer";
+import WidgetsToolBar from "../WidgetsToolBar/WidgetsToolBar";
+import AsideBox from "../../Components/AsideBox/AsideBox";
 function Layout() {
   return (
     <div className={classes.main}>
@@ -11,6 +13,7 @@ function Layout() {
         sx={{
           display: "flex",
           flexDirection: "column",
+    
         }}
       >
  
@@ -26,6 +29,9 @@ function Layout() {
           <MainBody>
             <Outlet/>
           </MainBody>
+
+            <WidgetsToolBar/>
+            <AsideBox/>
         </Box>
       </Box>
     </div>
