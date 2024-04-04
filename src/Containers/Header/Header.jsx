@@ -10,6 +10,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 
 import SearchBar from "../../Components/SearchBar/SearchBar";
 import { Settings } from "@mui/icons-material";
+import Clock from "../../Components/Clock";
 
 
 export default function Header() {
@@ -45,13 +46,9 @@ export default function Header() {
               flexDirection: { lg: "row", xs: "column" },
             }}
           >
-            <Typography
-              variant="h6"
-              component="div"
-              sx={{ flexGrow: 1, ml: 2, display: "inline-block" }}
-            >
-              22.00
-            </Typography>
+       
+
+              <Clock/>
           
               <Typography
                 variant="h6"

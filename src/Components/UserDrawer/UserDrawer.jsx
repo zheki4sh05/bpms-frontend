@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
 
 import List from "@mui/material/List";
-import classes from "./UserDrawer.module.scss";
+
 import Divider from "@mui/material/Divider";
 
 import ListItem from "@mui/material/ListItem";
@@ -15,14 +15,17 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
-
+import AssignmentReturnedIcon from '@mui/icons-material/AssignmentReturned';
 import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
+
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { Link } from "react-router-dom";
 import PathConstants from "../../assets/pathConstants";
-import routes from '../../assets/routesNames'
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import TimelineIcon from '@mui/icons-material/Timeline';
+import DescriptionIcon from '@mui/icons-material/Description';
+import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -64,9 +67,48 @@ const Drawer = styled(MuiDrawer, {
     "& .MuiDrawer-paper": closedMixin(theme),
   }),
 }));
+
+const menu_items = [
+  {
+    path:PathConstants.HOME,
+    name:"Новости",
+    icon: <MailIcon />
+  },
+  {
+    path:PathConstants.PROJECTS,
+    name:"Мои проекты",
+    icon: <InboxIcon />
+  },
+  {
+    path:PathConstants.TASKS,
+    name:"Мои задачи",
+    icon: <AssignmentReturnedIcon />
+  },
+  {
+    path:PathConstants.CALENDAR,
+    name:"Календарь",
+    icon: <CalendarMonthIcon/>
+  },
+  {
+    path:PathConstants.PROCESSES,
+    name:"Процессы",
+    icon: <TimelineIcon />
+  },
+  {
+    path:PathConstants.DOCUMENTS,
+    name:"Документы",
+    icon: <DescriptionIcon />
+  },
+  {
+    path:PathConstants.ASSIGNMENTS,
+    name:"Поручения",
+    icon: <AssignmentIndIcon />
+  },
+]
+
 export default function UserDrawer() {
   const theme = useTheme();
-  console.log(classes);
+ 
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
@@ -105,15 +147,16 @@ export default function UserDrawer() {
         <Divider />
 
         <List>
-          {["Новости", "Мои проекты"].map(
-            (text, index) => (
-              <ListItem key={text} disablePadding sx={{ display: "block" }}>
-                <Link to={routes[index].path} >
+          {menu_items.map(
+            (item, index) => (
+              <ListItem key={index} disablePadding sx={{ display: "block" }}>
+                <Link to={item.path} >
                   <ListItemButton
                     sx={{
                       minHeight: 48,
                       justifyContent: open ? "initial" : "center",
                       px: 2.5,
+                    
                     }}
                   >
                     <ListItemIcon
@@ -124,10 +167,12 @@ export default function UserDrawer() {
                         color: "white" 
                       }}
                     >
-                      {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+               
+                    {item.icon}
                     </ListItemIcon>
                     <ListItemText
-                      primary={text}
+                      
+                      primary={item.name}
                       sx={{ opacity: open ? 1 : 0, color:"white" }}
                     />
                   </ListItemButton>

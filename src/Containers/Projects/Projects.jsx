@@ -2,11 +2,22 @@ import { Grow, Stack, Typography } from "@mui/material";
 import SearchBox from "../../Components/SearchBox/SearchBox";
 import CustomTabPanel from "../../Components/CustomTabPanel/CustomTabPanel";
 import CustomTable from "../../Components/CustomTable";
+import { useState } from "react";
+import CreateProject from "../../Components/CreateProject";
 
 function Projects() {
+
+  const [openDialog, setShow] = useState(false);
+
+  const handleOpenDialog=()=>{
+    setShow((prevState) => (prevState === false ? true : false));
+  }
+
   return (
     <div>
-      <SearchBox />
+      <SearchBox
+        openDialog={handleOpenDialog}
+      />
       <Stack direction="row" sx={{ alignItems: "center", mt: 2 }}>
         <Typography variant="h5" gutterBottom>
           Мои проекты
@@ -48,6 +59,13 @@ function Projects() {
      
         
       </CustomTabPanel>
+
+
+      {
+        openDialog ?
+        <CreateProject/>
+        : null
+      }
     </div>
   );
 }

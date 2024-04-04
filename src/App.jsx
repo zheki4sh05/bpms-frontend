@@ -6,6 +6,11 @@ import NewsPage from "./Containers/NewsPage/NewsPage";
 import Layout from "./Containers/Layout/Layout";
 import Page404 from "./Components/Errors/Page404";
 import PathConstants from "./assets/pathConstants"
+import MyTasksPage from "./Containers/MyTasksPage";
+import CalendarPage from "./Containers/CalendarPage";
+import ProcessesPage from "./Containers/ProcessesPage";
+import DocumentsPage from "./Containers/DocumentsPage";
+import AssignmentsPage from "./Containers/AssignmentsPage";
 function App() {
   const router = createBrowserRouter([
     {
@@ -23,6 +28,24 @@ function App() {
           path: PathConstants.PROJECTS,
           element: <Projects />,
         },
+        {
+          path: PathConstants.TASKS,
+          element:<MyTasksPage/>
+        },
+        {
+          path:PathConstants.CALENDAR,
+          element:<CalendarPage/>
+        },
+        {
+          path:PathConstants.PROCESSES,
+          element:<ProcessesPage/>
+        },{
+          path:PathConstants.DOCUMENTS,
+          element:<DocumentsPage/>
+        },{
+          path:PathConstants.ASSIGNMENTS,
+          element:<AssignmentsPage/>
+        }
       ],
     },
   ]);
