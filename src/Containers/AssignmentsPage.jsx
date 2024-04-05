@@ -1,11 +1,74 @@
 import { Box } from "@mui/material";
+import SearchBox from "./../Components/SearchBox/SearchBox";
+import CustomTable from "./../Components/CustomTable";
+import CustomTabPanel from "./../Components/CustomTabPanel/CustomTabPanel";
+import { useState } from "react";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import PageInfo from "../Components/PageInfo";
+import CreateAssignment from "../Components/CreateAssignment";
 
 function AssignmentsPage() {
-    return ( 
-    <Box>
+  const [openDialog, setShow] = useState(false);
 
-    </Box> 
-    );
+  const handleOpenDialog = () => {
+    setShow((prevState) => (prevState === false ? true : false));
+  };
+
+  return (
+    <Box>
+      <SearchBox openDialog={handleOpenDialog} buttonText={"Назначить"}/>
+      {/* <Stack direction="row" sx={{ alignItems: "center", mt: 2 }}>
+        <Typography variant="h5" gutterBottom>
+          Мои проекты
+        </Typography>
+        <Typography variant="subtitle1" gutterBottom sx={{ ml: 2 }}>
+          я управляю:0
+        </Typography>
+        <Typography variant="subtitle1" gutterBottom sx={{ ml: 2 }}>
+          я управляю:0
+        </Typography>
+        <Typography variant="subtitle1" gutterBottom sx={{ ml: 2 }}>
+          просрочено:0
+        </Typography>
+        <Typography variant="subtitle1" gutterBottom sx={{ ml: 2 }}>
+          готово:0
+        </Typography>
+      </Stack> */}
+
+      <PageInfo
+        name="Поручения"
+        data={[
+          {
+            name: "Всего",
+            count: "0",
+          },
+        ]}
+      />
+
+      <CustomTabPanel
+        content={{
+          tabNames: ["Список", "Плитка", "Календарь", "Проект"],
+        }}
+      >
+        <CustomTable />
+        <Typography variant="h5" gutterBottom>
+          контент 1
+        </Typography>
+        <Typography variant="h5" gutterBottom>
+          контент 2
+        </Typography>
+        <Typography variant="h5" gutterBottom>
+          контент 3
+        </Typography>
+        <Typography variant="h5" gutterBottom>
+          контент 4
+        </Typography>
+      </CustomTabPanel>
+
+      {openDialog ? <CreateAssignment /> : null}
+    </Box>
+  );
 }
 
 export default AssignmentsPage;

@@ -1,9 +1,10 @@
 import WorkersList from "./WorkersList";
+import  Typography  from '@mui/material/Typography';
 
 function LeadersList() {
     return ( <>
         
-            <Typography variant="span" component="h2">
+        <Typography component="h2">
             Руководитель
         </Typography>
 

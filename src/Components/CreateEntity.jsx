@@ -14,19 +14,24 @@ import AboutProject from '../Containers/CreateProjects/AboutProject';
 import UserDatePicker from '../Containers/CreateProjects/UserDatePicker';
 import WorkersListControl from '../Containers/CreateProjects/WorkersListControl';
 
-const steps = ['О проекте', 'Настройки', 'Участники'];
+// const steps = ['О проекте', 'Настройки', 'Участники'];
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const StepPages = [
-    <AboutProject/>,
-    <UserDatePicker/>,
-    <WorkersListControl/>
-]
+// const StepPages = [
+//     <AboutProject/>,
+//     <UserDatePicker/>,
+//     <WorkersListControl/>
+// ]
 
-export default function CreateProject() {
+export default function CreateEntity({
+    stepsNames,
+    stepsPages,
+    name
+
+}) {
   const [open, setOpen] = React.useState(true);
 
  
@@ -101,7 +106,7 @@ export default function CreateProject() {
               <CloseIcon />
             </IconButton>
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Создание проекта
+             {name}
             </Typography>
             <Button autoFocus color="inherit" onClick={handleClose} disabled>
               Сохранить
@@ -112,7 +117,7 @@ export default function CreateProject() {
 
        <Box sx={{ width: '100%' }}>
       <Stepper activeStep={activeStep}>
-        {steps.map((label, index) => {
+        {stepsNames.map((label, index) => {
           const stepProps = {};
           const labelProps = {};
           if (isStepOptional(index)) {
@@ -130,7 +135,7 @@ export default function CreateProject() {
           );
         })}
       </Stepper>
-      {activeStep === steps.length ? (
+      {activeStep === stepsNames.length ? (
         <React.Fragment>
           <Typography sx={{ mt: 2, mb: 1 }}>
            Все этапы выполнены
@@ -147,7 +152,7 @@ export default function CreateProject() {
               
 
               {
-                StepPages[activeStep]
+                stepsPages[activeStep]
               }
 
           </Box>
@@ -172,7 +177,7 @@ export default function CreateProject() {
             )} */}
 
             <Button onClick={handleNext}>
-              {activeStep === steps.length - 1 ? 'Закончить' : 'Далее'}
+              {activeStep === stepsNames.length - 1 ? 'Закончить' : 'Далее'}
             </Button>
           </Box>
         </React.Fragment>

@@ -11,7 +11,9 @@ function WorkersListControl() {
 
     <LeadersList/>
       <Divider/>
-
+      <Typography component="h2">
+            Участники
+        </Typography>
         <WorkersList/>
 
     </Box>

@@ -1,7 +1,7 @@
 import { Box, Button, Stack } from "@mui/material";
 import SearchBar from "../SearchBar/SearchBar";
 
-function SearchBox({openDialog}) {
+function SearchBox({openDialog, buttonText}) {
   return (
     <Box
       sx={{
@@ -15,7 +15,7 @@ function SearchBox({openDialog}) {
     >
         <Box>
         <Button variant="contained" color="primary" onClick={openDialog}>
-        Создать
+        {buttonText ? buttonText :" Создать"}
       </Button>
 
         </Box>

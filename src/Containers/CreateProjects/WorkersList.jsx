@@ -7,10 +7,14 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 
+import { Button } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+
+
 export default function WorkersList() {
   return (
     <>
-    {/* <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+    <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
       <ListItem alignItems="flex-start">
         <ListItemAvatar>
           <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
@@ -76,10 +80,8 @@ export default function WorkersList() {
           }
         />
       </ListItem>
-    </List> */}
-    <Button variant="contained" endIcon={<SendIcon />}>
-  Добавить
-</Button>
+    </List>
+    
     </>
     
   );
