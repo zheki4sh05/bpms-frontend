@@ -10,7 +10,7 @@ import  FormControlLabel  from '@mui/material/FormControlLabel';
 function Deadline() {
   return (
     <Container maxWidth="sm">
-      <Box>
+      <Box sx={{mt:5}}>
         <Stack direction="row" spacing={2}>
           <Box>
             <Typography variant="subtitle2" gutterBottom>
@@ -36,7 +36,7 @@ function Deadline() {
           </Box>
         </Stack>
       </Box>
-      <WorkersList/>
+      
     </Container>
   );
 }

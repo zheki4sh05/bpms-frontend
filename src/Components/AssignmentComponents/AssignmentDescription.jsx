@@ -5,10 +5,20 @@ import Stack from "@mui/material/Stack";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import ToDoList from "./ToDoList";
+import { useState } from "react";
+import Counter from "./Counter";
 function AssignmentDescription() {
+
+  const [checked,setChecked] = useState(false);
+
+  const handleClickChecked=()=>{
+    console.log(checked)
+    setChecked((prevState) => (prevState === false ? true : false));
+  }
+
   return (
-    <Container maxWidth="md">
-      <Stack direction="row">
+    <Container maxWidth="sm">
+     
         <Stack direction="column" spacing={2} sx={{ mt: 5, mr:2 }}>
           <TextField
             id="outlined-basic"
@@ -21,13 +31,19 @@ function AssignmentDescription() {
             multiline
             rows={4}
           />
-        </Stack>
-        <Stack direction="column" spacing={2} sx={{ mt: 5}}>
-          <ToDoList/>
-        </Stack>
-      </Stack>
 
-      <Box></Box>
+            <FormControlLabel sx={{mt:2}}  control={ <Checkbox chechecked={checked} onChange={handleClickChecked}/>} label="Необходимо прикрепить файлы" />
+
+            {
+              checked ?
+              <Counter/>
+              :
+              null
+
+            }
+        </Stack>
+       
+
     </Container>
   );
 }

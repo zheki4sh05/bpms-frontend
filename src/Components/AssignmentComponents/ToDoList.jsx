@@ -76,6 +76,7 @@ function ToDoList() {
         color="primary"
         onClick={handleClick}
         disabled={inputVal ? false : true}
+        sx={{ml:2}}
       >
         {isEdited ? "Изменить" : "Добавить"}
       </Button>

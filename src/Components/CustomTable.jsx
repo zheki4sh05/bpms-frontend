@@ -22,31 +22,21 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 
-function createData(id, name, calories, fat, carbs, protein) {
+function createData(id, name, done, start, workers, role, access) {
   return {
     id,
     name,
-    calories,
-    fat,
-    carbs,
-    protein,
+    done,
+    start,
+    workers,
+    role,
+    access 
   };
 }
 
 const rows = [
-  createData(1, 'Cupcake', 305, 3.7, 67, 4.3),
-  createData(2, 'Donut', 452, 25.0, 51, 4.9),
-  createData(3, 'Eclair', 262, 16.0, 24, 6.0),
-  createData(4, 'Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData(5, 'Gingerbread', 356, 16.0, 49, 3.9),
-  createData(6, 'Honeycomb', 408, 3.2, 87, 6.5),
-  createData(7, 'Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData(8, 'Jelly Bean', 375, 0.0, 94, 0.0),
-  createData(9, 'KitKat', 518, 26.0, 65, 7.0),
-  createData(10, 'Lollipop', 392, 0.2, 98, 0.0),
-  createData(11, 'Marshmallow', 318, 0, 81, 2.0),
-  createData(12, 'Nougat', 360, 19.0, 9, 37.0),
-  createData(13, 'Oreo', 437, 18.0, 63, 4.0),
+  createData(1,1 ,'Новый продукт', 70, "20.04.2023", 10, "Управляющий", "Публичный"),
+  
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -83,34 +73,46 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: 'name',
+    id: 'ID',
     numeric: false,
     disablePadding: true,
-    label: 'Dessert (100g serving)',
+    label: 'ID',
   },
   {
-    id: 'calories',
-    numeric: true,
+    id: 'name',
+    numeric: false,
     disablePadding: false,
-    label: 'Calories',
+    label: 'Название',
   },
   {
-    id: 'fat',
+    id: 'done',
     numeric: true,
     disablePadding: false,
-    label: 'Fat (g)',
+    label: 'Выполнено %',
   },
   {
-    id: 'carbs',
+    id: 'start',
     numeric: true,
     disablePadding: false,
-    label: 'Carbs (g)',
+    label: 'Начало',
   },
   {
-    id: 'protein',
+    id: 'workers',
     numeric: true,
     disablePadding: false,
-    label: 'Protein (g)',
+    label: 'Участников',
+  },
+  {
+    id: 'role',
+    numeric: false,
+    disablePadding: false,
+    label: 'Роль',
+  },
+  {
+    id: 'access',
+    numeric: false,
+    disablePadding: false,
+    label: 'Тип приватности',
   },
 ];
 
@@ -191,7 +193,7 @@ function EnhancedTableToolbar(props) {
           variant="subtitle1"
           component="div"
         >
-          {numSelected} selected
+          {numSelected} выбрано
         </Typography>
       ) : (
         <Typography
@@ -200,7 +202,7 @@ function EnhancedTableToolbar(props) {
           id="tableTitle"
           component="div"
         >
-          Nutrition
+          Проекты
         </Typography>
       )}
 
@@ -346,10 +348,12 @@ export default function CustomTable() {
                     >
                       {row.name}
                     </TableCell>
-                    <TableCell align="right">{row.calories}</TableCell>
-                    <TableCell align="right">{row.fat}</TableCell>
-                    <TableCell align="right">{row.carbs}</TableCell>
-                    <TableCell align="right">{row.protein}</TableCell>
+                   
+                    <TableCell align="left">{row.done}</TableCell>
+                    <TableCell align="left">{row.start}</TableCell>
+                    <TableCell align="left">{row.workers}</TableCell>
+                    <TableCell align="left">{row.role}</TableCell>
+                    <TableCell align="left">{row.access}</TableCell>
                   </TableRow>
                 );
               })}
@@ -359,7 +363,7 @@ export default function CustomTable() {
                     height: (dense ? 33 : 53) * emptyRows,
                   }}
                 >
-                  <TableCell colSpan={6} />
+                  <TableCell colSpan={7} />
                 </TableRow>
               )}
             </TableBody>

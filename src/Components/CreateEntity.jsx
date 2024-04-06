@@ -1,18 +1,27 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
+import * as React from "react";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
 
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import CloseIcon from '@mui/icons-material/Close';
-import Slide from '@mui/material/Slide';
-import { Box, Breadcrumbs, Link, Stack, Step, StepLabel, Stepper } from '@mui/material';
-import { useState } from 'react';
-import AboutProject from '../Containers/CreateProjects/AboutProject';
-import UserDatePicker from '../Containers/CreateProjects/UserDatePicker';
-import WorkersListControl from '../Containers/CreateProjects/WorkersListControl';
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import CloseIcon from "@mui/icons-material/Close";
+import Slide from "@mui/material/Slide";
+import {
+  Box,
+  Breadcrumbs,
+  Link,
+  Stack,
+  Step,
+  StepLabel,
+  Stepper,
+} from "@mui/material";
+import { useState } from "react";
+import AboutProject from "../Containers/CreateProjects/AboutProject";
+import UserDatePicker from "../Containers/CreateProjects/UserDatePicker";
+import WorkersListControl from "../Containers/CreateProjects/WorkersListControl";
+import  Container  from '@mui/material/Container';
 
 // const steps = ['О проекте', 'Настройки', 'Участники'];
 
@@ -26,20 +35,12 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 //     <WorkersListControl/>
 // ]
 
-export default function CreateEntity({
-    stepsNames,
-    stepsPages,
-    name
-
-}) {
+export default function CreateEntity({ stepsNames, stepsPages, name }) {
   const [open, setOpen] = React.useState(true);
 
- 
   const handleClose = () => {
     setOpen(false);
   };
-
- 
 
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
@@ -86,6 +87,9 @@ export default function CreateEntity({
     setActiveStep(0);
   };
 
+  const handleSave=()=>{
+    handleClose();
+  }
 
   return (
     <React.Fragment>
@@ -95,7 +99,7 @@ export default function CreateEntity({
         onClose={handleClose}
         TransitionComponent={Transition}
       >
-        <AppBar sx={{ position: 'relative' }}>
+        <AppBar sx={{ position: "relative" }}>
           <Toolbar>
             <IconButton
               edge="start"
@@ -105,86 +109,81 @@ export default function CreateEntity({
             >
               <CloseIcon />
             </IconButton>
+            <Box>
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-             {name}
+              {name}
             </Typography>
-            <Button autoFocus color="inherit" onClick={handleClose} disabled>
-              Сохранить
-            </Button>
+            </Box>
+          
+  
+
+            
           </Toolbar>
         </AppBar>
-       <Box sx={{p:5}}>
-
-       <Box sx={{ width: '100%' }}>
-      <Stepper activeStep={activeStep}>
-        {stepsNames.map((label, index) => {
-          const stepProps = {};
-          const labelProps = {};
-          if (isStepOptional(index)) {
-            labelProps.optional = (
-              <Typography variant="caption">Optional</Typography>
-            );
-          }
-          if (isStepSkipped(index)) {
-            stepProps.completed = false;
-          }
-          return (
-            <Step key={label} {...stepProps}>
-              <StepLabel {...labelProps}>{label}</StepLabel>
-            </Step>
-          );
-        })}
-      </Stepper>
-      {activeStep === stepsNames.length ? (
-        <React.Fragment>
-          <Typography sx={{ mt: 2, mb: 1 }}>
-           Все этапы выполнены
-          </Typography>
-          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-            <Box sx={{ flex: '1 1 auto' }} />
-            <Button onClick={handleReset}>Сброс</Button>
-          </Box>
-        </React.Fragment>
-      ) : (
-        <React.Fragment>
-
-          <Box>
-              
-
-              {
-                stepsPages[activeStep]
-              }
-
-          </Box>
-
-          
-
-         
-          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-            <Button
-              color="inherit"
-              disabled={activeStep === 0}
-              onClick={handleBack}
-              sx={{ mr: 1 }}
-            >
-              Назад
-            </Button>
-            <Box sx={{ flex: '1 1 auto' }} />
-            {/* {isStepOptional(activeStep) && (
+        <Box sx={{ p: 5 }}>
+          <Box sx={{ width: "100%" }}>
+            <Stepper activeStep={activeStep}>
+              {stepsNames.map((label, index) => {
+                const stepProps = {};
+                const labelProps = {};
+                if (isStepOptional(index)) {
+                  labelProps.optional = (
+                    <Typography variant="caption">Optional</Typography>
+                  );
+                }
+                if (isStepSkipped(index)) {
+                  stepProps.completed = false;
+                }
+                return (
+                  <Step key={label} {...stepProps}>
+                    <StepLabel {...labelProps}>{label}</StepLabel>
+                  </Step>
+                );
+              })}
+            </Stepper>
+              <Container maxWidth="sm">
+              <Box sx={{ display: "flex", flexDirection: "row", mt:2 }}>
+                <Button
+                  color="inherit"
+                  disabled={activeStep === 0}
+                  onClick={handleBack}
+                  sx={{ mr: 1 }}
+                  variant="contained"
+                >
+                  Назад
+                </Button>
+                <Box sx={{ flex: "1 1 auto" }} />
+                {/* {isStepOptional(activeStep) && (
               <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
                 Пропустить
               </Button>
             )} */}
 
-            <Button onClick={handleNext}>
-              {activeStep === stepsNames.length - 1 ? 'Закончить' : 'Далее'}
-            </Button>
+                <Button onClick={handleNext} color="inherit" variant="contained">
+                  {activeStep === stepsNames.length - 1 ? "Закончить" : "Далее"}
+                </Button>
+             
+              </Box>
+              </Container>
+            
+
+            {activeStep === stepsNames.length ? (
+              <React.Fragment>
+                <Typography sx={{ mt: 2, mb: 1 }}>
+                  Все этапы выполнены
+                </Typography>
+                <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+                  <Box sx={{ flex: "1 1 auto" }} />
+                  <Button variant="contained" onClick={handleSave} sx={{mr:2}}>Сохранить</Button>
+                  <Button onClick={handleReset}>Сброс</Button>
+                </Box>
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                <Box>{stepsPages[activeStep]}</Box>
+              </React.Fragment>
+            )}
           </Box>
-        </React.Fragment>
-      )}
-    </Box>
-
-
         </Box>
       </Dialog>
     </React.Fragment>

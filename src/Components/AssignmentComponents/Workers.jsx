@@ -1,51 +1,71 @@
+import Container from "@mui/material/Container";
 
-import  Container  from "@mui/material/Container";
+import Stack from "@mui/material/Stack";
 
-import  Stack from '@mui/material/Stack';
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+
+import ListItemText from "@mui/material/ListItemText";
+import Avatar from "@mui/material/Avatar";
 
 
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-
-import ListItemText from '@mui/material/ListItemText';
-import Avatar from '@mui/material/Avatar';
+import Typography from "@mui/material/Typography";
+import FolderIcon from "@mui/icons-material/Folder";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useState } from "react";
+import { TextField } from "@mui/material";
+import { Button } from "@mui/material";
+import { Box } from "@mui/material";
+import { ListItemButton } from "@mui/material";
+import { Tooltip } from "@mui/material";
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import IconButton from '@mui/material/IconButton';
 
-import Typography from '@mui/material/Typography';
-import FolderIcon from '@mui/icons-material/Folder';
-import DeleteIcon from '@mui/icons-material/Delete';
-
 function Workers() {
+  const [dense, setDense] = useState(false);
+  const [secondary, setSecondary] = useState(false);
   return (
-    <Container maxWidth={"sm"}>
+    <Container maxWidth={"sm"} sx={{ mt: 5 }}>
       <Stack direction={"row"}>
-        <Stack direction={"column"}></Stack>
-        <Stack direction={"column"}>
+        <Box sx={{ display: "flex", flexDirection: "column" }}>
+          <TextField id="outlined-basic" label="Поиск" variant="outlined" />
+
+          <Box sx={{display:"flex", flexDirection:"row", alignItems:"center"}}>
+            <ListItemButton component="a" sx={{ mt: 2 }}>
+              <Tooltip title="Нажмит, чтобы добавить">
+                <ListItemText primary="Spam" />
+              </Tooltip>
+            </ListItemButton>
+            <Box>
+              <IconButton children={<MoreVertIcon/>} />
+            </Box>
+            
+          </Box>
+        </Box>
+        <Stack direction={"column"} sx={{ ml: 5 }}>
           <Typography variant="subtitle2" gutterBottom>
-            Исполнители
+            Исполнители:
           </Typography>
-          <List dense={dense}>
-              {generate(
-                <ListItem
-                  secondaryAction={
-                    <IconButton edge="end" aria-label="delete">
-                      <DeleteIcon />
-                    </IconButton>
-                  }
-                >
-                  <ListItemAvatar>
-                    <Avatar>
-                      <FolderIcon />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary="Single-line item"
-                    secondary={secondary ? 'Secondary text' : null}
-                  />
-                </ListItem>,
-              )}
-            </List>
+          <List>
+            <ListItem
+              secondaryAction={
+                <IconButton edge="end" aria-label="delete">
+                  <DeleteIcon />
+                </IconButton>
+              }
+            >
+              <ListItemAvatar>
+                <Avatar>
+                  <FolderIcon />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText
+                primary="Single-line item"
+                secondary={secondary ? "Secondary text" : null}
+              />
+            </ListItem>
+          </List>
         </Stack>
       </Stack>
     </Container>

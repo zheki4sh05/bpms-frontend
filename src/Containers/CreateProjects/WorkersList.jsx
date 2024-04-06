@@ -36,6 +36,7 @@ export default function WorkersList() {
           }
         />
       </ListItem>
+    
       <Divider variant="inset" component="li" />
       <ListItem alignItems="flex-start">
         <ListItemAvatar>
@@ -58,6 +59,7 @@ export default function WorkersList() {
           }
         />
       </ListItem>
+    
       <Divider variant="inset" component="li" />
       <ListItem alignItems="flex-start">
         <ListItemAvatar>
@@ -81,6 +83,7 @@ export default function WorkersList() {
         />
       </ListItem>
     </List>
+    <Button variant="contained">Добавить</Button>
     
     </>
     
