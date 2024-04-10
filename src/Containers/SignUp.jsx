@@ -12,9 +12,10 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
-
+import { useDispatch } from 'react-redux'
+import { useState } from 'react';
+import {userLogIn} from '../Store/slices/appUserSlice'
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -34,17 +35,42 @@ const defaultTheme = createTheme();
 
 export default function SignUp({onTogglePage,toggleState}) {
 
- 
+  const dispatch = useDispatch()
+
+  const [userData,setUserData] = useState(new FormData());
+
+
+
   async function makeRequest(formData){
     try {
+      console.log(formData.get('firstname'));
+      console.log(formData.get('lastname'));
+      console.log(formData.get('email'));
+      console.log(formData.get('password'));
      const response = await axios.post("http://localhost:8080/api/v1/auth/register",  {  
                 firstname:formData.get('firstname'),
                  lastname:formData.get('lastname'),
                  email:formData.get('email'),
                  password:formData.get('password') 
                });
+      console.log(response);
+      console.log(formData.get('firstname'));
+      console.log(formData.get('lastname'));
+      console.log(formData.get('email'));
+      console.log(formData.get('password'));
+      dispatch(
+        userLogIn({
+        name:formData.get('firstname'),
+        lastname:formData.get('lastname'),
+        email:formData.get('email'),
+        jwtToken:response.data.token
+
+
+      })
+    );
       toggleState();
     } catch (error) {
+      console.log("wefjnler")
       console.log("error", error);
     }
   
@@ -53,7 +79,6 @@ export default function SignUp({onTogglePage,toggleState}) {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-
     makeRequest(data)
 
     
@@ -82,7 +107,7 @@ export default function SignUp({onTogglePage,toggleState}) {
               <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="given-name"
-                  name="firstName"
+                  name="firstname"
                   required={true}
                   fullWidth
                   id="firstName"
@@ -94,9 +119,9 @@ export default function SignUp({onTogglePage,toggleState}) {
                 <TextField
                    required={true}
                   fullWidth
-                  id="lastName"
+                  id="lastname"
                   label="Фамилия"
-                  name="lastName"
+                  name="lastname"
                   autoComplete="family-name"
                 />
               </Grid>
@@ -108,6 +133,7 @@ export default function SignUp({onTogglePage,toggleState}) {
                   label="e-mail"
                   name="email"
                   autoComplete="email"
+                  type="email"
                 />
               </Grid>
               <Grid item xs={12}>
