@@ -5,7 +5,9 @@ import { AccountCircle } from "@mui/icons-material";
 import { Box, Stack } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { Grid, Typography } from "@mui/material";
-import CustomTabPanel from "./CustomTabPanel/CustomTabPanel";
+import CustomTabPanel from "../CustomTabPanel/CustomTabPanel";
+import AboutUser from "./AboutUser";
+import AboutCompany from "./AboutCompany";
 function UserProfile() {
   const [state, setState] = useState({
     top: false,
@@ -15,12 +17,7 @@ function UserProfile() {
   });
 
   const toggleDrawer = (anchor, open) => (event) => {
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
+ 
 
     setState({ ...state, [anchor]: open });
   };
@@ -30,7 +27,7 @@ function UserProfile() {
       sx={{ width: "90vw"}}
       role="presentation"
       
-      onKeyDown={toggleDrawer(anchor, false)}
+      // onClick={toggleDrawer(anchor, false)}
 
     >
       <Box sx={{ml:2}}>
@@ -60,10 +57,10 @@ function UserProfile() {
                   }}
             >
                 <Box>
-                    1
+                    <AboutUser/>
                 </Box>
                 <Box>
-                    2
+                    <AboutCompany/>
                 </Box>
                 <Box>
                     3

@@ -1,6 +1,7 @@
 const DomainNames = {
     app:{
-        appUser:"appUser"
+        appUser:"appUser",
+        company:"company"
     }
 }
 export default DomainNames;

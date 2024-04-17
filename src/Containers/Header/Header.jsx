@@ -13,8 +13,9 @@ import { Settings } from "@mui/icons-material";
 import Clock from "../../Components/Clock";
 import { useSelector } from 'react-redux'
 import DomainNames from "../../Store/DomainNames";
+import UserProfile from './../../Components/UserProfile/UserProfile';
 
-import UserProfile from "../../Components/UserProfile";
+
 export default function Header() {
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);

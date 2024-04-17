@@ -14,8 +14,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 import { useDispatch } from 'react-redux'
-import { useState } from 'react';
-import {userLogIn} from '../Store/slices/appUserSlice'
+import {userUpdate} from '../Store/slices/appUserSlice'
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -37,35 +36,25 @@ export default function SignUp({onTogglePage,toggleState}) {
 
   const dispatch = useDispatch()
 
-  const [userData,setUserData] = useState(new FormData());
-
-
-
   async function makeRequest(formData){
     try {
-      console.log(formData.get('firstname'));
-      console.log(formData.get('lastname'));
-      console.log(formData.get('email'));
-      console.log(formData.get('password'));
+
      const response = await axios.post("http://localhost:8080/api/v1/auth/register",  {  
                 firstname:formData.get('firstname'),
                  lastname:formData.get('lastname'),
                  email:formData.get('email'),
                  password:formData.get('password') 
                });
-      console.log(response);
-      console.log(formData.get('firstname'));
-      console.log(formData.get('lastname'));
-      console.log(formData.get('email'));
-      console.log(formData.get('password'));
+
       dispatch(
-        userLogIn({
+        userUpdate({
         name:formData.get('firstname'),
         lastname:formData.get('lastname'),
+        surname:formData.get('surname'),
         email:formData.get('email'),
+        phone:formData.get('phone'),
+        bDay:formData.get('birth'),
         jwtToken:response.data.token
-
-
       })
     );
       toggleState();
@@ -110,7 +99,7 @@ export default function SignUp({onTogglePage,toggleState}) {
                   name="firstname"
                   required={true}
                   fullWidth
-                  id="firstName"
+                  id="firstname"
                   label="Имя"
                   autoFocus
                 />
