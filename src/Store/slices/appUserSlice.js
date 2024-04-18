@@ -16,14 +16,25 @@ const appUserSlice = createSlice({
     name: DomainNames.app.appUser,
     initialState,
     reducers: {
-        userUpdate(state, action) {
+        userCreate(state, action) {
+
             state.pop();
             state.push(action.payload)
-            console.log(state)
+           
+        },
+        userUpdate(state,action){
+            const { name, lastname, surname,email,phone,bDay } = action.payload
+            const existingUser = state.find(user => user.name === name)
+            existingUser.name = name
+            existingUser.lastname = lastname
+            existingUser.surname = surname
+            existingUser.email = email
+            existingUser.phone = phone
+            existingUser.bDay = bDay
         }
     }
   })
 
 
-  export const { userUpdate } = appUserSlice.actions
+  export const { userCreate,  } = appUserSlice.actions
   export default appUserSlice.reducer

@@ -18,6 +18,13 @@ function AboutCompany() {
 
   const [isCreared, setCreated] = useState(false);
 
+  const handleRetireFromCompany=()=>{
+
+  }
+  const handleDeligateCompany=()=>{
+
+  }
+
   const dispatch = useDispatch();
   return (
     <Box>
@@ -80,10 +87,15 @@ function AboutCompany() {
                 
 
                
-
-                <Button variant="contained" color="error">
-                  Уволиться
-                </Button>
+                {userInCompany[0].currentRole == "admin" ?
+                    <Button variant="outlined" size="small" color="error" onClick={handleDeligateCompany}>
+                    Передать компанию
+                    </Button> :
+                     <Button variant="outlined" size="small" color="error" onClicl={handleRetireFromCompany} >
+                     Уволиться
+                   </Button>
+                }
+               
               </Box>
             </>
           ) : (

@@ -14,7 +14,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 import { useDispatch } from 'react-redux'
-import {userUpdate} from '../Store/slices/appUserSlice'
+import {userCreate} from '../Store/slices/appUserSlice'
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -47,7 +47,7 @@ export default function SignUp({onTogglePage,toggleState}) {
                });
 
       dispatch(
-        userUpdate({
+        userCreate({
         name:formData.get('firstname'),
         lastname:formData.get('lastname'),
         surname:formData.get('surname'),

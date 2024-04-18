@@ -38,7 +38,6 @@ function CreateCompany({handleCreate}) {
             name:formData.get('name'),
             desc:formData.get('desc'),
             currentRole:"admin",
-        
         })
     )
     handleCreate();

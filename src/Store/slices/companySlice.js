@@ -15,11 +15,20 @@ const companySlice = createSlice({
             
             state.pop();
             state.push(action.payload)
-            console.log(state)
+            createCompanyRequest(payload)
+        },
+        companyUpdate(state,action){
+            const {name, desc, currentRole} = action.payload;
+            const company = state.find(item=>item.name===name)
+            company.name = name;
+            company.desc = desc
         }
     }
   })
 
+async function createCompanyRequest(payload){
 
-  export const { companyCreate } = companySlice.actions
+}
+
+  export const { companyCreate, companyUpdate } = companySlice.actions
   export default companySlice.reducer
