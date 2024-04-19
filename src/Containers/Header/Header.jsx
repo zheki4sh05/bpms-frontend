@@ -25,7 +25,7 @@ export default function Header() {
     onToggle(false);
   };
 
-  const user = useSelector(state => state[DomainNames.app.appUser])
+  const user = useSelector(state => state[DomainNames.app.appUser].user)
   
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -70,10 +70,10 @@ export default function Header() {
             <UserProfile/>
             <Box sx={{ display: "flex", flexDirection: "column", ml:1 }}>
               <Typography variant="subtitle1" >
-                {user[0].lastname} {user[0].name}
+                {user.lastname} {user.name}
               </Typography>
               <Typography variant="subtitle2">
-              {user[0].email}
+              {user.email}
               </Typography>
             </Box>
           </Box>

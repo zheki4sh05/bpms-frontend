@@ -15,7 +15,7 @@ import { useSelector } from 'react-redux'
 import DomainNames from "../../Store/DomainNames";
 import { useDispatch } from "react-redux";
 function AboutUser() {
-    const user = useSelector(state => state[DomainNames.app.appUser])
+    const user = useSelector(state => state[DomainNames.app.appUser].user)
 const defaultTheme = createTheme();
 const dispatch = useDispatch()
 
@@ -60,7 +60,6 @@ const dispatch = useDispatch()
         email:formData.get('email'),
         phone:formData.get('phone'),
         bDay:formData.get('birth'),
-        jwtToken:user[0].jwtToken
       }))
 
       
@@ -173,7 +172,7 @@ const handleFormChange =()=>{
                   fullWidth
                   id="firstname"
                   label="Имя"
-                  defaultValue={user[0].name}
+                  defaultValue={user.name}
                   
                 />
               </Grid>
@@ -184,7 +183,7 @@ const handleFormChange =()=>{
                   id="surname"
                   label="Отчество"
                   name="surname"
-                  defaultValue={user[0].surname}
+                  defaultValue={user.surname}
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
@@ -194,7 +193,7 @@ const handleFormChange =()=>{
                   id="lastname"
                   label="Фамилия"
                   name="lastname"
-                  defaultValue={user[0].lastname}
+                  defaultValue={user.lastname}
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
@@ -204,7 +203,7 @@ const handleFormChange =()=>{
                   id="email"
                   label="email"
                   name="email"
-                  defaultValue={user[0].email}
+                  defaultValue={user.email}
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
@@ -215,7 +214,7 @@ const handleFormChange =()=>{
                   label="Телефон"
                   type="phone"
                   id="phone" 
-                  defaultValue={user[0].phone}
+                  defaultValue={user.phone}
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
@@ -224,7 +223,7 @@ const handleFormChange =()=>{
               variant="outlined"
               type="datetime-local"
               name="birth"
-              defaultValue={user[0].bDay}
+              defaultValue={user.bDay}
             />
               </Grid>
               

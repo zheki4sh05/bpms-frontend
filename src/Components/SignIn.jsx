@@ -12,7 +12,13 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
+import { useState } from 'react';
+import { useDispatch } from 'react-redux'
+import {fetchUser} from '../Store/slices/appUserSlice'
+import DomainNames from '../Store/DomainNames';
+import { CircularProgress } from '@mui/material';
+import CustomCreateAlert from '../Components/CustomCreateAlert';
+import { useSelector } from 'react-redux';
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -31,14 +37,50 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignIn({onTogglePage,toggleState}) {
+
+  const dispatch = useDispatch();
+
+
+  function makeRequest(formdata){
+   
+    dispatch(fetchUser({
+      email:formdata.get('email'),
+      password:formdata.get('password')
+    }))
+  }
+
+
+//   if(userStatus ==='loading'){
+//     authResultContent =  <CircularProgress />
+  
+//   }else if (userStatus === 'succeeded') {
+
+//     authResultContent = <CustomCreateAlert        
+//         messageText="Авторизация прошла успешно"
+//         duration={alertDuration}
+//         userSeverity="success"
+//     />
+//     setTimeout(function() {
+//       toggleState();
+//   }, alertDuration);
+
+//   }else if (userStatus === 'failed') {
+//     authResultContent = <CustomCreateAlert        
+//     messageText={"Ошибка авторизации. ".concat(error)}
+//     duration={6000}
+//     userSeverity="error"
+// />
+//   }
+
+
+  
+  
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-    toggleState();
+    const formData = new FormData(event.currentTarget);
+    makeRequest(formData);
+   
   };
 
   return (
@@ -90,7 +132,7 @@ export default function SignIn({onTogglePage,toggleState}) {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              Войти
             </Button>
             <Grid container>
               <Grid item xs>
@@ -100,11 +142,12 @@ export default function SignIn({onTogglePage,toggleState}) {
               </Grid>
               <Grid item>
               <Button onClick={onTogglePage} size="small">"У Вас нет аккаунта? Зарегистрироваться"</Button>
-                {/* <Link href="#" variant="body2">
-                  {"У Вас нет аккаунта? Зарегистрироваться"}
-                </Link> */}
+             
+   
               </Grid>
+             
             </Grid>
+        
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />

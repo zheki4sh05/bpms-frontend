@@ -12,9 +12,14 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import axios from 'axios';
 import { useDispatch } from 'react-redux'
 import {userCreate} from '../Store/slices/appUserSlice'
+import DomainNames from '../Store/DomainNames';
+import { CircularProgress } from '@mui/material';
+import CustomCreateAlert from '../Components/CustomCreateAlert';
+import { useSelector } from 'react-redux';
+import {addNewUser} from '../Store/slices/appUserSlice'
+import { useState } from 'react';
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -34,43 +39,63 @@ const defaultTheme = createTheme();
 
 export default function SignUp({onTogglePage,toggleState}) {
 
-  const dispatch = useDispatch()
+  let alertDuration = 1000;
+  const [data,setData] = useState({})
 
-  async function makeRequest(formData){
-    try {
+  const dispatch = useDispatch();
 
-     const response = await axios.post("http://localhost:8080/api/v1/auth/register",  {  
-                firstname:formData.get('firstname'),
-                 lastname:formData.get('lastname'),
-                 email:formData.get('email'),
-                 password:formData.get('password') 
-               });
+  let authResultContent;
 
-      dispatch(
-        userCreate({
-        name:formData.get('firstname'),
-        lastname:formData.get('lastname'),
-        surname:formData.get('surname'),
-        email:formData.get('email'),
-        phone:formData.get('phone'),
-        bDay:formData.get('birth'),
-        jwtToken:response.data.token
-      })
-    );
-      toggleState();
-    } catch (error) {
-      console.log("wefjnler")
-      console.log("error", error);
-    }
+   function makeRequest(formData){
+
+    dispatch(addNewUser({
+      firstname:formData.get('firstname'),
+      lastname:formData.get('lastname'),
+      email:formData.get('email'),
+      password:formData.get('password')
+    }))
   
   }
+
+//   if(userStatus ==='loading'){
+//     authResultContent =  <CircularProgress />
+  
+//   }else if (userStatus === 'succeeded') {
+
+//     authResultContent = <CustomCreateAlert        
+//         messageText="Регистрация прошла успешно"
+//         duration={alertDuration}
+//         userSeverity="success"
+//     />
+
+//     dispatch(
+//       userCreate({
+//       name:data.get('firstname'),
+//       lastname:data.get('lastname'),
+//       surname:'',
+//       email:data.get('email'),
+//       phone:'',
+//       bDay:'',
+//     })
+//   );
+    
+//     setTimeout(function() {
+//       toggleState();
+//   }, alertDuration);
+
+//   }else if (userStatus === 'failed') {
+//     authResultContent = <CustomCreateAlert        
+//     messageText={"Ошибка регистрации. ".concat(error)}
+//     duration={6000}
+//     userSeverity="error"
+// />
+//   }
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    setData(data);
     makeRequest(data)
-
-    
   };
 
   return (
@@ -152,11 +177,13 @@ export default function SignUp({onTogglePage,toggleState}) {
             >
               Зарегистрироваться
             </Button>
+            
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Button onClick={onTogglePage} size="small">"У Вас уже есть аккаунт? Войти"</Button>
               </Grid>
             </Grid>
+          
           </Box>
         </Box>
         <Copyright sx={{ mt: 5 }} />
