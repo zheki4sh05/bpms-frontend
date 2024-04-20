@@ -6,7 +6,7 @@ import DomainNames from "../Store/DomainNames";
 import { CircularProgress } from "@mui/material";
 import CustomCreateAlert from "../Components/CustomCreateAlert";
 import { useSelector } from "react-redux";
-function AuthFormComponent({ toggleState }) {
+function AuthFormComponent() {
   let authResultContent;
   let alertDuration = 1500;
   const signUp = 1;
@@ -35,9 +35,7 @@ function AuthFormComponent({ toggleState }) {
       />
     );
 
-    setTimeout(function () {
-      toggleState();
-    }, alertDuration);
+  
   } else if (userStatus === "failed") {
     authResultContent = (
       <CustomCreateAlert
@@ -60,9 +58,9 @@ function AuthFormComponent({ toggleState }) {
     >
       <Box sx={{ display: "flex", flexDirection: "column" }}>
         {page == signIn ? (
-          <SignIn onTogglePage={handleTogglePage} toggleState={toggleState} />
+          <SignIn onTogglePage={handleTogglePage}  />
         ) : (
-          <SignUp onTogglePage={handleTogglePage} toggleState={toggleState} />
+          <SignUp onTogglePage={handleTogglePage}  />
         )}
         <Box sx={{ mt: 2 }}>{authResultContent}</Box>
       </Box>

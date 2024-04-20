@@ -39,12 +39,12 @@ const defaultTheme = createTheme();
 
 export default function SignUp({onTogglePage,toggleState}) {
 
-  let alertDuration = 1000;
+
   const [data,setData] = useState({})
 
   const dispatch = useDispatch();
 
-  let authResultContent;
+
 
    function makeRequest(formData){
 

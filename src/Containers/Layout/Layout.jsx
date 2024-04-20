@@ -11,18 +11,31 @@ import SignUp from "../SignUp";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { ruRU } from '@mui/material/locale';
 import AuthFormComponent from "../../Components/AuthFormComponent";
-
+import DomainNames from "../../Store/DomainNames";
+import statusTypes from "../../API/status";
+import { useSelector } from "react-redux";
 const theme = createTheme(
   ruRU,
 );
 
 function Layout() {
 
+  const authStatus = useSelector((state)=>state[DomainNames.app.appUser].status)
+
   const [isAuth,setAuth] = useState(false);
 
   const handleLogIn=()=>{
-    setAuth(true);
+
+    setTimeout(function () {
+      setAuth(true);
+    }, 1500);
+  
   }
+
+  if(authStatus===statusTypes.succeeded){
+    handleLogIn();
+  }
+
   const handleLogOut=()=>{
       
   }
@@ -34,7 +47,7 @@ function Layout() {
         !isAuth ? 
 
         <AuthFormComponent 
-            toggleState = {handleLogIn}
+            
         />
         :
         <Box

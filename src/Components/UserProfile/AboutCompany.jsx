@@ -1,15 +1,29 @@
 import { Box, Button, Divider, Grid, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DomainNames from "../../Store/DomainNames";
 import CreateCompany from "./CreateCompany";
 import CustomCreateAlert from './../CustomCreateAlert';
+import statusTypes from "../../API/status";
+import { userCompany } from "../../Store/slices/companySlice";
+import { getToken } from "../../Store/slices/appUserSlice";
 function AboutCompany() {
-  const userInCompany = useSelector((state) => state[DomainNames.app.company]);
-
+  const userInCompany = useSelector((state) => state[DomainNames.company].userCompany);
+  const token = useSelector(getToken);
+  const status = useSelector((state) => state[DomainNames.company].status);
+  const dispatch = useDispatch();
   const [isWorked, setWorked] = useState(
-    userInCompany[0].name == "" ? false : true
+    userInCompany.name == "" ? false : true
   );
+  useEffect(() => {
+    if (status === statusTypes.idle) {
+      dispatch(userCompany({token}))
+      setWorked(true)
+    }
+  }, [status, dispatch])
+
+  
+
 
   const handleWork = () => {
     setWorked(true);
@@ -24,8 +38,6 @@ function AboutCompany() {
   const handleDeligateCompany=()=>{
 
   }
-
-  const dispatch = useDispatch();
   return (
     <Box>
       <Grid container spacing={1}>
@@ -34,13 +46,13 @@ function AboutCompany() {
             Ваше место работы:
           </Typography>
           <Box sx={{ mb: 1 }}>
-            {userInCompany[0].name == "" ? (
+            {userInCompany.name == "" ? (
               <Typography>Вы ни где не работаете</Typography>
             ) : (
               <>
                 {" "}
                 <Typography variant="h4" gutterBottom>
-                  {userInCompany[0].name}
+                  {userInCompany.name}
                 </Typography>{" "}
                 <Button size="small" sx={{ mr: 1 }} variant="outlined">
                   Подробнее
@@ -57,7 +69,7 @@ function AboutCompany() {
                   Ваша роль:
                 </Typography>
                 <Typography variant="subtitle1" gutterBottom>
-                  {userInCompany[0].currentRole == "admin"
+                  {userInCompany.currentRole == "admin"
                     ? "Основатель компании"
                     : "Работник компании"}
                 </Typography>
@@ -87,7 +99,7 @@ function AboutCompany() {
                 
 
                
-                {userInCompany[0].currentRole == "admin" ?
+                {userInCompany.currentRole == "admin" ?
                     <Button variant="outlined" size="small" color="error" onClick={handleDeligateCompany}>
                     Передать компанию
                     </Button> :

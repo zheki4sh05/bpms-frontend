@@ -18,7 +18,7 @@ const initialState = {
 
 //Авторизация
 export const fetchUser = createAsyncThunk(DomainNames.app.appUser.concat('/fetchUser')  , async (initialUser) => {
-  const response = await axios.post(api.authenticate,  initialUser);
+  const response = await axios.post(api.user.authenticate,  initialUser);
     return response.data
 })
 
@@ -27,7 +27,7 @@ export const addNewUser = createAsyncThunk(
     DomainNames.app.appUser.concat('/addNewUser'),
     async (initialUser) => {
    
-      const response = await axios.post(api.register,  initialUser);
+      const response = await axios.post(api.user.register,  initialUser);
       return response.data
     }
   )
@@ -86,5 +86,8 @@ const appUserSlice = createSlice({
 
 
   export const { userCreate,  userUpdate} = appUserSlice.actions
+  export function getToken(state) {
+  return state[DomainNames.app.appUser].user.jwtToken;
+}
   export default appUserSlice.reducer
 

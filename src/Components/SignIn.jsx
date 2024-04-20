@@ -36,7 +36,7 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
-export default function SignIn({onTogglePage,toggleState}) {
+export default function SignIn({onTogglePage}) {
 
   const dispatch = useDispatch();
 
@@ -124,7 +124,7 @@ export default function SignIn({onTogglePage,toggleState}) {
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+              label="Запомнить меня"
             />
             <Button
               type="submit"
