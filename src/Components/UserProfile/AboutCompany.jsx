@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Grid, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Divider, Grid, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DomainNames from "../../Store/DomainNames";
@@ -7,8 +7,10 @@ import CustomCreateAlert from './../CustomCreateAlert';
 import statusTypes from "../../API/status";
 import { userCompany } from "../../Store/slices/companySlice";
 import { getToken } from "../../Store/slices/appUserSlice";
+import { getErrorName } from "../../Util/ErrorTypes";
 function AboutCompany() {
   const userInCompany = useSelector((state) => state[DomainNames.company].userCompany);
+  const error = useSelector((state)=>state[DomainNames.company].error)
   const token = useSelector(getToken);
   const status = useSelector((state) => state[DomainNames.company].status);
   const dispatch = useDispatch();
@@ -22,13 +24,20 @@ function AboutCompany() {
     }
   }, [status, dispatch])
 
-  
-
-
   const handleWork = () => {
     setWorked(true);
     setCreated(true)
   };
+  let fetchingResult;
+  if (status === statusTypes.loading) {
+    fetchingResult = <CircularProgress />;
+  } else if (status === statusTypes.failed) {
+    fetchingResult  = <CustomCreateAlert
+        messageText={`Ошибка загрузки данных ${getErrorName('any', error.code)}`}
+        duration={6000}
+        userSeverity="error"
+      />
+  }
 
   const [isCreared, setCreated] = useState(false);
 
@@ -86,6 +95,8 @@ function AboutCompany() {
 
                   /> :
                   <></>
+                }{
+                  fetchingResult
                 }
 
               <Box

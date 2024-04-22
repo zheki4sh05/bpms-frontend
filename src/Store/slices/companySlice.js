@@ -66,7 +66,7 @@ const companySlice = createSlice({
           })
           .addCase(fetchCompany.rejected, (state, action) => {
             state.status = 'failed';
-            state.error = action.error.message
+            state.error = action.error
           })
           //-----------------------------------------------
           // ---------создание компании--------------------
@@ -94,17 +94,23 @@ const companySlice = createSlice({
           })
           .addCase(updateCompany.rejected, (state, action) => {
             state.status = 'failed';
-            state.error = action.error.message
+            state.error = action.error
           })
             //----------------------------------------------------
              // ---------если у пользователя уже есть компания------
-
+             .addCase(userCompany.pending, (state, action) => {
+              state.status = 'loading';
+            })
              .addCase(userCompany.fulfilled, (state, action) => {
               state.status = 'succeeded';
               state.error = null;
               state.userCompany.name = action.payload.name;
               state.userCompany.desc = action.payload.desc;
               state.userCompany.currentRole = action.payload.role;
+            })
+            .addCase(userCompany.rejected, (state, action) => {
+              state.status = 'failed';
+              state.error = action.error
             })
              //----------------------------------------------------
         }
