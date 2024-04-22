@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import DomainNames from '../DomainNames'
 import api from '../../API/APIPath'
 import axios from 'axios';
+import getRequestConfig from '../../API/requestConfig';
 const initialState = {
     user: {
         name:"",
@@ -13,6 +14,7 @@ const initialState = {
         jwtToken:"",
     },
     status:'idle',
+    updated:'false',
     error:null
 }
 
@@ -31,6 +33,19 @@ export const addNewUser = createAsyncThunk(
       return response.data
     }
   )
+
+//Получение даннных пользователя
+export const fetchUserData = createAsyncThunk(DomainNames.app.appUser.concat('/fetchUserData')  , async (initialUser) => {
+  const response = await axios.get(api.user.data,  getRequestConfig(initialUser.token));
+    return response.data
+})
+
+//Изменение данных пользователя
+export const updateUserData = createAsyncThunk(DomainNames.app.appUser.concat('/updateUserData')  , async (initialUser) => {
+  const response = await axios.post(api.user.update, initialUser.user ,getRequestConfig(initialUser.token));
+    return response.data
+})
+
 
 const appUserSlice = createSlice({
     name: DomainNames.app.appUser,
@@ -59,6 +74,7 @@ const appUserSlice = createSlice({
     },
     extraReducers(builder) {
       builder
+      //---Регистрация пользователя-------------
         .addCase(addNewUser.pending, (state, action) => {
           state.status = 'loading'
         })
@@ -70,6 +86,8 @@ const appUserSlice = createSlice({
           state.status = 'failed';
           state.error = action.error.message
         })
+        //----------------------------------------
+        //---Авторизация пользователя-------------
         .addCase(fetchUser.pending, (state, action) => {
           state.status = 'loading'
         })
@@ -81,6 +99,41 @@ const appUserSlice = createSlice({
           state.status = 'failed';
           state.error = action.error.message
         })
+         //----------------------------------------
+          //---Получение даннных пользователя-------------
+        .addCase(fetchUserData.pending, (state, action) => {
+          state.status = 'loading'
+        })
+        .addCase(fetchUserData.fulfilled, (state, action) => {
+          state.status = 'succeeded';
+    
+          state.user.name = action.payload.firstname;
+          state.user.lastname = action.payload.lastname;
+          state.user.surname = action.payload.surname;
+          state.user.bDay = action.payload.birth_day;
+          state.user.email = action.payload.email;
+          state.user.phone = action.payload.phone;
+        
+        })
+        .addCase(fetchUserData.rejected, (state, action) => {
+          state.status = 'failed';
+          state.error = action.error.message
+        })
+         //---------------------------------------------
+         //------Изменение данных пользователя----------
+         .addCase(updateUserData.pending, (state, action) => {
+          state.updated = 'loading'
+        })
+        .addCase(updateUserData.fulfilled, (state, action) => {
+          state.updated = 'succeeded';
+          state.error=null;
+    
+         })
+        .addCase(updateUserData.rejected, (state, action) => {
+          state.updated = 'failed';
+          state.error = action.error
+        })
+           //---------------------------------------------
       }
   })
 

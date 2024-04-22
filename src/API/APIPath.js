@@ -4,6 +4,8 @@ const api={
     user:{
         register:base.concat("auth/register"),
         authenticate:base.concat("auth/authenticate"),
+        data:base.concat("user/"),
+        update:base.concat("user/update")
     },
     company:{
         create:base.concat("company/create"),

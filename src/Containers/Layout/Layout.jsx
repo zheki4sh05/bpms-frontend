@@ -14,18 +14,19 @@ import AuthFormComponent from "../../Components/AuthFormComponent";
 import DomainNames from "../../Store/DomainNames";
 import statusTypes from "../../API/status";
 import { useSelector } from "react-redux";
+import { fetchUserData, getToken } from "../../Store/slices/appUserSlice";
+import { useDispatch } from "react-redux";
 const theme = createTheme(
   ruRU,
 );
 
 function Layout() {
-
   const authStatus = useSelector((state)=>state[DomainNames.app.appUser].status)
 
-  const [isAuth,setAuth] = useState(false);
+  const [isAuth,setAuth] = useState(true);
 
   const handleLogIn=()=>{
-
+   
     setTimeout(function () {
       setAuth(true);
     }, 1500);
@@ -34,6 +35,7 @@ function Layout() {
 
   if(authStatus===statusTypes.succeeded){
     handleLogIn();
+   
   }
 
   const handleLogOut=()=>{

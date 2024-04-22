@@ -50,32 +50,6 @@ export default function SignIn({onTogglePage}) {
   }
 
 
-//   if(userStatus ==='loading'){
-//     authResultContent =  <CircularProgress />
-  
-//   }else if (userStatus === 'succeeded') {
-
-//     authResultContent = <CustomCreateAlert        
-//         messageText="Авторизация прошла успешно"
-//         duration={alertDuration}
-//         userSeverity="success"
-//     />
-//     setTimeout(function() {
-//       toggleState();
-//   }, alertDuration);
-
-//   }else if (userStatus === 'failed') {
-//     authResultContent = <CustomCreateAlert        
-//     messageText={"Ошибка авторизации. ".concat(error)}
-//     duration={6000}
-//     userSeverity="error"
-// />
-//   }
-
-
-  
-  
-
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);

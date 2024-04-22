@@ -4,19 +4,22 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
+
 import Stack from "@mui/material/Stack";
-import AccountCircle from "@mui/icons-material/AccountCircle";
 
 import SearchBar from "../../Components/SearchBar/SearchBar";
 import { Settings } from "@mui/icons-material";
 import Clock from "../../Components/Clock";
-import { useSelector } from 'react-redux'
+import { useSelector } from "react-redux";
 import DomainNames from "../../Store/DomainNames";
-import UserProfile from './../../Components/UserProfile/UserProfile';
-
+import UserProfile from "./../../Components/UserProfile/UserProfile";
+import { useDispatch } from "react-redux";
+import statusTypes from "../../API/status";
+import { fetchUserData, getToken } from "../../Store/slices/appUserSlice";
+import { useEffect } from "react";
 
 export default function Header() {
+
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -25,8 +28,15 @@ export default function Header() {
     onToggle(false);
   };
 
-  const user = useSelector(state => state[DomainNames.app.appUser].user)
-  
+  const user = useSelector((state) => state[DomainNames.app.appUser].user);
+
+  // useEffect(() => {
+  //   if (status === statusTypes.idle) {
+  //     dispatch(fetchUserData({ token }));
+  //   }
+  // }, [status, dispatch]);
+
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar sx={{ position: "relative", width: "100%", bgcolor: "#6495ED" }}>
@@ -52,7 +62,7 @@ export default function Header() {
               component="div"
               sx={{ flexGrow: 1, ml: 2, display: "inline-block" }}
             >
-             {new Date().toLocaleDateString()}
+              {new Date().toLocaleDateString()}
             </Typography>
             <IconButton
               size="large"
@@ -66,20 +76,17 @@ export default function Header() {
           </Box>
 
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{display:"flex",flexDirection:"row"}}>
-            <UserProfile/>
-            <Box sx={{ display: "flex", flexDirection: "column", ml:1 }}>
-              <Typography variant="subtitle1" >
+          <Box sx={{ display: "flex", flexDirection: "row" }}>
+            <UserProfile />
+            <Box sx={{ display: "flex", flexDirection: "column", ml: 1 }}>
+              <Typography variant="subtitle1">
                 {user.lastname} {user.name}
               </Typography>
-              <Typography variant="subtitle2">
-              {user.email}
-              </Typography>
+              <Typography variant="subtitle2">{user.email}</Typography>
             </Box>
           </Box>
         </Toolbar>
       </AppBar>
- 
     </Box>
   );
 }

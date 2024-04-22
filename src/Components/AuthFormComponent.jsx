@@ -6,13 +6,16 @@ import DomainNames from "../Store/DomainNames";
 import { CircularProgress } from "@mui/material";
 import CustomCreateAlert from "../Components/CustomCreateAlert";
 import { useSelector } from "react-redux";
+import { fetchUserData, getToken } from "../Store/slices/appUserSlice";
+import { useDispatch } from "react-redux";
 function AuthFormComponent() {
+
   let authResultContent;
   let alertDuration = 1500;
   const signUp = 1;
 
   const signIn = 2;
-
+ 
   const [page, togglePage] = useState(signUp);
 
   const handleTogglePage = () => {
@@ -27,6 +30,9 @@ function AuthFormComponent() {
   if (userStatus === "loading") {
     authResultContent = <CircularProgress />;
   } else if (userStatus === "succeeded") {
+
+   
+
     authResultContent = (
       <CustomCreateAlert
         messageText={`${page==signUp ? "Регистрация" : "Авторизация" } прошла успешно`}

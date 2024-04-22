@@ -1,10 +1,9 @@
-import { Grid, TextField } from "@mui/material";
+import { CircularProgress, Grid, TextField } from "@mui/material";
 import { useState } from "react";
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import { userUpdate} from '../../Store/slices/appUserSlice'
+import { getToken, updateUserData, userUpdate} from '../../Store/slices/appUserSlice'
 
 
 import Box from '@mui/material/Box';
@@ -14,8 +13,15 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useSelector } from 'react-redux'
 import DomainNames from "../../Store/DomainNames";
 import { useDispatch } from "react-redux";
+import statusTypes from "../../API/status";
+import CustomCreateAlert from "../CustomCreateAlert";
+import { getErrorName } from "../../Util/ErrorTypes";
 function AboutUser() {
-    const user = useSelector(state => state[DomainNames.app.appUser].user)
+  const [data,setData] = useState({});
+  const user = useSelector(state => state[DomainNames.app.appUser].user)
+  const statusUpdated = useSelector(state=>state[DomainNames.app.appUser].updated)
+  const error = useSelector(state=>state[DomainNames.app.appUser].error)
+  const token = useSelector(getToken)
 const defaultTheme = createTheme();
 const dispatch = useDispatch()
 
@@ -52,64 +58,52 @@ const dispatch = useDispatch()
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    dispatch(
-        userUpdate({
-        name:formData.get('firstname'),
-        lastname:formData.get('lastname'),
-        surname:formData.get('surname'),
-        email:formData.get('email'),
-        phone:formData.get('phone'),
-        bDay:formData.get('birth'),
-      }))
-
+   
+    const userData = {
+      name:formData.get('firstname'),
+      lastname:formData.get('lastname'),
+      surname:formData.get('surname'),
+      email:formData.get('email'),
+      phone:formData.get('phone'),
+      bDay:formData.get('birth'),
+    }
+    setData(userData);
+    dispatch(updateUserData({
+      user:{...userData},
+      token
+    }     
       
-    setEdited(false)
+  ))
+    
   };
 
-//   const [name,setName] = useState('');
-//   const [surname,setSurname] = useState('');
-//   const [secondname,setSecondname] = useState('');
-//   const [email,setEmail] = useState('');
-//   const [phone,setPhone] = useState('');
-//   const [birthDay,setBirthDay] = useState('');
+  let updatedResultContent;
 
-//   function dispatherEditor(type){
-//     switchEdited(true);
-//     let value = event.target.value;
-//     switch(type){
-//         case "name" :{
-//             setName(value);
-//             break;
-//         }
-//         case "surname" :{
-//             setSurname(value);
-//             break;
-//         }
-//         case "secondname" :{
-//             setSecondname(value);
-//             break;
-//         }
-//         case "email" :{
-//             setEmail(value);
-//             break;
-//         }
-//         case "phone" :{
-//             setPhone(value);
-//             break;
-//         }
-//         case "birth" :{
-//             setBirthDay(value);
-//             break;
-//         }
-//     }
-    
-       
-  
-//   }
+  if(statusUpdated===statusTypes.failed){
+    updatedResultContent = <CustomCreateAlert
+      messageText={`Ошибка обновления. ${getErrorName('any',error.code)}`}
+      duration={2000}
+      userSeverity={statusTypes.error}
 
-//   const switchEdited = (value) => {
-//     setEdited(value);
-//   };
+    />
+  }else if(statusUpdated===statusTypes.succeeded){
+    updatedResultContent = <CustomCreateAlert
+    messageText={'Данные успешно обновлены'}
+    duration={1500}
+    userSeverity={"success"}
+
+  />
+
+    setEdited(false);
+    dispatch(
+      userUpdate({
+     ...data
+    }))
+  }else if(statusUpdated===statusTypes.loading){
+    updatedResultContent = <CircularProgress />
+  }
+
+
 const handleFormChange =()=>{
    setEdited(true);
 
@@ -117,37 +111,7 @@ const handleFormChange =()=>{
 
   return (
     <>
-      {/* <Grid container spacing={1}>
 
-        <Grid item xs={3} >
-        <TextField id="outlined-basic" label={inputTypes[0].value} variant="outlined" value={name} onChange={dispatherEditor("name")}/>
-        </Grid>
-
-
-        <Grid item xs={3}>
-          <TextField id="outlined-basic" label={inputTypes[1].value} value={surname}  onChange={dispatherEditor("surname")} variant="outlined" />
-        </Grid>
-        <Grid item xs={3}>
-          <TextField id="outlined-basic" label={inputTypes[2].value}  value={secondname}  onChange={dispatherEditor("secondname")} variant="outlined" />
-        </Grid>
-      </Grid>
-      <Grid sx={{ mt: 1 }} container spacing={1}>
-        <Grid item xs={3}>
-          <TextField id="outlined-basic" label={inputTypes[3].value} value={email} variant="outlined" onChange={dispatherEditor("email")}/>
-        </Grid>
-        <Grid item xs={3}>
-          <TextField id="outlined-basic" label={inputTypes[4].value}  value={phone} variant="outlined" onChange={dispatherEditor("phone")}/>
-        </Grid>
-        <Grid item xs={3}>
-          <TextField
-            id="outlined-basic"
-            variant="outlined"
-            type="datetime-local"
-            value={birthDay}
-            onChange={dispatherEditor("birth")}
-          />
-        </Grid>
-      </Grid> */}
 
 <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="md">
@@ -233,11 +197,12 @@ const handleFormChange =()=>{
               type="submit"
             disabled={!edited}
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 2,display:"flex",flexDirection:"column" }}
 
             >
               Сохранить 
             </Button>
+            {updatedResultContent}
             </Box>
             
        

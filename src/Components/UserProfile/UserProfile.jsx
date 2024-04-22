@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Drawer, IconButton } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
@@ -8,7 +8,17 @@ import { Grid, Typography } from "@mui/material";
 import CustomTabPanel from "../CustomTabPanel/CustomTabPanel";
 import AboutUser from "./AboutUser";
 import AboutCompany from "./AboutCompany";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUserData, getToken } from "../../Store/slices/appUserSlice";
 function UserProfile() {
+  const dispatch = useDispatch();
+  const token = useSelector(getToken);
+    useEffect(() => {
+     
+      dispatch(fetchUserData({ token }));
+     
+  }, []);
+
   const [state, setState] = useState({
     top: false,
     left: false,
