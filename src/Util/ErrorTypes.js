@@ -14,7 +14,7 @@ export function getErrorName(from, error){
         case 'any':{
             switch(error){
                 case "ERR_NETWORK":{
-                    return "Неполадки с итернет-соединением"
+                    return "Неполадки с интернет-соединением"
                 }
             }
         }
