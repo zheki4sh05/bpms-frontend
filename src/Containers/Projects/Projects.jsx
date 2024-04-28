@@ -1,10 +1,8 @@
-import { Grow, Stack, Typography } from "@mui/material";
+import {Stack, Typography } from "@mui/material";
 import SearchBox from "../../Components/SearchBox/SearchBox";
 import CustomTabPanel from "../../Components/CustomTabPanel/CustomTabPanel";
 import CustomTable from "../../Components/CustomTable";
-import { useState } from "react";
 import CreateProject from "../../Components/CreateProject";
-import DialogContext from "../../Components/DialogContext";
 import DialogEntityProvider from "../../Components/DialogEntityProvider";
 
 function Projects() {
