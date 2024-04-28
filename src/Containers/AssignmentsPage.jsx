@@ -7,18 +7,15 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import PageInfo from "../Components/PageInfo";
 import CreateAssignment from "../Components/CreateAssignment";
+import DialogContext from "../Components/DialogContext";
+import DialogEntityProvider from "../Components/DialogEntityProvider";
 
 function AssignmentsPage() {
-  const [openDialog, setShow] = useState(false);
-
-  const handleOpenDialog = () => {
-    setShow((prevState) => (prevState === false ? true : false));
-  };
-
   return (
-    <Box>
-      <SearchBox openDialog={handleOpenDialog} buttonText={"Назначить"}/>
-      {/* <Stack direction="row" sx={{ alignItems: "center", mt: 2 }}>
+    <DialogEntityProvider>
+      <Box>
+        <SearchBox buttonText={"Назначить"} />
+        {/* <Stack direction="row" sx={{ alignItems: "center", mt: 2 }}>
         <Typography variant="h5" gutterBottom>
           Мои проекты
         </Typography>
@@ -36,38 +33,39 @@ function AssignmentsPage() {
         </Typography>
       </Stack> */}
 
-      <PageInfo
-        name="Поручения"
-        data={[
-          {
-            name: "Всего",
-            count: "0",
-          },
-        ]}
-      />
+        <PageInfo
+          name="Поручения"
+          data={[
+            {
+              name: "Всего",
+              count: "0",
+            },
+          ]}
+        />
 
-      <CustomTabPanel
-        content={{
-          tabNames: ["Список", "Плитка", "Календарь", "Проект"],
-        }}
-      >
-        <CustomTable />
-        <Typography variant="h5" gutterBottom>
-          контент 1
-        </Typography>
-        <Typography variant="h5" gutterBottom>
-          контент 2
-        </Typography>
-        <Typography variant="h5" gutterBottom>
-          контент 3
-        </Typography>
-        <Typography variant="h5" gutterBottom>
-          контент 4
-        </Typography>
-      </CustomTabPanel>
+        <CustomTabPanel
+          content={{
+            tabNames: ["Список", "Плитка", "Календарь", "Проект"],
+          }}
+        >
+          <CustomTable />
+          <Typography variant="h5" gutterBottom>
+            контент 1
+          </Typography>
+          <Typography variant="h5" gutterBottom>
+            контент 2
+          </Typography>
+          <Typography variant="h5" gutterBottom>
+            контент 3
+          </Typography>
+          <Typography variant="h5" gutterBottom>
+            контент 4
+          </Typography>
+        </CustomTabPanel>
 
-      {openDialog ? <CreateAssignment /> : null}
-    </Box>
+        <CreateAssignment />
+      </Box>
+    </DialogEntityProvider>
   );
 }
 

@@ -22,6 +22,8 @@ import AboutProject from "../Containers/CreateProjects/AboutProject";
 import UserDatePicker from "../Containers/CreateProjects/UserDatePicker";
 import WorkersListControl from "../Containers/CreateProjects/WorkersListControl";
 import  Container  from '@mui/material/Container';
+import { useContext } from "react";
+import DialogContext from "./DialogContext";
 
 // const steps = ['О проекте', 'Настройки', 'Участники'];
 
@@ -36,12 +38,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 // ]
 
 export default function CreateEntity({ stepsNames, stepsPages, name }) {
-  const [open, setOpen] = React.useState(true);
+ 
+  const {openDialog, closeDialogHandler} = useContext(DialogContext)
 
   const handleClose = () => {
-    setOpen(false);
+    closeDialogHandler()
   };
-
+ 
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
 
@@ -95,7 +98,7 @@ export default function CreateEntity({ stepsNames, stepsPages, name }) {
     <React.Fragment>
       <Dialog
         fullScreen
-        open={open}
+        open={openDialog}
         onClose={handleClose}
         TransitionComponent={Transition}
       >
