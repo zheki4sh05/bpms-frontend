@@ -13,6 +13,9 @@ function DialogEntityProvider({children}) {
   const closeDialogHandler = () => {
     setOpen(false);
   };
+  const setDataHandler=(value)=>{
+    setData(value)
+  }
   return (
     <DialogContext.Provider
       value={{
