@@ -10,29 +10,35 @@ const initialState = {
         desc:"",
         currentRole:"",
     },
+    updated:null,
     error:null,
     status:'idle'
 }
 //получение подробных данных компании
 export const fetchCompany = createAsyncThunk(DomainNames.company.concat('/fetchCompany')  , async (initialCompany) => {
-    const response = await axios.get(api.company.fetch,  initialCompany, getRequestConfig(initialCompany.token));
+    const response = await axios.get(api.company.fetch,  initialCompany.data, getRequestConfig(initialCompany.token));
       return response.data
   })
 
 //создание компании
 export const createCompany= createAsyncThunk(DomainNames.company.concat('/createCompany')  , async (initialCompany) => {
-    const response = await axios.post(api.company.create,  initialCompany, getRequestConfig(initialCompany.token));
+    const response = await axios.post(api.company.create,  initialCompany.data, getRequestConfig(initialCompany.token));
       return response.data
   })
 // обновление названия и описания компании
 export const updateCompany= createAsyncThunk(DomainNames.company.concat('/updateCompany')  , async (initialCompany) => {
-    const response = await axios.post(api.company.update,  initialCompany, getRequestConfig(initialCompany.token));
+    const response = await axios.put(api.company.update,  initialCompany.data, getRequestConfig(initialCompany.token));
       return response.data
   })
 //поиск компании, в которой состоит пользователь
 export const userCompany= createAsyncThunk(DomainNames.company.concat('/userCompany')  , async (initialCompany) => {
   const response = await axios.get(api.company.userCompany,getRequestConfig(initialCompany.token));
-  console.log(response.data)
+  return response.data
+})
+//пригласить пользователя в компанию
+export const inviteUserToCompany= createAsyncThunk(DomainNames.company.concat('/inviteUserToCompany')  , async (initialCompany) => {
+  const response = await axios.get(api.company.invite,initialCompany.data,getRequestConfig(initialCompany.token));
+
   return response.data
 })
 
@@ -46,10 +52,8 @@ const companySlice = createSlice({
             state.userCompany.desc = action.payload.desc
             state.userCompany.currentRole = action.payload.currentRole
         },
-        companyUpdate(state,action){
-            const {name, desc, currentRole} = action.payload;
-            state.userCompany.name = name
-            state.userCompany.desc = desc
+        resetUpdated(state,action){
+          state.updated=null;
         }
     },
     extraReducers(builder) {
@@ -86,14 +90,18 @@ const companySlice = createSlice({
             //----------------------------------------------------
             // ---------обновление названия и описания компании------
           .addCase(updateCompany.pending, (state, action) => {
-            state.status = 'loading'
+            state.updated = 'loading'
           })
           .addCase(updateCompany.fulfilled, (state, action) => {
-            state.status = 'succeeded';
+            state.updated = 'succeeded';
+
+            state.userCompany.name = action.payload.name;
+            state.userCompany.desc = action.payload.desc;
+
             state.error = null
           })
           .addCase(updateCompany.rejected, (state, action) => {
-            state.status = 'failed';
+            state.updated = 'failed';
             state.error = action.error
           })
             //----------------------------------------------------
@@ -115,7 +123,7 @@ const companySlice = createSlice({
              //----------------------------------------------------
         }
   })
-  export const { saveCompany, companyUpdate } = companySlice.actions
+  export const { saveCompany,resetUpdated } = companySlice.actions
   export default companySlice.reducer
 
   

@@ -47,6 +47,7 @@ export const updateUserData = createAsyncThunk(DomainNames.app.appUser.concat('/
 })
 
 
+
 const appUserSlice = createSlice({
     name: DomainNames.app.appUser,
     initialState,
@@ -70,6 +71,9 @@ const appUserSlice = createSlice({
             existingUser.phone = phone
             existingUser.bDay = bDay
         },
+        resetUserUpdatedStatus(state,action){
+          state.updated = null;
+        }
         
     },
     extraReducers(builder) {
@@ -126,6 +130,16 @@ const appUserSlice = createSlice({
         })
         .addCase(updateUserData.fulfilled, (state, action) => {
           state.updated = 'succeeded';
+
+          state.user.name = action.payload.firstname;
+          state.user.lastname = action.payload.lastname;
+          state.user.surname = action.payload.surname;
+          state.user.bDay = action.payload.birth_day;
+          state.user.email = action.payload.email;
+          state.user.phone = action.payload.phone;
+
+          
+
           state.error=null;
     
          })
@@ -138,7 +152,7 @@ const appUserSlice = createSlice({
   })
 
 
-  export const { userCreate,  userUpdate} = appUserSlice.actions
+  export const { userCreate,  userUpdate,resetUserUpdatedStatus} = appUserSlice.actions
   export function getToken(state) {
   return state[DomainNames.app.appUser].user.jwtToken;
 }

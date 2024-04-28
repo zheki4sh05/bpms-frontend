@@ -10,7 +10,14 @@ const api={
     company:{
         create:base.concat("company/create"),
         update:base.concat("company/update"),
-        userCompany:base.concat("company/userCompany")
+        userCompany:base.concat("company/userCompany"),
+        invite:base.concat("company/invite")
+    },
+    project:{
+        create:base.concat("project/create"),
+        update:base.concat("project/update"),
+        include:base.concat("project/include"),
+        delete:base.concat("project/delete"),
     }
     
    

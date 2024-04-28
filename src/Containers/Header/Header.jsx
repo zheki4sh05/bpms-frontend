@@ -13,10 +13,7 @@ import Clock from "../../Components/Clock";
 import { useSelector } from "react-redux";
 import DomainNames from "../../Store/DomainNames";
 import UserProfile from "./../../Components/UserProfile/UserProfile";
-import { useDispatch } from "react-redux";
-import statusTypes from "../../API/status";
-import { fetchUserData, getToken } from "../../Store/slices/appUserSlice";
-import { useEffect } from "react";
+
 
 export default function Header() {
 
@@ -28,13 +25,10 @@ export default function Header() {
     onToggle(false);
   };
 
-  const user = useSelector((state) => state[DomainNames.app.appUser].user);
+  const name = useSelector((state) => state[DomainNames.app.appUser].user.name);
+  const email = useSelector((state) => state[DomainNames.app.appUser].user.email);
+  const lastname = useSelector((state) => state[DomainNames.app.appUser].user.lastname);
 
-  // useEffect(() => {
-  //   if (status === statusTypes.idle) {
-  //     dispatch(fetchUserData({ token }));
-  //   }
-  // }, [status, dispatch]);
 
 
   return (
@@ -80,9 +74,9 @@ export default function Header() {
             <UserProfile />
             <Box sx={{ display: "flex", flexDirection: "column", ml: 1 }}>
               <Typography variant="subtitle1">
-                {user.lastname} {user.name}
+                {lastname} {name}
               </Typography>
-              <Typography variant="subtitle2">{user.email}</Typography>
+              <Typography variant="subtitle2">{email}</Typography>
             </Box>
           </Box>
         </Toolbar>

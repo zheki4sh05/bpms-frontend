@@ -23,7 +23,7 @@ const theme = createTheme(
 function Layout() {
   const authStatus = useSelector((state)=>state[DomainNames.app.appUser].status)
 
-  const [isAuth,setAuth] = useState(true);
+  const [isAuth,setAuth] = useState(false);
 
   const handleLogIn=()=>{
    

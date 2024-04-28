@@ -16,6 +16,9 @@ export function getErrorName(from, error){
                 case "ERR_NETWORK":{
                     return "Неполадки с интернет-соединением"
                 }
+                default:{
+                    return "Что-то пошло не так..."
+                }
             }
         }
         default:{

@@ -10,12 +10,16 @@ import AboutUser from "./AboutUser";
 import AboutCompany from "./AboutCompany";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserData, getToken } from "../../Store/slices/appUserSlice";
+import DomainNames from "../../Store/DomainNames";
 function UserProfile() {
   const dispatch = useDispatch();
   const token = useSelector(getToken);
+  const status = useSelector(state=>state[DomainNames.app.appUser].status)
     useEffect(() => {
-     
-      dispatch(fetchUserData({ token }));
+  
+        dispatch(fetchUserData({ token }));
+
+
      
   }, []);
 

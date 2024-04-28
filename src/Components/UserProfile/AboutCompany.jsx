@@ -8,12 +8,15 @@ import statusTypes from "../../API/status";
 import { userCompany } from "../../Store/slices/companySlice";
 import { getToken } from "../../Store/slices/appUserSlice";
 import { getErrorName } from "../../Util/ErrorTypes";
+import CustomTabPanel from './../CustomTabPanel/CustomTabPanel';
+import CompanyInformation from "./CompanyInformation";
 function AboutCompany() {
   const userInCompany = useSelector((state) => state[DomainNames.company].userCompany);
   const error = useSelector((state)=>state[DomainNames.company].error)
   const token = useSelector(getToken);
   const status = useSelector((state) => state[DomainNames.company].status);
   const dispatch = useDispatch();
+  const [open,setOpen] = useState(false);
   const [isWorked, setWorked] = useState(
     userInCompany.name == "" ? false : true
   );
@@ -23,6 +26,10 @@ function AboutCompany() {
       setWorked(true)
     }
   }, [status, dispatch])
+
+  const handleOpenTabsAboutCompany=()=>{
+    setOpen((prevState) => (prevState === false ? true : false));
+  }
 
   const handleWork = () => {
     setWorked(true);
@@ -63,8 +70,9 @@ function AboutCompany() {
                 <Typography variant="h4" gutterBottom>
                   {userInCompany.name}
                 </Typography>{" "}
-                <Button size="small" sx={{ mr: 1 }} variant="outlined">
-                  Подробнее
+                <Button size="small" sx={{ mr: 1 }} variant="outlined" onClick={handleOpenTabsAboutCompany}>
+
+                  {open ? "Скрыть" : "Подробнее"}
                 </Button>
               </>
             )}
@@ -126,6 +134,23 @@ function AboutCompany() {
               <CreateCompany handleCreate={handleWork} />
             </Box>
           )}
+        </Grid>
+        <Grid item xs={5}>
+          {
+            open ? 
+            <CustomTabPanel  content={{
+              tabNames: ["О компании", "Сотрудники", ],
+            }}>
+                <CompanyInformation/>
+                <Typography>
+                  Hello
+                </Typography>
+              </CustomTabPanel>
+              :
+              null
+          }
+         
+
         </Grid>
       </Grid>
       <Grid container spacing={1}>

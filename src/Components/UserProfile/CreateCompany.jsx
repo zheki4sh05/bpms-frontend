@@ -41,9 +41,11 @@ function CreateCompany({handleCreate}) {
     const formData = new FormData(event.currentTarget);
     setData(formData);
     dispatch(createCompany({
-      name:formData.get('name'),
-      desc:formData.get('desc'),
-      currentRole:"admin",
+      data:{
+        name:formData.get('name'),
+        desc:formData.get('desc'),
+        currentRole:"admin",
+      },
       token
     }))
 
