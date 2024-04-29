@@ -9,8 +9,8 @@ function UserDatePicker() {
 
   const [isEditedStart, setEditedStart] = useState(false)
   const [isEditedFinish, setEditedFinish] = useState(false)
-  const [startDate,setStartDate] = useState(data.startDate);
-  const [finishDate,setFinishDate] = useState(data.finishDate);
+  const [startDate,setStartDate] = useState(data.deadline ? data.deadline.startDate : "");
+  const [finishDate,setFinishDate] = useState(data.deadline ? data.deadline.finishDate : "");
 
   const handleStartDate=(event)=>{
     setEditedStart(true)
@@ -54,7 +54,7 @@ function UserDatePicker() {
             disabled={!(isEditedStart && isEditedFinish) }
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
-            onClick={()=>setDataHandler({...data, startDate, finishDate})}
+            onClick={()=>setDataHandler({...data,deadline:{...data.deadline, startDate, finishDate}})}
           >
             Сохранить
           </Button>

@@ -21,7 +21,7 @@ import { useState } from "react";
 import AboutProject from "../Containers/CreateProjects/AboutProject";
 import UserDatePicker from "../Containers/CreateProjects/UserDatePicker";
 import WorkersListControl from "../Containers/CreateProjects/WorkersListControl";
-import  Container  from '@mui/material/Container';
+import Container from "@mui/material/Container";
 import { useContext } from "react";
 import DialogContext from "./DialogContext";
 
@@ -31,16 +31,20 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-
-
-export default function CreateEntity({ stepsNames, stepsPages, name, handleSaveContext }) {
- 
-  const {openDialog, closeDialogHandler} = useContext(DialogContext)
+export default function CreateEntity({
+  stepsNames,
+  stepsPages,
+  name,
+  handleSaveContext,
+  getResult,
+  resetDialog,
+}) {
+  const { openDialog, closeDialogHandler } = useContext(DialogContext);
 
   const handleClose = () => {
-    closeDialogHandler()
+    closeDialogHandler();
   };
- 
+
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
 
@@ -53,6 +57,8 @@ export default function CreateEntity({ stepsNames, stepsPages, name, handleSaveC
   };
 
   const handleNext = () => {
+    console.log(getResult());
+    console.log(stepsNames.length);
     let newSkipped = skipped;
     if (isStepSkipped(activeStep)) {
       newSkipped = new Set(newSkipped.values());
@@ -83,13 +89,14 @@ export default function CreateEntity({ stepsNames, stepsPages, name, handleSaveC
   };
 
   const handleReset = () => {
+    resetDialog();
     setActiveStep(0);
   };
 
-  const handleSave=()=>{
+  const handleSave = () => {
     handleSaveContext();
     handleClose();
-  }
+  };
 
   return (
     <React.Fragment>
@@ -110,14 +117,10 @@ export default function CreateEntity({ stepsNames, stepsPages, name, handleSaveC
               <CloseIcon />
             </IconButton>
             <Box>
-            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              {name}
-            </Typography>
+              <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+                {name}
+              </Typography>
             </Box>
-          
-  
-
-            
           </Toolbar>
         </AppBar>
         <Box sx={{ p: 5 }}>
@@ -141,8 +144,8 @@ export default function CreateEntity({ stepsNames, stepsPages, name, handleSaveC
                 );
               })}
             </Stepper>
-              <Container maxWidth="sm">
-              <Box sx={{ display: "flex", flexDirection: "row", mt:2 }}>
+            <Container maxWidth="sm">
+              <Box sx={{ display: "flex", flexDirection: "row", mt: 2 }}>
                 <Button
                   color="inherit"
                   disabled={activeStep === 0}
@@ -158,23 +161,44 @@ export default function CreateEntity({ stepsNames, stepsPages, name, handleSaveC
                 Пропустить
               </Button>
             )} */}
-
-                <Button onClick={handleNext} color="inherit" variant="contained">
-                  {activeStep === stepsNames.length - 1 ? "Закончить" : "Далее"}
-                </Button>
-             
+                {activeStep !== stepsNames.length ? (
+                  <Button
+                    onClick={handleNext}
+                    color="inherit"
+                    variant="contained"
+                  >
+                    {activeStep === stepsNames.length - 1
+                      ? "Закончить"
+                      : "Далее"}
+                  </Button>
+                ) : (
+                  <></>
+                )}
               </Box>
-              </Container>
-            
+            </Container>
 
             {activeStep === stepsNames.length ? (
               <React.Fragment>
-                <Typography sx={{ mt: 2, mb: 1 }}>
-                  Все этапы выполнены
-                </Typography>
+                {getResult() == stepsNames.length ? (
+                  <Typography sx={{ mt: 2, mb: 1 }}>
+                    Все этапы выполнены
+                  </Typography>
+                ) : (
+                  <Typography sx={{ mt: 2, mb: 1 }}>
+                    Выполнено {getResult()} из {stepsNames.length}
+                  </Typography>
+                )}
+
                 <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
                   <Box sx={{ flex: "1 1 auto" }} />
-                  <Button variant="contained" onClick={handleSave} sx={{mr:2}}>Сохранить</Button>
+                  <Button
+                    variant="contained"
+                    onClick={handleSave}
+                    sx={{ mr: 2 }}
+                    disabled={getResult() !== stepsNames.length}
+                  >
+                    Сохранить
+                  </Button>
                   <Button onClick={handleReset}>Сброс</Button>
                 </Box>
               </React.Fragment>

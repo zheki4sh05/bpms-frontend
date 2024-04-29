@@ -17,6 +17,13 @@ function DialogEntityProvider({children}) {
     setData(value)
     console.log(value)
   }
+
+  const getDialogResult=()=>{
+      return Object.keys(data).length
+  }
+  const resetDialogContext=()=>{
+    Object.keys(data).forEach(key => delete data[key]);
+  }
   return (
     <DialogContext.Provider
       value={{
@@ -25,6 +32,8 @@ function DialogEntityProvider({children}) {
         closeDialogHandler,
         setDataHandler,
         data,
+        getDialogResult,
+        resetDialogContext
       }}
     >
       {children}

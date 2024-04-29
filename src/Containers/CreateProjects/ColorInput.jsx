@@ -9,7 +9,10 @@ function ColorInput() {
   
     const handleChange = (value) => {
       
-      setDataHandler({...data,color:value.hex})
+      setDataHandler({...data, aboutProject:{
+        ...data.aboutProject,
+        color: value.hex,
+  }});
     }
 
     return ( 

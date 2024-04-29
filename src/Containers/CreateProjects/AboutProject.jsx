@@ -9,20 +9,36 @@ import {
 } from "@mui/material";
 import ColorInput from "./ColorInput";
 import FileImageInput from "./FileImageInput";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import DialogContext from "./../../Components/DialogContext";
 const defaultTheme = createTheme();
 function AboutProject() {
   const { data, setDataHandler } = useContext(DialogContext);
 
+  const [inputValueName, setInputValueName] = useState(''); 
+  const [inputValueDesc, setInputValueDesc] = useState(''); 
+
+  const handleInputChangeName = (e) => {
+    setInputValueName(e.target.value);
+  };
+
+  const handleInputChangeDesc = (e) => {
+    setInputValueDesc(e.target.value);
+  };
+
+  useEffect(() => {
+    setInputValueName(typeof data.aboutProject!=="undefined" ? data.aboutProject.name : " ");
+    setInputValueDesc(typeof data.aboutProject!=="undefined" ? data.aboutProject.desc : " "); 
+  }, [data]);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    setDataHandler({
-      ...data,
-      name: formData.get("name"),
-      desc: formData.get("desc"),
-    });
+    setDataHandler({...data, aboutProject:{
+          ...data.aboutProject,
+          name: formData.get("name"),
+          desc: formData.get("desc"),
+    }});
   };
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -40,7 +56,8 @@ function AboutProject() {
             label="Название проекта"
             variant="outlined"
             sx={{ mb: 2 }}
-            value={data.name}
+            value={inputValueName} 
+            onChange={handleInputChangeName}
           />
           <TextField
             margin="normal"
@@ -52,7 +69,8 @@ function AboutProject() {
             rows={4}
             variant="outlined"
             sx={{ mb: 2 }}
-            value={data.desc}
+            value={inputValueDesc} 
+            onChange={handleInputChangeDesc}
           />
           <ColorInput />
           <Button

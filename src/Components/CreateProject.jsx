@@ -6,9 +6,11 @@ import CreateEntity from "./CreateEntity";
 import { useContext } from "react";
 import DialogContext from './DialogContext';
 
+
 export default function CreateProject() {
 
-  const {data} = useContext(DialogContext)
+  const {data, getDialogResult,resetDialogContext,setDataHandler} = useContext(DialogContext)
+
 
   const handleSaveCreatedProject=()=>{
     //задиспатчить сохранение
@@ -20,6 +22,8 @@ export default function CreateProject() {
     stepsPages={[<AboutProject />, <UserDatePicker />, <WorkersListControl />]}
     name={"Создание проекта"}
     handleSaveContext={handleSaveCreatedProject}
+    getResult={getDialogResult}
+    resetDialog={resetDialogContext}
     />
   );
 }
