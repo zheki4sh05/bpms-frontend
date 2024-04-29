@@ -15,6 +15,7 @@ function DialogEntityProvider({children}) {
   };
   const setDataHandler=(value)=>{
     setData(value)
+    console.log(value)
   }
   return (
     <DialogContext.Provider
@@ -22,6 +23,7 @@ function DialogEntityProvider({children}) {
         openDialog,
         openDialogHandler,
         closeDialogHandler,
+        setDataHandler,
         data,
       }}
     >
