@@ -18,8 +18,10 @@ const api={
         update:base.concat("project/update"),
         include:base.concat("project/include"),
         delete:base.concat("project/delete"),
+    },
+    workers:{
+        fetch:base.concat("workers/")
     }
-    
    
 }
 

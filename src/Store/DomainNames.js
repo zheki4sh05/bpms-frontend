@@ -5,6 +5,7 @@ const DomainNames = {
        
     },
     company:"company",
-    projects:"projects"
+    projects:"projects",
+    workers:"workers"
 }
 export default DomainNames;

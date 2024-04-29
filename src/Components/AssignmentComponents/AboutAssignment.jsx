@@ -61,7 +61,7 @@ function AboutAssignment({ projects }) {
               disabled={show}
             >
               {projects.map((item, index) => (
-                <MenuItem value={index}>{item}</MenuItem>
+                <MenuItem value={index} key={index}>{item}</MenuItem>
               ))}
             </Select>
           </FormControl>

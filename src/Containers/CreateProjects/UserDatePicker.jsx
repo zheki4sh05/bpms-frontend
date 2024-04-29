@@ -1,7 +1,30 @@
-import { Box, Container, Divider } from "@mui/material";
+import { Box, Button, Container, Divider, TextField, Typography } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { useContext, useState } from "react";
+import DialogContext from "../../Components/DialogContext";
 function UserDatePicker() {
+
+  const {setDataHandler,data} = useContext(DialogContext);
+
+  const [isEditedStart, setEditedStart] = useState(false)
+  const [isEditedFinish, setEditedFinish] = useState(false)
+  const [startDate,setStartDate] = useState(data.startDate);
+  const [finishDate,setFinishDate] = useState(data.finishDate);
+
+  const handleStartDate=(event)=>{
+    setEditedStart(true)
+
+    setStartDate(event.target.value)
+
+  }
+  const handleFinishDate=(event)=>{
+    setEditedFinish(true)
+    
+    setFinishDate(event.target.value)
+
+  }
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Container maxWidth="sm">
@@ -9,12 +32,32 @@ function UserDatePicker() {
           sx={{
             display: "flex",
             flexDirection: "row",
-            mt:2
+            justifyContent:"space-between",
+            mt: 2,
           }}
         >
-          <DatePicker label="Начало проекта" sx={{mr:3}}/>
-        
-          <DatePicker label="Окончание проекта"  />
+          <Box>
+            <Typography variant="subtitle2" gutterBottom >
+             Начало проекта
+            </Typography>
+            <TextField  type="datetime-local" onChange={handleStartDate} value={startDate}/>
+          </Box>
+          <Box>
+            <Typography variant="subtitle2" gutterBottom >
+             Конец проекта
+            </Typography>
+            <TextField  type="datetime-local" onChange={handleFinishDate}  value={finishDate}/>
+          </Box>
+        </Box>
+        <Box sx={{display:"flex",justifyContent:"flex-end"}}>
+        <Button
+            disabled={!(isEditedStart && isEditedFinish) }
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            onClick={()=>setDataHandler({...data, startDate, finishDate})}
+          >
+            Сохранить
+          </Button>
         </Box>
       </Container>
     </LocalizationProvider>

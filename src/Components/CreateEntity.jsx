@@ -31,13 +31,9 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-// const StepPages = [
-//     <AboutProject/>,
-//     <UserDatePicker/>,
-//     <WorkersListControl/>
-// ]
 
-export default function CreateEntity({ stepsNames, stepsPages, name }) {
+
+export default function CreateEntity({ stepsNames, stepsPages, name, handleSaveContext }) {
  
   const {openDialog, closeDialogHandler} = useContext(DialogContext)
 
@@ -91,6 +87,7 @@ export default function CreateEntity({ stepsNames, stepsPages, name }) {
   };
 
   const handleSave=()=>{
+    handleSaveContext();
     handleClose();
   }
 

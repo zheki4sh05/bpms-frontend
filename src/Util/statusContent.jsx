@@ -11,7 +11,7 @@ class StatusContent extends React.Component {
 
   
     render() { 
-        const { result, errorDomain, errorCode } = this.props; 
+        const { result, errorDomain, errorCode, loadingType } = this.props; 
        
         switch (result) {
             case statusTypes.failed:
@@ -20,6 +20,7 @@ class StatusContent extends React.Component {
                         messageText={`${this.props.failedText}. ${getErrorName(errorDomain || '', errorCode)}`}
                         duration={2000}
                         userSeverity={statusTypes.error}
+                        type={loadingType || "primary"}
                     />
                 );
             case statusTypes.loading:
@@ -30,6 +31,7 @@ class StatusContent extends React.Component {
                         messageText={this.props.successText}
                         duration={2000}
                         userSeverity="success"
+                        type={loadingType || "primary"}
                     />
                 );
             default:
