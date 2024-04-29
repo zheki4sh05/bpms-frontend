@@ -3,7 +3,7 @@ import WorkersList from './WorkersList';
 import LeadersList from "./LeadersList";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { getAllWorkers, getWorkersList } from "../../Store/slices/workersSlice";
+import { getAllWorkers, getFetchWorkersErrorMessage, getWorkersList, getWorkersStatus } from "../../Store/slices/workersSlice";
 import { useSelector } from "react-redux";
 import StatusContent from './../../Util/statusContent';
 
@@ -13,6 +13,9 @@ function WorkersListControl() {
 
   const allWorkers = useSelector(getWorkersList)
 
+  const status = useSelector(getWorkersStatus)
+ //const errorMessage = useSelector(getFetchWorkersErrorMessage)
+ const errorMessage="EMPTY_LIST"
   useEffect(() => {
     dispatch(getAllWorkers())
   },[]);
@@ -33,7 +36,12 @@ function WorkersListControl() {
         </Typography>
         }
         <StatusContent
-        
+          result={status}
+          errorDomain={'workers'}
+          errorCode={errorMessage}
+          loadingType={'skeletons'}
+          successType={'primary'}
+          errorType={'primary'}
 
         />
       

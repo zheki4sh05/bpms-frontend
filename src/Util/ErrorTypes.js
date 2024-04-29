@@ -21,6 +21,13 @@ export function getErrorName(from, error){
                 }
             }
         }
+        case 'workers':{
+            switch(error){
+                case "EMPTY_LIST":{
+                    return "В вашей компании нет сотрудников"
+                }
+            }
+        }
         default:{
             return "Что-то пошло не так..."
         }
