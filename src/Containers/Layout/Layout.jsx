@@ -14,7 +14,7 @@ import AuthFormComponent from "../../Components/AuthFormComponent";
 import DomainNames from "../../Store/DomainNames";
 import statusTypes from "../../API/status";
 import { useSelector } from "react-redux";
-import { fetchUserData, getToken } from "../../Store/slices/appUserSlice";
+import { fetchUserData, getToken, getUserDataStatus } from "../../Store/slices/appUserSlice";
 import { useDispatch } from "react-redux";
 const theme = createTheme(
   ruRU,
@@ -22,21 +22,20 @@ const theme = createTheme(
 
 function Layout() {
   const authStatus = useSelector((state)=>state[DomainNames.app.appUser].status)
+  const userDataStatus = useSelector(getUserDataStatus) 
 
-  const [isAuth,setAuth] = useState(true);
+  //const [isAuth,setAuth] = useState(true);
 
-  const handleLogIn=()=>{
-   
-    setTimeout(function () {
-      setAuth(true);
-    }, 1500);
+  // const handleLogIn=()=>{
+    
+  //     setAuth(true);
+
+  // }
+
+  // if(authStatus===statusTypes.succeeded && userDataStatus===statusTypes.succeeded){
+  //   handleLogIn();
   
-  }
-
-  if(authStatus===statusTypes.succeeded){
-    handleLogIn();
-   
-  }
+  // }
 
   const handleLogOut=()=>{
       
@@ -46,7 +45,7 @@ function Layout() {
     <ThemeProvider theme={theme}>
       <div className={classes.main}>
       {
-        !isAuth ? 
+        !(authStatus===statusTypes.succeeded && userDataStatus===statusTypes.succeeded) ? 
 
         <AuthFormComponent 
             

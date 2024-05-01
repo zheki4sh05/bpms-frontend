@@ -14,6 +14,7 @@ const initialState = {
         jwtToken:"",
     },
     status:'idle',
+    loadedMore:'idle',
     updated:'false',
     error:null
 }
@@ -106,10 +107,10 @@ const appUserSlice = createSlice({
          //----------------------------------------
           //---Получение даннных пользователя-------------
         .addCase(fetchUserData.pending, (state, action) => {
-          state.status = 'loading'
+          state.loadedMore = 'loading'
         })
         .addCase(fetchUserData.fulfilled, (state, action) => {
-          state.status = 'succeeded';
+          state.loadedMore = 'succeeded';
     
           state.user.name = action.payload.firstname;
           state.user.lastname = action.payload.lastname;
@@ -120,7 +121,7 @@ const appUserSlice = createSlice({
         
         })
         .addCase(fetchUserData.rejected, (state, action) => {
-          state.status = 'failed';
+          state.loadedMore = 'failed';
           state.error = action.error.message
         })
          //---------------------------------------------
@@ -155,6 +156,10 @@ const appUserSlice = createSlice({
   export const { userCreate,  userUpdate,resetUserUpdatedStatus} = appUserSlice.actions
   export function getToken(state) {
   return state[DomainNames.app.appUser].user.jwtToken;
+}
+
+export function getUserDataStatus(state){
+  return state[DomainNames.app.appUser].loadedMore;
 }
   export default appUserSlice.reducer
 

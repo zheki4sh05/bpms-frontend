@@ -4,8 +4,30 @@ import CustomTabPanel from "../../Components/CustomTabPanel/CustomTabPanel";
 import CustomTable from "../../Components/CustomTable";
 import CreateProject from "../../Components/CreateProject";
 import DialogEntityProvider from "../../Components/DialogEntityProvider";
+import { getAllUserProjects } from "../../Store/slices/projectSlice";
+import { useSelector } from "react-redux";
+import { getCompanyName } from "../../Store/slices/companySlice";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { getToken } from "../../Store/slices/appUserSlice";
 
 function Projects() {
+
+  const token = useSelector(getToken)
+
+  const companyName = useSelector(getCompanyName)
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(
+      getAllUserProjects({
+        data:{
+          companyName
+        },
+        token,
+      })
+    );
+  }, []);
+
   return (
     <div>
       <DialogEntityProvider>

@@ -124,6 +124,12 @@ const companySlice = createSlice({
         }
   })
   export const { saveCompany,resetUpdated } = companySlice.actions
+  export function getCompanyName(state) {
+    return state[DomainNames.company].userCompany.name;
+  }
+  export function getCompanyDataStatus(state) {
+    return state[DomainNames.company].status;
+  }
   export default companySlice.reducer
 
   

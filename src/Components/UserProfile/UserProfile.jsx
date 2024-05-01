@@ -15,13 +15,9 @@ function UserProfile() {
   const dispatch = useDispatch();
   const token = useSelector(getToken);
   const status = useSelector(state=>state[DomainNames.app.appUser].status)
-    useEffect(() => {
-  
-        dispatch(fetchUserData({ token }));
-
-
-     
-  }, []);
+  //   useEffect(() => {
+  //       dispatch(fetchUserData({ token }));
+  // }, []);
 
   const [state, setState] = useState({
     top: false,

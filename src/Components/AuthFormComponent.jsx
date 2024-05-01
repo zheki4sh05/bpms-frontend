@@ -8,6 +8,8 @@ import CustomCreateAlert from "../Components/CustomCreateAlert";
 import { useSelector } from "react-redux";
 import { fetchUserData, getToken } from "../Store/slices/appUserSlice";
 import { useDispatch } from "react-redux";
+import statusTypes from "../API/status";
+import LoadingUserData from "./LoadingUserData";
 function AuthFormComponent() {
 
   let authResultContent;
@@ -63,12 +65,21 @@ function AuthFormComponent() {
       }}
     >
       <Box sx={{ display: "flex", flexDirection: "column" }}>
+
+      {
+          userStatus===statusTypes.succeeded ?
+          <LoadingUserData />
+          :
+          null
+        }
         {page == signIn ? (
           <SignIn onTogglePage={handleTogglePage}  />
         ) : (
           <SignUp onTogglePage={handleTogglePage}  />
         )}
         <Box sx={{ mt: 2 }}>{authResultContent}</Box>
+       
+        
       </Box>
     </Box>
   );

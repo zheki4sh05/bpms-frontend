@@ -14,13 +14,14 @@ const api={
         invite:base.concat("company/invite")
     },
     project:{
+        fetch:base.concat("project/fetch"),
         create:base.concat("project/create"),
         update:base.concat("project/update"),
         include:base.concat("project/include"),
         delete:base.concat("project/delete"),
     },
     workers:{
-        fetch:base.concat("workers/")
+        list:base.concat("workers/list")
     }
    
 }

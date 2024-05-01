@@ -1,6 +1,6 @@
 import statusTypes from "../API/status";
 import CustomCreateAlert from "../Components/CustomCreateAlert";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, LinearProgress } from "@mui/material";
 import { getErrorName } from "./ErrorTypes";
 import React from "react";
 
@@ -44,6 +44,9 @@ class StatusContent extends React.Component {
             case "skeleton": {
               return <Skeleton animation="wave" />;
             }
+            case "linear":{
+              return <LinearProgress />
+            }
             default: {
               return (
                 <CircularProgress />
@@ -53,6 +56,9 @@ class StatusContent extends React.Component {
       }
       case statusTypes.succeeded:
         switch(successType){
+            case "none":{
+              return <></>
+            }
             default:{
                 return (
                     <CustomCreateAlert
