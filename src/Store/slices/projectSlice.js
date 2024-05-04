@@ -8,12 +8,14 @@ import addParams from '../../Util/paramsConfig';
 const initialState = {
     projects:[],
     error:null,
-    status:'idle'
+    status:'idle',
+    created:"idle",
 }
 
 
 export const createProject = createAsyncThunk(DomainNames.projects.concat('/create')  , async (initialUser) => {
-    const response = await axios.post(api.project.create,  initialUser, getRequestConfig(initialUser.token));
+    console.log(initialUser.project)
+    const response = await axios.post(api.project.create,  initialUser.project, getRequestConfig(initialUser.token));
       return response.data
   })
 
@@ -34,10 +36,10 @@ export const createProject = createAsyncThunk(DomainNames.projects.concat('/crea
       builder
       //-------------Создание проекта----------------------
       .addCase(createProject.pending, (state, action) => {
-        state.status = 'loading'
+        state.created = 'loading'
       })
       .addCase(createProject.fulfilled, (state, action) => {
-        state.status = 'succeeded';
+        state.created = 'succeeded';
 
         project.name = action.payload.name;   
         project.desc = action.payload.desc;  
@@ -52,7 +54,7 @@ export const createProject = createAsyncThunk(DomainNames.projects.concat('/crea
         
       })
       .addCase(createProject.rejected, (state, action) => {
-        state.status = 'failed';
+        state.created = 'failed';
         
         state.error = action.error
       })
@@ -80,3 +82,35 @@ export const createProject = createAsyncThunk(DomainNames.projects.concat('/crea
   })
 
   export default projectsSlice.reducer
+  export function getCreatedStatus(state) {
+    return state[DomainNames.projects].created;
+  }
+  export function getActiveProjectsCount(state){
+    return state[DomainNames.projects].projects.filter(function(item){
+      item.status==="active"
+    }).length;
+  }
+  export function getAdminProjectsCount(state){
+    return state[DomainNames.projects].projects.filter(function(item){
+      item.role==="admin"
+    }).length;
+  }
+  export function getParticipantProjectsCount(state){
+    return state[DomainNames.projects].projects.filter(function(item){
+      item.role==="user"
+    }).length;
+  }
+
+function isOverdue(project){
+  return false;
+}
+
+  export function getCountOverdueProjectsCount(state){
+    return state[DomainNames.projects].projects.filter(function(item){
+      isOverdue(item)
+    }).length;
+  }
+  
+  
+
+  

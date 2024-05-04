@@ -10,6 +10,7 @@ import { getCompanyName } from "../../Store/slices/companySlice";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { getToken } from "../../Store/slices/appUserSlice";
+import ProjectsPageHeader from "../../Components/ProjectsPage/ProjectsPageHeader";
 
 function Projects() {
 
@@ -33,23 +34,7 @@ function Projects() {
       <DialogEntityProvider>
         <>
           <SearchBox />
-          <Stack direction="row" sx={{ alignItems: "center", mt: 2 }}>
-            <Typography variant="h5" gutterBottom>
-              Мои проекты
-            </Typography>
-            <Typography variant="subtitle1" gutterBottom sx={{ ml: 2 }}>
-              я управляю:0
-            </Typography>
-            <Typography variant="subtitle1" gutterBottom sx={{ ml: 2 }}>
-              я управляю:0
-            </Typography>
-            <Typography variant="subtitle1" gutterBottom sx={{ ml: 2 }}>
-              просрочено:0
-            </Typography>
-            <Typography variant="subtitle1" gutterBottom sx={{ ml: 2 }}>
-              готово:0
-            </Typography>
-          </Stack>
+         <ProjectsPageHeader/>
           <CustomTabPanel
             content={{
               tabNames: ["Список", "Гант", "Сроки", "Календарь", "Канбан"],

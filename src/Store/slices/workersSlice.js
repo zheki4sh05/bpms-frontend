@@ -36,7 +36,7 @@ export const getAllWorkers = createAsyncThunk(DomainNames.workers.concat('/getAl
             state.error = null;
            
             state.workers.splice(0,state.workers.length)
-            state.workers.push(action.payload)
+            state.workers=action.payload
                  
           })
           .addCase(getAllWorkers.rejected, (state, action) => {
