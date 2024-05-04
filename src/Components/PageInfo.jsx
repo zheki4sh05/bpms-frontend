@@ -14,21 +14,7 @@ function PageInfo({ name, data }) {
         </Typography>
       ))}
 
-      {/* <Typography variant="h5" gutterBottom>
-        Мои проекты
-      </Typography>
-      <Typography variant="subtitle1" gutterBottom sx={{ ml: 2 }}>
-        я управляю:0
-      </Typography>
-      <Typography variant="subtitle1" gutterBottom sx={{ ml: 2 }}>
-        я управляю:0
-      </Typography>
-      <Typography variant="subtitle1" gutterBottom sx={{ ml: 2 }}>
-        просрочено:0
-      </Typography>
-      <Typography variant="subtitle1" gutterBottom sx={{ ml: 2 }}>
-        готово:0
-      </Typography> */}
+      
     </Stack>
   );
 }
