@@ -1,26 +1,32 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import { alpha } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import TableSortLabel from '@mui/material/TableSortLabel';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
-import DeleteIcon from '@mui/icons-material/Delete';
-import FilterListIcon from '@mui/icons-material/FilterList';
-import { visuallyHidden } from '@mui/utils';
+import * as React from "react";
+import PropTypes from "prop-types";
+import { alpha } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import TableSortLabel from "@mui/material/TableSortLabel";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
+import Checkbox from "@mui/material/Checkbox";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Switch from "@mui/material/Switch";
+import DeleteIcon from "@mui/icons-material/Delete";
+import FilterListIcon from "@mui/icons-material/FilterList";
+import { visuallyHidden } from "@mui/utils";
+import { useSelector } from "react-redux";
+import { getProjects } from "../Store/slices/projectSlice";
+import { Button } from "@mui/material";
+import { useState } from "react";
+import { useContext } from "react";
+import DialogContext from "./DialogContext";
 
 function createData(id, name, done, start, workers, role, access) {
   return {
@@ -30,14 +36,15 @@ function createData(id, name, done, start, workers, role, access) {
     start,
     workers,
     role,
-    access 
+    access,
   };
 }
 
-const rows = [
-  createData(1,1 ,'Новый продукт', 70, "20.04.2023", 10, "Управляющий", "Публичный"),
-  
-];
+const rows = [];
+
+function initRows(data) {
+  return [];
+}
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -50,7 +57,7 @@ function descendingComparator(a, b, orderBy) {
 }
 
 function getComparator(order, orderBy) {
-  return order === 'desc'
+  return order === "desc"
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
@@ -70,55 +77,62 @@ function stableSort(array, comparator) {
   });
   return stabilizedThis.map((el) => el[0]);
 }
-
-const headCells = [
-  {
-    id: 'ID',
-    numeric: false,
-    disablePadding: true,
-    label: 'ID',
-  },
-  {
-    id: 'name',
-    numeric: false,
-    disablePadding: false,
-    label: 'Название',
-  },
-  {
-    id: 'done',
-    numeric: true,
-    disablePadding: false,
-    label: 'Выполнено %',
-  },
-  {
-    id: 'start',
-    numeric: true,
-    disablePadding: false,
-    label: 'Начало',
-  },
-  {
-    id: 'workers',
-    numeric: true,
-    disablePadding: false,
-    label: 'Участников',
-  },
-  {
-    id: 'role',
-    numeric: false,
-    disablePadding: false,
-    label: 'Роль',
-  },
-  {
-    id: 'access',
-    numeric: false,
-    disablePadding: false,
-    label: 'Тип приватности',
-  },
-];
+//Example
+// const headCells = [
+//   {
+//     id: 'ID',
+//     numeric: true,
+//     disablePadding: true,
+//     label: 'ID',
+//   },
+//   {
+//     id: 'name',
+//     numeric: false,
+//     disablePadding: false,
+//     label: 'Название',
+//   },
+//   {
+//     id: 'done',
+//     numeric: true,
+//     disablePadding: false,
+//     label: 'Выполнено %',
+//   },
+//   {
+//     id: 'start',
+//     numeric: true,
+//     disablePadding: false,
+//     label: 'Начало',
+//   },
+//   {
+//     id: 'workers',
+//     numeric: true,
+//     disablePadding: false,
+//     label: 'Участников',
+//   },
+//   {
+//     id: 'role',
+//     numeric: false,
+//     disablePadding: false,
+//     label: 'Роль',
+//   },
+//   {
+//     id: 'access',
+//     numeric: false,
+//     disablePadding: false,
+//     label: 'Тип приватности',
+//   },
+// ];
 
 function EnhancedTableHead(props) {
-  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
-    props;
+  const {
+    onSelectAllClick,
+    order,
+    orderBy,
+    numSelected,
+    rowCount,
+    onRequestSort,
+    headCells = [],
+  } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -127,32 +141,36 @@ function EnhancedTableHead(props) {
     <TableHead>
       <TableRow>
         <TableCell padding="checkbox">
+        <Tooltip title="Управлять всеми">
           <Checkbox
             color="primary"
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
             inputProps={{
-              'aria-label': 'select all desserts',
+              "aria-label": "select all desserts",
             }}
           />
+          </Tooltip>
         </TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'normal'}
+            // align={headCell.numeric ? 'right' : 'left'}
+            align={"left"}
+            // padding={headCell.disablePadding ? 'none' : 'normal'}
+            padding={headCell.disablePadding ? "none" : "normal"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
+              direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
             >
               {headCell.label}
               {orderBy === headCell.id ? (
                 <Box component="span" sx={visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                  {order === "desc" ? "sorted descending" : "sorted ascending"}
                 </Box>
               ) : null}
             </TableSortLabel>
@@ -167,13 +185,20 @@ EnhancedTableHead.propTypes = {
   numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
   onSelectAllClick: PropTypes.func.isRequired,
-  order: PropTypes.oneOf(['asc', 'desc']).isRequired,
+  order: PropTypes.oneOf(["asc", "desc"]).isRequired,
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
 };
 
 function EnhancedTableToolbar(props) {
-  const { numSelected } = props;
+  const { setDataHandler, openDialogHandler } = useContext(DialogContext);
+
+  const { numSelected, selectedList } = props;
+
+  const handleOpenDialog = () => {
+    setDataHandler({ list: selectedList });
+    openDialogHandler();
+  };
 
   return (
     <Toolbar
@@ -182,13 +207,16 @@ function EnhancedTableToolbar(props) {
         pr: { xs: 1, sm: 1 },
         ...(numSelected > 0 && {
           bgcolor: (theme) =>
-            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
+            alpha(
+              theme.palette.primary.main,
+              theme.palette.action.activatedOpacity
+            ),
         }),
       }}
     >
       {numSelected > 0 ? (
         <Typography
-          sx={{ flex: '1 1 100%' }}
+          sx={{ flex: "1 1 100%" }}
           color="inherit"
           variant="subtitle1"
           component="div"
@@ -197,17 +225,23 @@ function EnhancedTableToolbar(props) {
         </Typography>
       ) : (
         <Typography
-          sx={{ flex: '1 1 100%' }}
+          sx={{ flex: "1 1 100%" }}
           variant="h6"
           id="tableTitle"
           component="div"
         >
-          Проекты
+          {props.title}
         </Typography>
       )}
+      {numSelected > 0 ? (
+        <Tooltip title="Подробнее">
+            <Button onClick={handleOpenDialog}>Открыть</Button>
+        </Tooltip>
+      
+      ) : null}
 
       {numSelected > 0 ? (
-        <Tooltip title="Delete">
+        <Tooltip title="Удалить">
           <IconButton>
             <DeleteIcon />
           </IconButton>
@@ -227,17 +261,18 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function CustomTable() {
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('calories');
+export default function CustomTable({ rows = [], tableTitle, tableHeadCells }) {
+  console.log(rows)
+  const [order, setOrder] = React.useState("asc");
+  const [orderBy, setOrderBy] = React.useState("calories");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
 
@@ -263,7 +298,7 @@ export default function CustomTable() {
     } else if (selectedIndex > 0) {
       newSelected = newSelected.concat(
         selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
+        selected.slice(selectedIndex + 1)
       );
     }
     setSelected(newSelected);
@@ -292,20 +327,24 @@ export default function CustomTable() {
     () =>
       stableSort(rows, getComparator(order, orderBy)).slice(
         page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage,
+        page * rowsPerPage + rowsPerPage
       ),
-    [order, orderBy, page, rowsPerPage],
+    [order, orderBy, page, rowsPerPage]
   );
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+    <Box sx={{ width: "100%" }}>
+      <Paper sx={{ width: "100%", mb: 2 }}>
+        <EnhancedTableToolbar
+          selectedList={selected}
+          numSelected={selected.length}
+          title={tableTitle}
+        />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
             aria-labelledby="tableTitle"
-            size={dense ? 'small' : 'medium'}
+            size={dense ? "small" : "medium"}
           >
             <EnhancedTableHead
               numSelected={selected.length}
@@ -314,8 +353,10 @@ export default function CustomTable() {
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
               rowCount={rows.length}
+              headCells={tableHeadCells}
             />
             <TableBody>
+    
               {visibleRows.map((row, index) => {
                 const isItemSelected = isSelected(row.id);
                 const labelId = `enhanced-table-checkbox-${index}`;
@@ -329,31 +370,32 @@ export default function CustomTable() {
                     tabIndex={-1}
                     key={row.id}
                     selected={isItemSelected}
-                    sx={{ cursor: 'pointer' }}
+                    sx={{ cursor: "pointer" }}
                   >
                     <TableCell padding="checkbox">
+                    <Tooltip title="Выбрать строку">
                       <Checkbox
                         color="primary"
                         checked={isItemSelected}
                         inputProps={{
-                          'aria-labelledby': labelId,
+                          "aria-labelledby": labelId,
                         }}
                       />
+                      </Tooltip>
+                    
                     </TableCell>
-                    <TableCell
-                      component="th"
-                      id={labelId}
-                      scope="row"
-                      padding="none"
-                    >
-                      {row.name}
-                    </TableCell>
-                   
+                    {tableHeadCells.map((cell, index) => (
+                      <TableCell key={index} align="left">
+                        {row[cell.id]}
+                      </TableCell>
+                    ))}
+
+                    {/* <TableCell align="left">{row.name}</TableCell>
                     <TableCell align="left">{row.done}</TableCell>
                     <TableCell align="left">{row.start}</TableCell>
                     <TableCell align="left">{row.workers}</TableCell>
                     <TableCell align="left">{row.role}</TableCell>
-                    <TableCell align="left">{row.access}</TableCell>
+                    <TableCell align="left">{row.access}</TableCell> */}
                   </TableRow>
                 );
               })}

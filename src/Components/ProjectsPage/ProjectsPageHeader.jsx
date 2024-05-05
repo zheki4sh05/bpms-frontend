@@ -3,7 +3,7 @@ import PageInfo from "../PageInfo";
 import {
   getActiveProjectsCount,
   getAdminProjectsCount,
-  getCountOverdueProjectsCount,
+  getOverdueProjectsCount,
   getParticipantProjectsCount,
 } from "../../Store/slices/projectSlice";
 
@@ -11,7 +11,7 @@ function ProjectsPageHeader() {
   let countActive = useSelector(getActiveProjectsCount);
   let countAdmin = useSelector(getAdminProjectsCount);
   let countParticipant = useSelector(getParticipantProjectsCount);
-  let countOverdue = useSelector(getCountOverdueProjectsCount);
+  let countOverdue = useSelector(getOverdueProjectsCount);
 
   return (
     <PageInfo
@@ -26,11 +26,11 @@ function ProjectsPageHeader() {
           count: countAdmin,
         },
         {
-          name: "состою:",
+          name: "состою",
           count: countParticipant,
         },
         {
-          name: "просрочено:",
+          name: "просрочено",
           count: countOverdue,
         },
       ]}
