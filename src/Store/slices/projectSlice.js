@@ -6,7 +6,16 @@ import getRequestConfig from '../../API/requestConfig';
 import addParams from '../../Util/paramsConfig';
 
 const initialState = {
-    projects:[],
+    projects:[{
+      id:"1",
+      name:"Новый проект",
+      done:"80",
+      start:"23.04.2023",
+      finish:"34.07.2024",
+      workers:8,
+      role:"Управлющий",
+      access:"Публичный",
+    }],
     error:null,
     status:'idle',
     created:"idle",
@@ -105,12 +114,20 @@ function isOverdue(project){
   return false;
 }
 
-  export function getCountOverdueProjectsCount(state){
+  export function getOverdueProjectsCount(state){
     return state[DomainNames.projects].projects.filter(function(item){
       isOverdue(item)
     }).length;
   }
+
   
+  export function getProjectsCount(state){
+    return state[DomainNames.projects].projects.length;
+  }
+
+  export function getProjects(state){
+    return state[DomainNames.projects].projects
+  }
   
 
   
