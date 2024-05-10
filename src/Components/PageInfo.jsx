@@ -3,6 +3,7 @@ import { Stack } from '@mui/material';
 import  Typography  from '@mui/material/Typography';
 
 function PageInfo({ name, data }) {
+
   return (
     <Stack direction="row" sx={{ alignItems: "center", mt: 2 }}>
       <Typography variant="h5" gutterBottom>

@@ -8,11 +8,24 @@ import {
 } from "../../Store/slices/projectSlice";
 
 function ProjectsPageHeader() {
-  let countActive = useSelector(getActiveProjectsCount);
-  let countAdmin = useSelector(getAdminProjectsCount);
-  let countParticipant = useSelector(getParticipantProjectsCount);
-  let countOverdue = useSelector(getOverdueProjectsCount);
+  const countActive = useSelector(getActiveProjectsCount);
+  const countAdmin = useSelector(getAdminProjectsCount);
+  const countParticipant = useSelector(getParticipantProjectsCount);
+  const countOverdue = useSelector(getOverdueProjectsCount);
 
+  // const [countActive,setcountActive] =useState(0);
+  // const [countAdmin,setcountAdmin] = useState(0);
+  // const [countParticipant,setcountParticipant] = useState(0);
+  // const [countOverdue,setcountOverdue] = useState(0);
+
+  // useEffect(() => {
+  //   setcountActive(useSelector(getActiveProjectsCount))
+  //   setcountParticipant(useSelector(getParticipantProjectsCount))
+  //   setcountAdmin(useSelector(getAdminProjectsCount))
+  //   setcountOverdue(useSelector(getOverdueProjectsCount))
+  // }, []);
+
+  console.log(countAdmin)
   return (
     <PageInfo
       name={"Мои проекты"}

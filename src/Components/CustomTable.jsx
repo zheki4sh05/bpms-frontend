@@ -262,6 +262,7 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function CustomTable({ rows = [], tableTitle, tableHeadCells }) {
+  console.log("CustomTable")
   console.log(rows)
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");

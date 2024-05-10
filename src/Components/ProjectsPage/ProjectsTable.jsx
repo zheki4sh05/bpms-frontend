@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { getProjects } from "../../Store/slices/projectSlice";
+import { getAddedStatus, getProjects, getProjectsResults } from "../../Store/slices/projectSlice";
 import CustomTable from "../CustomTable";
 import { Box } from "@mui/material";
 import { useState } from "react";
@@ -7,36 +7,44 @@ import DialogEntityProvider from "../DialogEntityProvider";
 import AsideDrawer from "../AsideBox/AsideDrawer";
 import ProjectOverviewWindow from "./ProjectOverviewWindow";
 
-function ProjectsTable() {
+function ProjectsTable({projects=[]}) {
+  console.log("ProjectsTable")
+  console.log(projects)
+  
+  const statuses = useSelector(getProjectsResults) || [];
 
 
 
-    const projects = useSelector(getProjects) || [];
+
+  const addNew = (arr) => {
+    const result = arr.map((el) => {
+    
+        return { ...el, 
+          done: statuses.find(status => status.id == el.id).done,
+          workers: statuses.find(status => status.id == el.id).workers.length
+         };
+    });
+    return result;
+};
+
+// const updatedArray = addNew(arr);
+// console.log(updatedArray);
 
 
-    console.log(projects)
 
-    // function getRows(data=[]){
-    //   return data.forEach(project => {
-    //         return {
-    //             id:project.id,
-    //             name:project.name,
-    //             done:project.done,
-    //             finish:project.finish,
-    //             workers:project.workers,
-    //             role:project.role,
-    //             access:project.access
-    //         }
-    //     });
-    // }
 
+//   //  extendedProjects=projects.map(item => item.done = statuses.find(status => status.id == item.id).done);
+//       extendedProjects = Array.from(new Set(projects.concat(statuses)))
+  
+//   console.log("extendedProjects")
+// console.log(extendedProjects)
     return ( 
     <Box>
       <DialogEntityProvider>
 
         <CustomTable
-          
-          rows={projects}
+       
+          rows={addNew(projects)}
           tableTitle="Проекты"
           tableHeadCells={[
               {
@@ -58,7 +66,7 @@ function ProjectsTable() {
                   label: 'Выполнено %',
                 },
                 {
-                  id: 'start',
+                  id: 'createdAt',
                   numeric: true,
                   disablePadding: false,
                   label: 'Начало',

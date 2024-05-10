@@ -45,7 +45,7 @@ function Layout() {
     <ThemeProvider theme={theme}>
       <div className={classes.main}>
       {
-        (authStatus===statusTypes.succeeded && userDataStatus===statusTypes.succeeded) ? 
+        !(authStatus===statusTypes.succeeded && userDataStatus===statusTypes.succeeded) ? 
 
         <AuthFormComponent 
             
