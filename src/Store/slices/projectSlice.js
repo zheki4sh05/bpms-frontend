@@ -12,7 +12,7 @@ const initialState = {
     error:null,
     status:'idle',
     created:"idle",
-    added:"idle"
+    added:"idle",
 }
 
 
@@ -34,6 +34,11 @@ export const createProject = createAsyncThunk(DomainNames.projects.concat('/crea
       return response.data
   })
 
+  export const updateProject = createAsyncThunk(DomainNames.projects.concat('/update')  , async (initialUser) => {
+
+    const response = await axios.post(api.project.update.concat(addParams(initialUser.data)), getRequestConfig(initialUser.token));
+      return response.data
+  })
 
   const projectsSlice = createSlice({
     name: DomainNames.projects,
@@ -49,13 +54,15 @@ export const createProject = createAsyncThunk(DomainNames.projects.concat('/crea
       })
       .addCase(createProject.fulfilled, (state, action) => {
         state.created = 'succeeded';
-      
-        project.name = action.payload.name;   
-        project.desc = action.payload.desc;  
-        project.start = action.payload.start;  
-        project.workers = action.payload.workers;  
-        project.role = action.payload.role;  
-        project.access = action.payload.access;  
+        let project = {
+          name:action.payload.name,
+          desc:action.payload.desc,
+          start: action.payload.start,
+          workers:action.payload.workers,
+          role:action.payload.role,
+          access:action.payload.access
+        };
+
 
         state.projects.push(project)
 
@@ -102,6 +109,27 @@ export const createProject = createAsyncThunk(DomainNames.projects.concat('/crea
         
       })
       .addCase(getAllProjectsStatuses.rejected, (state, action) => {
+        state.added = 'failed';
+        
+        state.error = action.error
+      })
+        //-----------------------------------------------------
+        //-------Изменение описания проекта-------------------
+
+       .addCase(updateProject.pending, (state, action) => {
+        state.added = 'loading'
+      })
+      .addCase(updateProject.fulfilled, (state, action) => {
+        state.added = 'succeeded';
+
+        console.log(action.payload)
+
+        state.statuses = action.payload;
+
+        state.error = null
+        
+      })
+      .addCase(updateProject.rejected, (state, action) => {
         state.added = 'failed';
         
         state.error = action.error

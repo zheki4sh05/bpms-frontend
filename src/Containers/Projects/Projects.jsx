@@ -53,7 +53,7 @@ function Projects() {
           <SearchBox />
          <ProjectsPageHeader/>
          {
-              projectCount>0 && addedStatus===statusTypes.succeeded ? 
+              (projectCount>0 && addedStatus===statusTypes.succeeded) ? 
           
           <CustomTabPanel
             content={{

@@ -31,13 +31,27 @@ function AsideDrawer({anchorProp,content}) {
 
        
       // };
+      const onCloseByKey= () => (event) => {
+          if (
+            event.type === "keydown" &&
+            (event.key === "Tab" || event.key === "Shift")
+          ) {
+            return;
+          }
+         
+     
+          closeDialogHandler();
+        
+  
+         
+        };
     
       const list = (anchor) => (
         <Box
           sx={{ width: "90vw" }}
           role="presentation"
-          onClick={closeDialogHandler}
-          onKeyDown={closeDialogHandler}
+         
+          onKeyDown={onCloseByKey}
         >
           <Stack direction="row">
             <IconButton onClick={closeDialogHandler}>

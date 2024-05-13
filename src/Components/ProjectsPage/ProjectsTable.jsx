@@ -13,12 +13,8 @@ function ProjectsTable({projects=[]}) {
   
   const statuses = useSelector(getProjectsResults) || [];
 
-
-
-
   const addNew = (arr) => {
     const result = arr.map((el) => {
-    
         return { ...el, 
           done: statuses.find(status => status.id == el.id).done,
           workers: statuses.find(status => status.id == el.id).workers.length
@@ -27,17 +23,6 @@ function ProjectsTable({projects=[]}) {
     return result;
 };
 
-// const updatedArray = addNew(arr);
-// console.log(updatedArray);
-
-
-
-
-//   //  extendedProjects=projects.map(item => item.done = statuses.find(status => status.id == item.id).done);
-//       extendedProjects = Array.from(new Set(projects.concat(statuses)))
-  
-//   console.log("extendedProjects")
-// console.log(extendedProjects)
     return ( 
     <Box>
       <DialogEntityProvider>
