@@ -23,12 +23,8 @@ function ProjectOverviewWindow() {
 
 
     const {data} = useContext(DialogContext);
-    console.log("result")
-    console.log(data.list)
+
     const projects = useSelector(getProjects);
-    console.log("projects")
-    console.log(projects)
-    //onst mass=[{id:1,name:"Проект 1",description:"sdcsdc"},{id:2,name:"Проект 2",description:"sdcsdc"}];
     const mass=[];
     if(projects.length>0){
 
@@ -37,7 +33,6 @@ function ProjectOverviewWindow() {
           mass.push(projects.find(project=>project.id == item))
       }
     }
-    console.log(mass)
     return (
          <Box sx={{mt:4, maxWidth:"90%",pl:2}}>
 

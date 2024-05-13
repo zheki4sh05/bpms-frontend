@@ -26,6 +26,7 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import TimelineIcon from '@mui/icons-material/Timeline';
 import DescriptionIcon from '@mui/icons-material/Description';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
+import Diversity3Icon from '@mui/icons-material/Diversity3';
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -103,6 +104,11 @@ const menu_items = [
     path:PathConstants.ASSIGNMENTS,
     name:"Поручения",
     icon: <AssignmentIndIcon />
+  },
+  {
+    path:PathConstants.STAFF,
+    name:"Персонал",
+    icon: <Diversity3Icon />
   },
 ]
 

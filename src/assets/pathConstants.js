@@ -6,7 +6,8 @@ const PathConstants = {
     CALENDAR:"calendar",
     PROCESSES:"processes",
     DOCUMENTS:"documents",
-    ASSIGNMENTS:"assignments"
+    ASSIGNMENTS:"assignments",
+    STAFF:"staff"
 }
 
 export default PathConstants

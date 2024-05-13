@@ -161,5 +161,6 @@ const appUserSlice = createSlice({
 export function getUserDataStatus(state){
   return state[DomainNames.app.appUser].loadedMore;
 }
+
   export default appUserSlice.reducer
 

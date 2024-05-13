@@ -11,6 +11,7 @@ import CalendarPage from "./Containers/CalendarPage";
 import ProcessesPage from "./Containers/ProcessesPage";
 import DocumentsPage from "./Containers/DocumentsPage";
 import AssignmentsPage from "./Containers/AssignmentsPage";
+import StaffPage from "./Containers/StaffPage";
 function App() {
   const router = createBrowserRouter([
     {
@@ -45,6 +46,10 @@ function App() {
         },{
           path:PathConstants.ASSIGNMENTS,
           element:<AssignmentsPage/>
+        },
+        {
+          path:PathConstants.STAFF,
+          element:<StaffPage/>
         }
       ],
     },

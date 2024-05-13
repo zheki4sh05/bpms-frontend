@@ -138,14 +138,15 @@ function AboutCompany() {
         <Grid item xs={5}>
           {
             open ? 
-            <CustomTabPanel  content={{
-              tabNames: ["О компании", "Сотрудники", ],
-            }}>
-                <CompanyInformation/>
-                <Typography>
-                  Hello
-                </Typography>
-              </CustomTabPanel>
+            // <CustomTabPanel  content={{
+            //   tabNames: ["О компании", "Сотрудники", ],
+            // }}>
+              
+            //     <Typography>
+            //       Hello
+            //     </Typography>
+            //   </CustomTabPanel>
+            <CompanyInformation/>
               :
               null
           }

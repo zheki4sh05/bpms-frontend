@@ -90,7 +90,7 @@ function EditCompanyDesc() {
           <Button
             variant="contained"
             endIcon={<SaveIcon />}
-            disabled={!isEdited}
+            disabled={!isEdited && updated===statusTypes.succeeded}
             onClick={handleClick}
             sx={{ mt: 2 }}
           >

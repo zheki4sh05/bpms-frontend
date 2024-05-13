@@ -6,13 +6,32 @@ import getRequestConfig from '../../API/requestConfig';
 
 const initialState = {
     userCompany:{
-        name:"",
-        desc:"",
-        currentRole:"",
+        name:"Новая компания",
+        desc:"Описание новой компании",
+        currentRole:"admin",
+    },
+    staff:{
+      list:[{
+        id:"1",
+        name:"Олег",
+        surname:"Петрович",
+        lastname:"Иванов",
+        age:24,
+        email:"example@maio.ru",
+        position:"Дизайнер",
+        role:"Отв. за проект",
+        social:{
+          inst:"hsiasa",
+          teleg:"@hyess",
+          site:"www.sdpcm.com"
+        }
+      }],
+      updated:null,
+      status:'idle',
     },
     updated:null,
     error:null,
-    status:'idle'
+    status:'succeeded'
 }
 //получение подробных данных компании
 export const fetchCompany = createAsyncThunk(DomainNames.company.concat('/fetchCompany')  , async (initialCompany) => {
@@ -130,6 +149,18 @@ const companySlice = createSlice({
   export function getCompanyDataStatus(state) {
     return state[DomainNames.company].status;
   }
-  export default companySlice.reducer
+  export function   getRoleInCompany(state) {
+    return state[DomainNames.company].userCompany.currentRole;
+  }
 
   
+export function getStaff(state){
+  return state[DomainNames.company].staff.list;
+}
+export function getStaffCount(state){
+  return state[DomainNames.company].staff.list.length;
+}
+
+  export default companySlice.reducer
+
+ 

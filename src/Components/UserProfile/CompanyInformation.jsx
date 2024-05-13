@@ -1,9 +1,13 @@
-import { Divider, List, ListItem } from "@mui/material";
+import { Divider, List, ListItem, Typography } from "@mui/material";
 import EditCompanyDesc from "../../Containers/AboutCompany/EditCompanyDesc";
 
 function CompanyInformation() {
     return ( 
-        <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
+      <>
+   <Typography variant="h6" gutterBottom>
+       О компании
+      </Typography>
+<List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
         <ListItem alignItems="flex-start">
         
            <EditCompanyDesc/>
@@ -18,6 +22,8 @@ function CompanyInformation() {
           2
         </ListItem>
       </List>
+      </>
+        
 
     );
 }
