@@ -8,7 +8,6 @@ import statusTypes from "../../API/status";
 import { userCompany } from "../../Store/slices/companySlice";
 import { getToken } from "../../Store/slices/appUserSlice";
 import { getErrorName } from "../../Util/ErrorTypes";
-import CustomTabPanel from './../CustomTabPanel/CustomTabPanel';
 import CompanyInformation from "./CompanyInformation";
 function AboutCompany() {
   const userInCompany = useSelector((state) => state[DomainNames.company].userCompany);
@@ -23,6 +22,8 @@ function AboutCompany() {
   useEffect(() => {
     if (status === statusTypes.idle) {
       dispatch(userCompany({token}))
+    }
+    if(status === statusTypes.succeeded){
       setWorked(true)
     }
   }, [status, dispatch])
@@ -40,7 +41,7 @@ function AboutCompany() {
     fetchingResult = <CircularProgress />;
   } else if (status === statusTypes.failed) {
     fetchingResult  = <CustomCreateAlert
-        messageText={`Ошибка загрузки данных ${getErrorName('any', error.code)}`}
+        messageText={`Ошибка загрузки данных ${getErrorName('any', error ? error.code : "")}`}
         duration={6000}
         userSeverity="error"
       />

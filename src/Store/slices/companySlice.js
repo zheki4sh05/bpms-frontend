@@ -6,7 +6,11 @@ import getRequestConfig from '../../API/requestConfig';
 import addParams from './../../Util/paramsConfig';
 
 const initialState = {
-    userCompany:{},
+    userCompany:{
+      name:"",
+      desc:"",
+      currentRole:"",
+    },
     staff:{
       list:[],
       updated:null,
@@ -15,6 +19,7 @@ const initialState = {
     updated:null,
     error:null,
     status:'idle',
+    created:'idle',
     searched:{
       user:{
       },
@@ -111,7 +116,7 @@ const companySlice = createSlice({
             state.userCompany.currentRole = action.payload.currentRole
         },
         resetUpdated(state,action){
-          state.updated=null;
+          state.updated='idle';
         },
         resetSearchStatus(state,action){
           state.searched.status='idle';
@@ -139,15 +144,15 @@ const companySlice = createSlice({
           //-----------------------------------------------
           // ---------создание компании--------------------
           .addCase(createCompany.pending, (state, action) => {
-            state.status = 'loading'
+            state.created = 'loading'
           })
           .addCase(createCompany.fulfilled, (state, action) => {
-            state.status = 'succeeded';
+            state.created = 'succeeded';
             state.error = null
             
           })
           .addCase(createCompany.rejected, (state, action) => {
-            state.status = 'failed';
+            state.created = 'failed';
             
             state.error = action.error
           })
@@ -249,8 +254,9 @@ export function getInviteError(state){
 export function getInviteStatus(state){
   return state[DomainNames.company].searched.invited
 }
-
-
+export function getCreatedStatus(state){
+  return state[DomainNames.company].created
+}
   export default companySlice.reducer
 
  

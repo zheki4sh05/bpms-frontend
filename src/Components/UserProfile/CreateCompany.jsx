@@ -11,7 +11,7 @@ import { useState } from "react";
 import BusinessIcon from "@mui/icons-material/Business";
 import { useDispatch, useSelector } from "react-redux";
 import DomainNames from "../../Store/DomainNames";
-import { createCompany, saveCompany } from "../../Store/slices/companySlice";
+import { createCompany, getCreatedStatus, saveCompany } from "../../Store/slices/companySlice";
 import statusTypes from "../../API/status";
 import CustomCreateAlert from "../CustomCreateAlert";
 import { CircularProgress } from '@mui/material';
@@ -21,7 +21,7 @@ const defaultTheme = createTheme();
 function CreateCompany({handleCreate}) {
   const dispatch = useDispatch();
   const token = useSelector(getToken);
-  const status = useSelector((state)=>state[DomainNames.company].status)
+  const status = useSelector(getCreatedStatus)
   const error = useSelector((state)=>state[DomainNames.company].error)
   const [data,setData] = useState({});
   const [isDesideToCreate, setDesicion] = useState(false);
