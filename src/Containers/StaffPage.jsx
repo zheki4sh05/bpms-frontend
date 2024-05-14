@@ -6,6 +6,7 @@ import DialogEntityProvider from "../Components/DialogEntityProvider";
 import { Box } from "@mui/material";
 import PageInfo from "../Components/PageInfo";
 import StaffTable from "../Components/StaffPage/StaffTable";
+import InviteUser from "../Components/StaffPage/InviteUser";
 
 function StaffPage() {
   const userRoleInCompany = useSelector(getRoleInCompany);
@@ -32,7 +33,7 @@ function StaffPage() {
 
         <StaffTable />
 
-        {/* <CreateAssignment /> */}
+        <InviteUser/>
       </Box>
     </DialogEntityProvider>
   );

@@ -1,8 +1,10 @@
 import statusTypes from "../API/status";
 import CustomCreateAlert from "../Components/CustomCreateAlert";
-import { CircularProgress, LinearProgress } from "@mui/material";
+import { Alert, CircularProgress, LinearProgress, Snackbar } from "@mui/material";
 import { getErrorName } from "./ErrorTypes";
 import React from "react";
+import UserSkeleton from "../Components/StaffPage/UserSkeleton";
+import CustomizedSnackbars from "../Components/StaffPage/CustomizedSnackbars";
 
 class StatusContent extends React.Component {
   constructor(props) {
@@ -17,14 +19,19 @@ class StatusContent extends React.Component {
       loadingType,
       successType,
       errorType,
+      failedText,
     } = this.props;
 
     switch (result) {
       case statusTypes.failed:
         switch (errorType) {
-          case "skeleton": {
-            return <Skeleton animation="wave" />;
-          }
+        case "alert":{
+          return <CustomizedSnackbars
+          message={failedText}
+          type="error"
+        />
+        }
+         
           default: {
             return (
               <CustomCreateAlert
@@ -47,6 +54,9 @@ class StatusContent extends React.Component {
             case "linear":{
               return <LinearProgress />
             }
+            case "userSkeleton":{
+              return <UserSkeleton/>
+            }
             default: {
               return (
                 <CircularProgress />
@@ -58,6 +68,12 @@ class StatusContent extends React.Component {
         switch(successType){
             case "none":{
               return <></>
+            }
+            case "alert":{
+              return <CustomizedSnackbars
+                message="Приглашение отправлено!"
+                type="success"
+              />
             }
             default:{
                 return (

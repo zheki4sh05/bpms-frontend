@@ -28,6 +28,13 @@ export function getErrorName(from, error){
                 }
             }
         }
+        case 'invite':{
+            switch(error){
+                case "ERR_BAD_REQUEST":{
+                    return "Приглашение уже отправлено!"
+                }
+            }
+        }
         default:{
             return "Что-то пошло не так..."
         }

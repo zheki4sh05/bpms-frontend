@@ -11,7 +11,8 @@ const api={
         create:base.concat("company/create"),
         update:base.concat("company/update"),
         userCompany:base.concat("company/userCompany"),
-        invite:base.concat("company/invite")
+        invite:base.concat("company/invite"),
+        findUser:base.concat("company/findUser")
     },
     project:{
         fetch:base.concat("project/fetch"),

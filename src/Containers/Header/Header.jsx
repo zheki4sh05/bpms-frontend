@@ -37,7 +37,7 @@ export default function Header() {
         <Toolbar>
           <Stack direction="row" spacing={2}>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Логотип
+              TaskWise
             </Typography>
 
             <SearchBar />
