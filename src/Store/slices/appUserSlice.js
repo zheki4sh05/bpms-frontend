@@ -161,6 +161,9 @@ const appUserSlice = createSlice({
 export function getUserDataStatus(state){
   return state[DomainNames.app.appUser].loadedMore;
 }
+export function getEmail(state){
+  return state[DomainNames.app.appUser].user.email;
+}
 
   export default appUserSlice.reducer
 

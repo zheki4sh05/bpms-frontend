@@ -12,9 +12,44 @@ import {
   Stack,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import NotificationViewer from "./NotificationViewer";
+import { useSelector } from "react-redux";
+import { fetchNotification, getNotifCount, getNotificationStatus } from "../../Store/slices/notificationSlice";
+import { getEmail, getToken, getUserDataStatus } from "../../Store/slices/appUserSlice";
+import { useDispatch } from "react-redux";
+import statusTypes from "../../API/status";
 
 function AsideBox() {
+
+  const [contentType,setContentType] = useState("")
+
+  const notifCount = useSelector(getNotifCount);
+
+  const userDataStatus = useSelector(getUserDataStatus) 
+  const notifStatus = useSelector(getNotificationStatus)
+
+  const userEmail = useSelector(getEmail)
+  const token =useSelector(getToken)
+
+  const dispatch = useDispatch()
+  useEffect(() => {
+    if(notifStatus===statusTypes.idle && userDataStatus===statusTypes.succeeded){
+   
+      dispatch(fetchNotification(
+  
+        {
+          data:{
+            email:userEmail
+          },
+          token
+        }
+      ));
+      }
+     
+     
+    }, [userDataStatus, dispatch])
+
   const [state, setState] = useState({
     top: false,
     left: false,
@@ -22,14 +57,21 @@ function AsideBox() {
     right: false,
   });
 
-  const toggleDrawer = (anchor, open) => (event) => {
+  function getContent(type){
+    switch(type){
+      case "chat":{return <></>}
+      case "notification":{return <NotificationViewer/>}
+    }
+  }
+
+  const toggleDrawer = (anchor, open, type) => (event) => {
     if (
       event.type === "keydown" &&
       (event.key === "Tab" || event.key === "Shift")
     ) {
       return;
     }
-
+    setContentType(type)
     setState({ ...state, [anchor]: open });
   };
 
@@ -37,8 +79,7 @@ function AsideBox() {
     <Box
       sx={{ width: "90vw" }}
       role="presentation"
-      onClick={toggleDrawer(anchor, false)}
-      onKeyDown={toggleDrawer(anchor, false)}
+
     >
       <Stack direction="row">
         <IconButton onClick={toggleDrawer(anchor, false)}>
@@ -46,7 +87,9 @@ function AsideBox() {
         </IconButton>
       </Stack>
       <Box>
-        контент
+        {
+          getContent(contentType)
+        }
       </Box>
     </Box>
   );
@@ -66,13 +109,13 @@ function AsideBox() {
             boxShadow: 2,
           }}
         >
-          <IconButton onClick={toggleDrawer("right", true)}>
+          <IconButton onClick={toggleDrawer("right", true, "chat")}>
             <Badge badgeContent={1} color="primary">
               <MailIcon color="action" />
             </Badge>
           </IconButton>
-          <IconButton>
-            <Badge badgeContent={0} color="primary">
+          <IconButton onClick={toggleDrawer("right", true, "notification")}>
+            <Badge badgeContent={notifCount} color="primary" >
               <NotificationsIcon color="action" />
             </Badge>
           </IconButton>
