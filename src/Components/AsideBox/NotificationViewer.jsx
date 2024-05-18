@@ -69,7 +69,7 @@ function NotificationViewer() {
       <Divider />
       <Box sx={{ mt: 3 }}></Box>
       {getNotificationsByType(alignment).map((item, index) => (
-        <NotificationBox data={item} key={index} />
+        <NotificationBox notifData={item} key={index} />
       ))}
     </Box>
   );

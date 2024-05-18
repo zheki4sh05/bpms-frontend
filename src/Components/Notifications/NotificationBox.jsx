@@ -9,7 +9,7 @@ import DialogAcception from "./DialogAcception";
 import { useSelector } from "react-redux";
 import { getToken } from "../../Store/slices/appUserSlice";
 
-function NotificationBox({ data }) {
+function NotificationBox({ notifData}) {
   const [open, setOpen] = useState(false);
 
   const [openAcception, setAcceptionOpen] = useState(false);
@@ -22,7 +22,7 @@ function NotificationBox({ data }) {
 
     switch(type){
       case 'del':{
-        dispatch(rejInvitation({data:data.id,token}))
+        dispatch(rejInvitation({data:notifData.id,token}))
         setOpen(false)
         break;
       }
@@ -33,7 +33,7 @@ function NotificationBox({ data }) {
   
         {
           data:{
-            id:data.id
+            id:notifData.id 
           },
           token
         }
@@ -89,10 +89,10 @@ function NotificationBox({ data }) {
           <Grid container spacing={0}>
             <Grid xs={8}>
               <Box sx={{ display: "flex", flexDirection: "column" }}>
-                <Box>{getChip(data.type)}</Box>
+                <Box>{getChip(notifData.type)}</Box>
                 <Box sx={{ mt: 1 }}>
                   <Typography variant="body2" gutterBottom>
-                    {data.message}
+                    {notifData.message}
                   </Typography>
                 </Box>
               </Box>
@@ -107,7 +107,7 @@ function NotificationBox({ data }) {
                 }}
               >
                 <Typography variant="body2" gutterBottom>
-                  {data.date}
+                  {notifData.date}
                 </Typography>
               </Box>
             </Grid>
