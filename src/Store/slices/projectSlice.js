@@ -44,7 +44,9 @@ export const createProject = createAsyncThunk(DomainNames.projects.concat('/crea
     name: DomainNames.projects,
     initialState,
     reducers: {
-       
+      resetCreatedStatus(state,action){
+        state.created = 'idle'
+      }
     },
     extraReducers(builder) {
       builder
@@ -54,17 +56,6 @@ export const createProject = createAsyncThunk(DomainNames.projects.concat('/crea
       })
       .addCase(createProject.fulfilled, (state, action) => {
         state.created = 'succeeded';
-        let project = {
-          name:action.payload.name,
-          desc:action.payload.desc,
-          start: action.payload.start,
-          workers:action.payload.workers,
-          role:action.payload.role,
-          access:action.payload.access
-        };
-
-
-        state.projects.push(project)
 
         state.error = null
         
@@ -207,6 +198,8 @@ export const createProject = createAsyncThunk(DomainNames.projects.concat('/crea
   export function getAddedStatus(state){
     return state[DomainNames.projects].added
   }
+
+  export const { resetCreatedStatus} = projectsSlice.actions
 
 
 

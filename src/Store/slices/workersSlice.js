@@ -53,6 +53,9 @@ export const getAllWorkers = createAsyncThunk(DomainNames.workers.concat('/getAl
   export function getWorkersStatus(state) {
     return state[DomainNames.workers].status;
   }
+  export function getWorkersListLength(state) {
+    return state[DomainNames.workers].workers.length;
+  }
   export function getFetchWorkersError(state){
     return state[DomainNames.workers].error;
   }

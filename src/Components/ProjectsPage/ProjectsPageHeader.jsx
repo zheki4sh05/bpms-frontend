@@ -5,6 +5,7 @@ import {
   getAdminProjectsCount,
   getOverdueProjectsCount,
   getParticipantProjectsCount,
+  getProjects,
 } from "../../Store/slices/projectSlice";
 
 function ProjectsPageHeader() {
@@ -24,8 +25,6 @@ function ProjectsPageHeader() {
   //   setcountAdmin(useSelector(getAdminProjectsCount))
   //   setcountOverdue(useSelector(getOverdueProjectsCount))
   // }, []);
-
-  console.log(countAdmin)
   return (
     <PageInfo
       name={"Мои проекты"}

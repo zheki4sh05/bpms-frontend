@@ -1,5 +1,9 @@
 import { useSelector } from "react-redux";
-import { getRoleInCompany, getStaffCount } from "../Store/slices/companySlice";
+import {
+  getCompanyName,
+  getRoleInCompany,
+  getStaffCount,
+} from "../Store/slices/companySlice";
 import SearchBox from "../Components/SearchBox/SearchBox";
 import SimpleSearhcBox from "../Components/StaffPage/SimpleSearchBox";
 import DialogEntityProvider from "../Components/DialogEntityProvider";
@@ -7,10 +11,24 @@ import { Box } from "@mui/material";
 import PageInfo from "../Components/PageInfo";
 import StaffTable from "../Components/StaffPage/StaffTable";
 import InviteUser from "../Components/StaffPage/InviteUser";
+import { getAllWorkers, getWorkersListLength, getWorkersStatus } from "../Store/slices/workersSlice";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import statusTypes from "../API/status";
+import { getToken } from "../Store/slices/appUserSlice";
 
 function StaffPage() {
   const userRoleInCompany = useSelector(getRoleInCompany);
-  const staffCount = useSelector(getStaffCount)
+  const staffCount = useSelector(getWorkersListLength);
+  const status = useSelector(getWorkersStatus);
+  const company = useSelector(getCompanyName);
+  const token = useSelector(getToken)
+  const dispatch = useDispatch()
+  useEffect(() => {
+    if (status === statusTypes.idle) {
+      dispatch(getAllWorkers({ data: {companyName:company}, token }));
+    }
+  }, [status, dispatch]);
 
   return (
     <DialogEntityProvider>
@@ -33,7 +51,7 @@ function StaffPage() {
 
         <StaffTable />
 
-        <InviteUser/>
+        <InviteUser />
       </Box>
     </DialogEntityProvider>
   );

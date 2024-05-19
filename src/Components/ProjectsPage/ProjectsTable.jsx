@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { getAddedStatus, getProjects, getProjectsResults } from "../../Store/slices/projectSlice";
+import {getProjectsResults } from "../../Store/slices/projectSlice";
 import CustomTable from "../CustomTable";
 import { Box } from "@mui/material";
 import { useState } from "react";

@@ -8,11 +8,11 @@ import DialogContext from './DialogContext';
 import { useDispatch } from 'react-redux';
 import { useSelector } from "react-redux";
 import { getToken } from "../Store/slices/appUserSlice";
-import { createProject, getCreatedStatus } from "../Store/slices/projectSlice";
+import { createProject, getAllUserProjects, getCreatedStatus, resetCreatedStatus } from "../Store/slices/projectSlice";
 import statusTypes from "../API/status";
 
 
-export default function CreateProject() {
+export default function CreateProject({reloadHandler}) {
 
   const {data, getDialogResult,resetDialogContext} = useContext(DialogContext);
 
@@ -36,7 +36,9 @@ export default function CreateProject() {
   }
 
   if(createdStatus===statusTypes.succeeded){
+    reloadHandler();
     resetDialogContext();
+    dispatch(resetCreatedStatus())
   }
 
   return (

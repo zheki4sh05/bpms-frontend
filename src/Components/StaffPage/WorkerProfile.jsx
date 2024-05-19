@@ -120,7 +120,7 @@ function WorkerProfile({ worker }) {
           <Typography variant="subtitle1" gutterBottom>
             Соц. сети
           </Typography>
-          <List >
+          {/* <List >
             <ListItem>
               <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                 <Box>
@@ -133,7 +133,7 @@ function WorkerProfile({ worker }) {
                 </Box>
                 <Box>
                   <Typography variant="body1" gutterBottom>
-                    {worker.social.inst}
+                    {worker.inst}
                   </Typography>
                 </Box>
               </Box>
@@ -150,7 +150,7 @@ function WorkerProfile({ worker }) {
                 </Box>
                 <Box>
                   <Typography variant="body1" gutterBottom>
-                    {worker.social.teleg}
+                    {worker.teleg}
                   </Typography>
                 </Box>
               </Box>
@@ -167,12 +167,12 @@ function WorkerProfile({ worker }) {
                 </Box>
                 <Box>
                   <Typography variant="body1" gutterBottom>
-                    {worker.social.site}
+                    {worker.site}
                   </Typography>
                 </Box>
               </Box>
             </ListItem>
-          </List>
+          </List> */}
         </Box>
       </Grid>
       <Grid xs={8}>

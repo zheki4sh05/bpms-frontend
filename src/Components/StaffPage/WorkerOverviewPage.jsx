@@ -5,6 +5,7 @@ import { useContext, useState } from "react";
 import DialogContext from "../DialogContext";
 import { useSelector } from "react-redux";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { getWorkersList } from "../../Store/slices/workersSlice";
 
 function WorkerOverviewPage() {
 
@@ -17,7 +18,7 @@ function WorkerOverviewPage() {
   
       const {data} = useContext(DialogContext);
   
-      const staff = useSelector(getStaff) || [];
+      const staff = useSelector(getWorkersList) || [];
       const mass=[];
       if(staff.length>0){
   

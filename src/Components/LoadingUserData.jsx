@@ -6,7 +6,8 @@ import statusTypes from "../API/status";
 import { useEffect } from "react";
 import { Box } from "@mui/material";
 import { getCompanyDataStatus, userCompany } from "../Store/slices/companySlice";
-import { fetchNotification, getNotificationStatus } from "../Store/slices/notificationSlice";
+import { checkAll } from "../Util/checkStatuses";
+
 
 function LoadingUserData() {
 
@@ -14,9 +15,7 @@ function LoadingUserData() {
     const token = useSelector(getToken);
     const userDataStatus = useSelector(getUserDataStatus) 
     const companyDataStatus = useSelector(getCompanyDataStatus)
-    const notifStatus = useSelector(getNotificationStatus)
-  
-    const email = useSelector(getEmail)
+
     
     const dispatch  = useDispatch();
     useEffect(() => {
@@ -24,9 +23,9 @@ function LoadingUserData() {
         dispatch(fetchUserData({ token }));
     }
        
-        if (companyDataStatus === statusTypes.idle) {
-            dispatch(userCompany({token})) 
-          }
+      if (companyDataStatus === statusTypes.idle) {
+          dispatch(userCompany({token})) 
+        }
          
         //   if(notifStatus===statusTypes.idle && userDataStatus===statusTypes.succeeded){
         //     console.log(email)
@@ -44,11 +43,22 @@ function LoadingUserData() {
        
       }, [userDataStatus, companyDataStatus, dispatch])
     
+  //     function checkAll(list){
+  //        const loading = list.filter(item=>item===statusTypes.loading).lentgh
+  //        const failed = list.filter(item=>item===statusTypes.failed).length
+  //   if(failed!=0){
+  //     return statusTypes.failed
+  //   }else if (loading!=0){
+  //     return statusTypes.loading
+  //   }else {
+  //     return statusTypes.succeeded
+  //   }
+  // }
 
     return ( 
     <Box>
         <StatusContent
-          result={userDataStatus}
+          result={checkAll([userDataStatus, companyDataStatus])}
           errorDomain="any"
           errorCode={"any"}
           successText="Операция выполнена успешно!"

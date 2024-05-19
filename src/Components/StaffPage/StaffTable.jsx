@@ -5,11 +5,12 @@ import CustomTable from "../CustomTable";
 import AsideDrawer from "../AsideBox/AsideDrawer";
 import { getStaff } from "../../Store/slices/companySlice";
 import { useSelector } from "react-redux";
+import { getWorkersList } from "../../Store/slices/workersSlice";
 
 function StaffTable() {
 
 
-    const staffList = useSelector(getStaff)
+    const staffList = useSelector(getWorkersList)
     console.log(staffList)
   
       return ( 
@@ -22,8 +23,9 @@ function StaffTable() {
             tableTitle="Персонал"
             tableHeadCells={[
 
+           
                   {
-                    id: 'name',
+                    id: 'firstname',
                     numeric: false,
                     disablePadding: false,
                     label: 'Имя',

@@ -16,6 +16,8 @@ import statusTypes from "../../API/status";
 import { useSelector } from "react-redux";
 import { fetchUserData, getToken, getUserDataStatus } from "../../Store/slices/appUserSlice";
 import { useDispatch } from "react-redux";
+import { getCompanyDataStatus } from "../../Store/slices/companySlice";
+import { checkAll } from "../../Util/checkStatuses";
 const theme = createTheme(
   ruRU,
 );
@@ -23,6 +25,7 @@ const theme = createTheme(
 function Layout() {
   const authStatus = useSelector((state)=>state[DomainNames.app.appUser].status)
   const userDataStatus = useSelector(getUserDataStatus) 
+  const companyDataStatus = useSelector(getCompanyDataStatus)
 
   //const [isAuth,setAuth] = useState(true);
 
@@ -45,8 +48,8 @@ function Layout() {
     <ThemeProvider theme={theme}>
       <div className={classes.main}>
       {
-        !(authStatus===statusTypes.succeeded && userDataStatus===statusTypes.succeeded) ? 
-
+        !(authStatus===statusTypes.succeeded && userDataStatus===statusTypes.succeeded && companyDataStatus===statusTypes.succeeded) ? 
+        // !(checkAll([authStatus,userDataStatus,companyDataStatus])===statusTypes.succeeded) ? 
         <AuthFormComponent 
             
         />
