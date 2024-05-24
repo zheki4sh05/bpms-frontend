@@ -13,7 +13,8 @@ import { useContext } from "react";
 import DialogContext from "../../../Components/DialogContext";
 
 
-export default function WorkersList({ dataMembers }) {
+export default function WorkersList({ dataMembers=[] }) {
+  console.log(dataMembers)
   const { data, setDataHandler } = useContext(DialogContext);
   const [checked, setChecked] = useState([]);
 

@@ -6,18 +6,15 @@ import { Box } from "@mui/material";
 import UserDrawer from "../../Components/UserDrawer/UserDrawer";
 import WidgetsToolBar from "../WidgetsToolBar/WidgetsToolBar";
 import AsideBox from "../../Components/AsideBox/AsideBox";
-import { useState } from "react";
-import SignUp from "../SignUp";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { ruRU } from '@mui/material/locale';
 import AuthFormComponent from "../../Components/AuthFormComponent";
 import DomainNames from "../../Store/DomainNames";
 import statusTypes from "../../API/status";
 import { useSelector } from "react-redux";
-import { fetchUserData, getToken, getUserDataStatus } from "../../Store/slices/appUserSlice";
-import { useDispatch } from "react-redux";
+import { getUserDataStatus } from "../../Store/slices/appUserSlice";
 import { getCompanyDataStatus } from "../../Store/slices/companySlice";
-import { checkAll } from "../../Util/checkStatuses";
+
 const theme = createTheme(
   ruRU,
 );
@@ -48,7 +45,7 @@ function Layout() {
     <ThemeProvider theme={theme}>
       <div className={classes.main}>
       {
-        !(authStatus===statusTypes.succeeded && userDataStatus===statusTypes.succeeded && companyDataStatus===statusTypes.succeeded) ? 
+        (authStatus===statusTypes.succeeded && userDataStatus===statusTypes.succeeded && companyDataStatus===statusTypes.succeeded) ? 
         // !(checkAll([authStatus,userDataStatus,companyDataStatus])===statusTypes.succeeded) ? 
         <AuthFormComponent 
             

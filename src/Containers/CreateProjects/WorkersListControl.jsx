@@ -25,6 +25,7 @@ function WorkersListControl() {
   const token = useSelector(getToken);
   const errorMessage = useSelector(getFetchWorkersError);
   useEffect(() => {
+    console.log("запрос")
     dispatch(
       getAllWorkers({
         data: {

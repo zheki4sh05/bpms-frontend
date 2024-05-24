@@ -1,6 +1,5 @@
 import Container from "@mui/material/Container";
 
-import Stack from "@mui/material/Stack";
 
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -9,25 +8,65 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
 import Avatar from "@mui/material/Avatar";
 
-
-import Typography from "@mui/material/Typography";
-import FolderIcon from "@mui/icons-material/Folder";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { useState } from "react";
-import { TextField } from "@mui/material";
+import { useContext, useEffect, useState } from "react";
+import { Divider, TextField } from "@mui/material";
 import { Button } from "@mui/material";
 import { Box } from "@mui/material";
 import { ListItemButton } from "@mui/material";
-import { Tooltip } from "@mui/material";
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import IconButton from '@mui/material/IconButton';
+
+import { useSelector } from "react-redux";
+import DialogContext from "../DialogContext";
+import { getToken } from "../../Store/slices/appUserSlice";
+import { fetchRelevantWorkers, getAllProjectMembers, getRelevantWorkers } from "../../Store/slices/workersSlice";
+import { useDispatch } from "react-redux";
 
 function Workers() {
-  const [dense, setDense] = useState(false);
-  const [secondary, setSecondary] = useState(false);
+
+  const [save,setSave] = useState(false);
+
+  const [showAll,setState] = useState(false);
+
+  const [selectedWorkers,setWorker] = useState(new Set());
+
+  const {data,setDataHandler} = useContext(DialogContext);
+
+  const relevantWorkers = useSelector(getRelevantWorkers);
+
+  const allWorkers = useSelector(state => getAllProjectMembers(state, data.aboutAssign ? data.aboutAssign.project.id : 0)) | [];
+
+  const token = useSelector(getToken)
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+
+  if(data.aboutAssign){
+    dispatch(fetchRelevantWorkers({data:{
+      projectId: data.aboutAssign.project
+   },
+   token}));
+  }
+
+
+  }, []);
+ 
+
+  function getWorkers(status){
+      return status ? relevantWorkers.concat(allWorkers) : relevantWorkers
+  }
+
+  const handleShowAll =()=>{
+    setState((prevState) => (prevState === false ? true : false));
+  }
+
+  const setHandler=()=>{
+    setSave(true)
+    setDataHandler({...data, workers:selectedWorkers})
+  }
+
   return (
     <Container maxWidth={"sm"} sx={{ mt: 5 }}>
-      <Stack direction={"row"}>
+      {/* <Stack direction={"row"}>
         <Box sx={{ display: "flex", flexDirection: "column" }}>
           <TextField id="outlined-basic" label="Поиск" variant="outlined" />
 
@@ -67,7 +106,64 @@ function Workers() {
             </ListItem>
           </List>
         </Stack>
-      </Stack>
+      </Stack> */}
+
+
+      <List
+        dense
+        sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+      >
+        {getWorkers(showAll).map((value, index) => {
+         
+          return (
+            <ListItem
+              key={index}
+              secondaryAction={
+                // <Checkbox
+                //   edge="end"
+                //   onChange={handleToggle(value)}
+                //   checked={checked.indexOf(value) !== -1}
+                //   inputProps={{ "aria-labelledby": labelId }}
+                // />
+
+                <Button  edge="end" onClick={()=>{setWorker(prevState=>[...prevState, value]);  setSave(false)}}>
+                      Выбрать
+
+                </Button>
+
+              }
+              disablePadding
+            >
+              <ListItemButton>
+                <ListItemAvatar>
+                  <Avatar
+                    alt={`Avatar n°${value + 1}`}
+                    src={`/static/images/avatar/${value + 1}.jpg`}
+                  />
+                </ListItemAvatar>
+                <Box>
+                  <ListItemText
+                    id={index}
+                    primary={value.firstname + " " + value.lastname}
+                  />
+                  <ListItemText id={index} primary={value.email} />
+                </Box>
+              </ListItemButton>
+            </ListItem>
+          );
+        })}
+      </List>
+        <Button onClick={handleShowAll}>Показать всех</Button>
+  
+      <Divider/>
+      <Button
+            disabled={!save}
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            onClick={setHandler}
+          >
+            Сохранить
+          </Button>
     </Container>
   );
 }

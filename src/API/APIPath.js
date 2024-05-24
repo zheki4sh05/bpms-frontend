@@ -27,7 +27,16 @@ const api={
     },
     workers:{
         list:base.concat("workers/list")
+    },
+    assignments:{
+        create:base.concat("assignments/create"),
+        fetch:base.concat("assignments/fetch"),
+        statuses:base.concat("assignments/statuses"),
+    },
+    documents:{
+        reports:base.concat("documents/reports")
     }
+
    
 }
 

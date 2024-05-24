@@ -3,19 +3,57 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Container } from "@mui/material";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Divider from '@mui/material/Divider';
-function AboutAssignment({ projects }) {
-  const [age, setAge] = useState("");
+import DialogContext from "../DialogContext";
+
+function AboutAssignment({ assignments,projects=[], specizalizations=[] }) {
+
+  const { data, setDataHandler } = useContext(DialogContext);
+  
+
+  const [project, setProject] = useState(null);
+  const [specizalization, setSpecizalization] = useState("");
   const [show, setShow] = useState(true);
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
+  const handleProjectChange = (event) => {
+    setProject(event.target.value);
     setShow(false);
   };
+  const handleSpecializationChange = (event) => {
+    setSpecizalization(event.target.value);
+    
+  };
+
+  // useEffect(() => {
+  //   setInputValueName(typeof data.aboutProject!=="undefined" ? data.aboutProject.name : " ");
+  //   setInputValueDesc(typeof data.aboutProject!=="undefined" ? data.aboutProject.desc : " "); 
+  // }, [data]);
+
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   const formData = new FormData(event.currentTarget);
+  //   setDataHandler({...data, aboutProject:{
+  //         ...data.aboutProject,
+  //         name: formData.get("name"),
+  //         desc: formData.get("desc"),
+  //   }});
+  // }
+
+  const handleSubmit = ()=>{
+
+    setDataHandler({...data, aboutAssign:{
+      projectId: project.id,
+      specizalization
+    }});
+
+  }
+
+
+
   return (
     <Box sx={{ mt: 5 }}>
       <Container maxWidth="sm">
@@ -30,12 +68,12 @@ function AboutAssignment({ projects }) {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={age}
+              value={projects.length>0 ? projects[0].name : ""}
               label="Выбрать проект"
-              onChange={handleChange}
+              onChange={handleProjectChange}
             >
               {projects.map((item, index) => (
-                <MenuItem value={index}>{item}</MenuItem>
+                <MenuItem value={index}>{item.name}</MenuItem>
               ))}
             </Select>
           </FormControl>
@@ -54,14 +92,14 @@ function AboutAssignment({ projects }) {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={age}
+              value={specizalizations[0]}
               label="Выбрать специализацию"
-              onChange={handleChange}
+              onChange={handleSpecializationChange}
 
               disabled={show}
             >
               {projects.map((item, index) => (
-                <MenuItem value={index} key={index}>{item}</MenuItem>
+                <MenuItem value={index.name} key={index}>{item}</MenuItem>
               ))}
             </Select>
           </FormControl>
@@ -70,11 +108,24 @@ function AboutAssignment({ projects }) {
           </Box>
           
         </Stack>
-              
+              <Box>
+              <Button
+            onClick={handleSubmit}
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+
+              disabled={project==null && specizalization===""}
+
+          >
+            Сохранить
+          </Button>
+              </Box>
         </Stack>
       </Container>
     </Box>
   );
 }
+
 
 export default AboutAssignment;

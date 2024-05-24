@@ -7,8 +7,20 @@ import addParams from '../../Util/paramsConfig';
 
 
 const initialState = {
-    projects:[],
-    statuses:[],
+    projects:[{
+      id:1,
+      name:"Новый проект",
+     
+      finish:"14.09.2023",
+      role:"admin",
+      access:'private'
+    }],
+    statuses:[{
+      id:1,
+      done:90,
+      workers:[{}]
+
+    }],
     error:null,
     status:'idle',
     created:"idle",

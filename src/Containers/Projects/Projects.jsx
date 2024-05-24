@@ -63,9 +63,9 @@ function Projects() {
     <div>
       <DialogEntityProvider>
         <>
-          <SearchBox />
+          <SearchBox buttonText="Создать"/>
           <ProjectsPageHeader />
-          {projectCount > 0 && addedStatus === statusTypes.succeeded ? (
+          {projectCount > 0 && addedStatus === statusTypes.failed ? (
             <CustomTabPanel
               content={{
                 tabNames: ["Все", "Активные", "Просроченные"],

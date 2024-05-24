@@ -17,7 +17,7 @@ function SearchBox({ buttonText }) {
         alignItems: "center",
       }}
     >
-      <Box>
+      {buttonText != null ?    <Box>
         <Button
           variant="contained"
           color="primary"
@@ -28,6 +28,10 @@ function SearchBox({ buttonText }) {
           {buttonText ? buttonText : " Создать"}
         </Button>
       </Box>
+      :
+      <></>
+      }
+   
 
       <Box
         sx={{

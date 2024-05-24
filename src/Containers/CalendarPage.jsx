@@ -1,9 +1,15 @@
 import { Box } from "@mui/material";
+import SearchBox from "../Components/SearchBox/SearchBox";
+import MainBody from "../Components/BigCalendar/MainBody";
 
 function CalendarPage() {
-    return ( <Box>
+  return (
+    <Box>
+      <SearchBox buttonText={null} />
 
-    </Box> );
+      <MainBody />
+    </Box>
+  );
 }
 
-export default CalendarPage
+export default CalendarPage;

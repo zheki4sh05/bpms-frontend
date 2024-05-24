@@ -3,7 +3,7 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useContext, useState } from "react";
 import DialogContext from "../../Components/DialogContext";
-function UserDatePicker() {
+function UserDatePicker({titleFrom="", titleTo=""}) {
 
   const {setDataHandler,data} = useContext(DialogContext);
 
@@ -25,6 +25,12 @@ function UserDatePicker() {
 
   }
 
+  const setHandler=()=>{
+    setEditedFinish(false);
+    setEditedStart(false);
+    setDataHandler({...data,deadline:{...data.deadline, startDate, finishDate}})
+  }
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Container maxWidth="sm">
@@ -38,13 +44,13 @@ function UserDatePicker() {
         >
           <Box>
             <Typography variant="subtitle2" gutterBottom >
-             Начало проекта
+             {titleFrom}
             </Typography>
             <TextField  type="datetime-local" onChange={handleStartDate} value={startDate}/>
           </Box>
           <Box>
             <Typography variant="subtitle2" gutterBottom >
-             Конец проекта
+            {titleTo}
             </Typography>
             <TextField  type="datetime-local" onChange={handleFinishDate}  value={finishDate}/>
           </Box>
@@ -54,7 +60,7 @@ function UserDatePicker() {
             disabled={!(isEditedStart && isEditedFinish) }
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
-            onClick={()=>setDataHandler({...data,deadline:{...data.deadline, startDate, finishDate}})}
+            onClick={setHandler}
           >
             Сохранить
           </Button>

@@ -2,36 +2,55 @@ import { Box } from "@mui/material";
 import SearchBox from "./../Components/SearchBox/SearchBox";
 import CustomTable from "./../Components/CustomTable";
 import CustomTabPanel from "./../Components/CustomTabPanel/CustomTabPanel";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import PageInfo from "../Components/PageInfo";
 import CreateAssignment from "../Components/CreateAssignment";
 import DialogContext from "../Components/DialogContext";
 import DialogEntityProvider from "../Components/DialogEntityProvider";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { getEmail, getToken } from "../Store/slices/appUserSlice";
+import { getAllUserAssignmentsStatuses, getAllUserAssignmnets, getAssignmentsList } from "../Store/slices/assignmentSlice";
+import AssignmentTable from './../Components/AssignmentComponents/AssignmentTable';
 
 function AssignmentsPage() {
+
+  const useremail = useSelector(getEmail)
+
+  const token = useSelector(getToken)
+
+  const assignments = useSelector(getAssignmentsList) | []
+
+  function makeRequest(){
+    dispatch(
+      getAllUserAssignmnets({
+        data: {
+          useremail,
+        },
+        token,
+      })
+    );
+    dispatch(
+      getAllUserAssignmentsStatuses({
+        data: {
+          useremail,
+        },
+        token,
+      })
+    );
+  }
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    makeRequest(); 
+  }, []);
+
   return (
     <DialogEntityProvider>
       <Box>
         <SearchBox buttonText={"Назначить"} />
-        {/* <Stack direction="row" sx={{ alignItems: "center", mt: 2 }}>
-        <Typography variant="h5" gutterBottom>
-          Мои проекты
-        </Typography>
-        <Typography variant="subtitle1" gutterBottom sx={{ ml: 2 }}>
-          я управляю:0
-        </Typography>
-        <Typography variant="subtitle1" gutterBottom sx={{ ml: 2 }}>
-          я управляю:0
-        </Typography>
-        <Typography variant="subtitle1" gutterBottom sx={{ ml: 2 }}>
-          просрочено:0
-        </Typography>
-        <Typography variant="subtitle1" gutterBottom sx={{ ml: 2 }}>
-          готово:0
-        </Typography>
-      </Stack> */}
 
         <PageInfo
           name="Поручения"
@@ -45,10 +64,10 @@ function AssignmentsPage() {
 
         <CustomTabPanel
           content={{
-            tabNames: ["Список", "Плитка", "Календарь", "Проект"],
+            tabNames: ["Список", "Плитка", "Календарь", "Канбан"],
           }}
         >
-          <CustomTable />
+          <AssignmentTable assignments={assignments}/>
           <Typography variant="h5" gutterBottom>
             контент 1
           </Typography>
@@ -63,7 +82,10 @@ function AssignmentsPage() {
           </Typography>
         </CustomTabPanel>
 
-        <CreateAssignment />
+        <CreateAssignment 
+        
+          reloadHandler={makeRequest}
+        />
       </Box>
     </DialogEntityProvider>
   );

@@ -44,7 +44,7 @@ export default function CreateProject({reloadHandler}) {
   return (
     <CreateEntity
     stepsNames={["О проекте", "Настройки", "Участники"]}
-    stepsPages={[<AboutProject />, <UserDatePicker />, <WorkersListControl />]}
+    stepsPages={[<AboutProject />, <UserDatePicker titleFrom="Начало проекта" titleTo="Окончание проекта"/>, <WorkersListControl />]}
     name={"Создание проекта"}
     handleSaveContext={handleSaveCreatedProject}
     getResult={getDialogResult}

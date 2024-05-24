@@ -2,6 +2,7 @@ import { Box } from "@mui/material";
 
 import CustomTabPanel from "../CustomTabPanel/CustomTabPanel";
 import ProjectInfo from "./ProjectTabs/ProjectInfo";
+import KanbanProject from './ProjectTabs/KanbanProject';
 
 
 
@@ -15,7 +16,7 @@ function ProjectOverview({ project }) {
       > */}
        <CustomTabPanel
         content={{
-          tabNames: ["О проекте","Статистика"],
+          tabNames: ["О проекте","Статистика", "Канбан"],
         }}
       >
 
@@ -26,6 +27,7 @@ function ProjectOverview({ project }) {
         <ProjectInfo
           project={project}
         />
+        <KanbanProject/>
 
       </CustomTabPanel>
     </Box>
