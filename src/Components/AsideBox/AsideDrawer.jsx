@@ -6,7 +6,7 @@ import { Drawer, Stack,Box } from "@mui/material";
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
-function AsideDrawer({anchorProp,content}) {
+function AsideDrawer({anchorProp,content, widthLevel}) {
   
 
   const {openDialogHandler, closeDialogHandler, openDialog} = useContext(DialogContext)
@@ -45,10 +45,21 @@ function AsideDrawer({anchorProp,content}) {
   
          
         };
+
+        function calcWidthByLevel(level){
+            switch(level){
+              case 1:{
+                return "90vw"
+              }
+              case 2:{
+                return "85vw"
+              }
+            }
+        }
     
       const list = (anchor) => (
         <Box
-          sx={{ width: "90vw" }}
+          sx={{ width: calcWidthByLevel(widthLevel) }}
           role="presentation"
          
           onKeyDown={onCloseByKey}
@@ -70,6 +81,7 @@ function AsideDrawer({anchorProp,content}) {
         anchor={anchorProp}
         open={openDialog}
         onClose={closeDialogHandler}
+       
       >
         {list(anchorProp)}
       </Drawer>

@@ -1,53 +1,47 @@
 import { Box } from "@mui/material";
 import SignUp from "../Containers/SignUp";
 import SignIn from "./SignIn";
-import { useState } from "react";
+import { memo, useState } from "react";
 import DomainNames from "../Store/DomainNames";
 import { CircularProgress } from "@mui/material";
 import CustomCreateAlert from "../Components/CustomCreateAlert";
 import { useSelector } from "react-redux";
-import { fetchUserData, getToken } from "../Store/slices/appUserSlice";
-import { useDispatch } from "react-redux";
-import statusTypes from "../API/status";
-import LoadingUserData from "./LoadingUserData";
-function AuthFormComponent() {
+import { getAuthStatus } from "../Store/slices/appUserSlice";
 
+const AuthFormComponent = () => {
   let authResultContent;
   let alertDuration = 1500;
   const signUp = 1;
 
   const signIn = 2;
- 
+
   const [page, togglePage] = useState(signUp);
 
   const handleTogglePage = () => {
     togglePage((prevState) => (prevState === signIn ? signUp : signIn));
   };
 
-  const userStatus = useSelector(
-    (state) => state[DomainNames.app.appUser].status
-  );
+  const userStatus = useSelector(getAuthStatus);
   const error = useSelector((state) => state[DomainNames.app.appUser].error);
 
   if (userStatus === "loading") {
     authResultContent = <CircularProgress />;
   } else if (userStatus === "succeeded") {
-
-   
-
     authResultContent = (
       <CustomCreateAlert
-        messageText={`${page==signUp ? "Регистрация" : "Авторизация" } прошла успешно`}
+        messageText={`${
+          page == signUp ? "Регистрация" : "Авторизация"
+        } прошла успешно`}
         duration={alertDuration}
         userSeverity="success"
       />
     );
-
-  
   } else if (userStatus === "failed") {
     authResultContent = (
       <CustomCreateAlert
-        messageText={`Ошибка ${page==signUp ? "Регистрации" : "Авторизации" }. `.concat(error)}
+        messageText={`Ошибка ${
+          page == signUp ? "Регистрации" : "Авторизации"
+        }. `.concat(error)}
         duration={6000}
         userSeverity="error"
       />
@@ -65,24 +59,15 @@ function AuthFormComponent() {
       }}
     >
       <Box sx={{ display: "flex", flexDirection: "column" }}>
-
-      {
-          userStatus===statusTypes.succeeded ?
-          <LoadingUserData />
-          :
-          null
-        }
         {page == signIn ? (
-          <SignIn onTogglePage={handleTogglePage}  />
+          <SignIn onTogglePage={handleTogglePage} />
         ) : (
-          <SignUp onTogglePage={handleTogglePage}  />
+          <SignUp onTogglePage={handleTogglePage} />
         )}
         <Box sx={{ mt: 2 }}>{authResultContent}</Box>
-       
-        
       </Box>
     </Box>
   );
-}
+};
 
 export default AuthFormComponent;

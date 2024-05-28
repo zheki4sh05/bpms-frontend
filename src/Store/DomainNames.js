@@ -10,6 +10,7 @@ const DomainNames = {
     notif:"notif",
     assignments:"assignments",
     relevant:"relevant",
-    documents:"documents"
+    documents:"documents",
+    tasks:"tasks"
 }
 export default DomainNames;

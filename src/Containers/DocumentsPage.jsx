@@ -1,4 +1,11 @@
-import { Box, Typography } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+} from "@mui/material";
 import DialogEntityProvider from "../Components/DialogEntityProvider";
 import SearchBox from "../Components/SearchBox/SearchBox";
 import PageInfo from "../Components/PageInfo";
@@ -6,19 +13,57 @@ import CustomTabPanel from "../Components/CustomTabPanel/CustomTabPanel";
 import DocumentTable from "../Components/DocumentsComponents/DocumentTable";
 import UploadDocument from "../Components/DocumentsComponents/UploadDocument";
 import { useSelector } from "react-redux";
-import { getProjects } from "../Store/slices/projectSlice";
+import { getAllProjectsStatuses, getAllUserProjects, getProjects, getProjectsLoadedStatus } from "../Store/slices/projectSlice";
+import { getDocuments } from "../Store/slices/documentsSlice";
+import { useState } from "react";
+import statusTypes from "../API/status";
+import { useDispatch } from "react-redux";
+import { getToken } from "../Store/slices/appUserSlice";
+import { getCompanyName } from "../Store/slices/companySlice";
 
 function DocumentsPage() {
+  const dispatch = useDispatch();
+  const token  = useSelector(getToken)
+  const documents = useSelector(getDocuments);
+  const companyName = useSelector(getCompanyName);
+  const projects = useSelector(getProjects);
 
-    const documents = useSelector(getDocuments)
+  const projectsStatus = useSelector(getProjectsLoadedStatus)
 
-    const projects = useSelector(getProjects)
+  const [project, setProject] = useState(null);
+  const handleProjectChange = (event) => {
+    setProject(event.target.value);
+  };
 
-    const [project, setProject] = useState(null);
-    const handleProjectChange = (event) => {
-      setProject(event.target.value);
-   
-    };
+  function makeRequest(){
+    dispatch(
+      getAllUserProjects({
+        data: {
+          companyName,
+        },
+        token,
+      })
+    );
+    dispatch(
+      getAllProjectsStatuses({
+        data: {
+          companyName,
+        },
+        token,
+      })
+    );
+  }
+
+  if(projectsStatus !== statusTypes.succeeded){
+    makeRequest()
+  }
+
+
+  
+
+  
+
+
 
 
   return (
@@ -27,7 +72,7 @@ function DocumentsPage() {
         <SearchBox buttonText={"Загрузить"} />
 
         <PageInfo
-          name="Документов"
+          name="Документы"
           data={[
             {
               name: "Доступно",
@@ -36,22 +81,17 @@ function DocumentsPage() {
           ]}
         />
 
-        <CustomTabPanel
-          content={{
-            tabNames: ["Список", "Плитка", "Календарь", "Канбан"],
-          }}
-        >
+        {/* {projects.length > 0 ? (
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">
-              Выбрать проект
+              Выбрать область
             </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={project[0].name}
+              value={projects[0].name}
               label="Выбрать специализацию"
               onChange={handleProjectChange}
-              disabled={show}
             >
               {projects.map((item, index) => (
                 <MenuItem value={index.name} key={index}>
@@ -60,14 +100,24 @@ function DocumentsPage() {
               ))}
             </Select>
           </FormControl>
-
-          <DocumentTable assignments={assignments} />
+        ) : (
+          <Typography>У вас нет проектов</Typography>
+        )} */}
+        <CustomTabPanel
+          content={{
+            tabNames: ["Список", "Плитка"],
+          }}
+        >
+          <DocumentTable documents={documents} />
+          <Box>
           <Typography variant="h5" gutterBottom>
             контент 1
           </Typography>
+          </Box>
+        
         </CustomTabPanel>
 
-        <UploadDocument reloadHandler={makeRequest} />
+        {/* <UploadDocument reloadHandler={makeRequest} /> */}
       </Box>
     </DialogEntityProvider>
   );

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { memo, useCallback, useContext, useMemo, useState } from "react";
 import styled from "@emotion/styled";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import { Grid, Box, IconButton } from "@mui/material";
+import { Grid, Box, IconButton, ListItemButton } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
@@ -10,6 +10,12 @@ import TaskCard from "./TaskCard";
 import EditIcon from "@mui/icons-material/Edit";
 import AddColumnControl from "./AddColumnControl";
 import { id } from "date-fns/locale";
+import ChangeStatusDialog from "./ChangeStatusDialog";
+import DialogContext from "../DialogContext";
+import { useDispatch } from "react-redux";
+import { setSelectedTask } from "../../Store/slices/assignmentSlice";
+import { useSelector } from "react-redux";
+import { getProjectStages } from "../../Store/slices/projectSlice";
 const Container = styled("div")(() => ({
   display: "flex",
   flexDirection: "row",
@@ -43,26 +49,47 @@ const FilterIcon = styled("span")(() => ({
   color: "text.secondary",
 }));
 
-const Kanban = () => {
+const Kanban = memo(({tasks, showDialog, projectId}) => {
+  const {setDataHandler,  openDialogHandler } = useContext(DialogContext);
   // const [columns, setColumns] = useState(columnsFromBackend);
 
-  const columns = [];
+  const stages = useSelector(state => getProjectStages(state, projectId))
 
-  const [tasks,setTasks] = useState([{
-    id:1,
-    name:"задача",
-    desc:"описание",
-    start:"16.09.2024",
-    finish:"19.09.2024",
-    assigned_To:"test@mail.ru",
-    status_id:1
+ const dispatch= useDispatch();
 
-  }])
+  const [open,setOpen] = useState(false);
 
-  const [stages, setStages] = useState([{
-    id:1,
-    name:"Надо сделать"
-    }])
+//   const [tasks,setTasks] = useState([{
+//     id:1,
+//     name:"задача",
+//     desc:"описание",
+//     start:"16.09.2024",
+//     finish:"19.09.2024",
+//     assigned_To:"test@mail.ru",
+//     status_id:1
+
+//   },
+//   {
+//     id:2,
+//     name:"задача 2",
+//     desc:"описание",
+//     start:"16.09.2024",
+//     finish:"19.09.2024",
+//     assigned_To:"test@mail.ru",
+//     status_id:2
+
+//   }
+
+
+// ])
+
+  // const [stages, setStages] = useState([{
+  //   id:1,
+  //   name:"Надо сделать"
+  //   },{
+  //     id:2,
+  //     name:"Готово"
+  //     }])
 
 
   //   const onDragEnd = (result, columns, setColumns) => {
@@ -104,11 +131,43 @@ const Kanban = () => {
   function reduceTasks(tasks, id) {
     return tasks.filter(item=>item.status_id === id);
   }
+  // function openDialog(taskId, stage){
+
+   
+  // }
+
+  const openDialog =(taskId, stage={})=>{
+    dispatch(setSelectedTask({taskId, stage:{id:stage.id, name:stage.name}}))
+    
+    setOpen(true)
+
+  }
+
+  function handleClose(){
+    setOpen(false)
+  }
+
+  // function handleOpenOverview(taskId){
+  //     console.log(taskId)
+
+  //     setDataHandler({taskId:taskId})
+
+  //     openDialogHandler()
+
+  // }
+
+  const handleOpenOverview = (id, name)=>{
+    console.log(id)
+
+    setDataHandler({taskId:id, taskName: name})
+
+    openDialogHandler()
+  }
 
   return (
     <Container>
        {stages.map((item, index) => (
-      <TaskColumnStyles>
+      <TaskColumnStyles key={index}>
        
           <TaskList>
             <Box sx={{ width: "100%" }}>
@@ -135,16 +194,16 @@ const Kanban = () => {
                   </IconButton>
                 </Grid>
               </Grid>
+              <Divider />
             </Box>
-            <Divider />
+           
 
-            {/* {columns.items.map((item, index) => (
-     <TaskCard key={index} item={item} index={index} />
-   ))}
- */}
 
-          {reduceTasks(tasks, item.id).map((item,index)=>(
-               <TaskCard key={index} item={item} index={index} />
+          {reduceTasks(tasks, item.id).map((task,index)=>(
+        
+            <TaskCard  task={task}  handleOpenDialog={()=>openDialog(task.id,item)} handleOpenOverview={handleOpenOverview} showDialog={showDialog}/>
+ 
+              
           ))
           }
           </TaskList>
@@ -154,6 +213,11 @@ const Kanban = () => {
        
       </TaskColumnStyles>
        ))}
+
+       {showDialog ? <ChangeStatusDialog open={open} handleClose={handleClose}/> : null}
+
+  
+
       <Box>
         <Box>
           <AddColumnControl />
@@ -161,6 +225,6 @@ const Kanban = () => {
       </Box>
     </Container>
   );
-};
+});
 
 export default Kanban;

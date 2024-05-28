@@ -7,20 +7,29 @@ import addParams from '../../Util/paramsConfig';
 
 
 const initialState = {
-    projects:[{
-      id:1,
-      name:"Новый проект",
+    // projects:[{
+    //   id:1,
+    //   name:"Новый проект",
      
-      finish:"14.09.2023",
-      role:"admin",
-      access:'private'
-    }],
-    statuses:[{
-      id:1,
-      done:90,
-      workers:[{}]
+    //   finish:"14.09.2023",
+    //   role:"admin",
+    //   access:'private',
+    //   stages:[{
+    //     id:1,
+    //     name:"Надо сделать"
+    //     },{
+    //       id:2,
+    //       name:"Готово"
+    //       }]
+    // }],
+    // statuses:[{
+    //   id:1,
+    //   done:90,
+    //   workers:[{}]
 
-    }],
+    // }],
+    projects:[],
+    statuses:[],
     error:null,
     status:'idle',
     created:"idle",
@@ -32,6 +41,7 @@ export const createProject = createAsyncThunk(DomainNames.projects.concat('/crea
     const response = await axios.post(api.project.create,  initialUser.project, getRequestConfig(initialUser.token));
       return response.data
   })
+
 
 
   export const getAllUserProjects = createAsyncThunk(DomainNames.projects.concat('/fetch')  , async (initialUser) => {
@@ -104,7 +114,7 @@ export const createProject = createAsyncThunk(DomainNames.projects.concat('/crea
       .addCase(getAllProjectsStatuses.fulfilled, (state, action) => {
         state.added = 'succeeded';
 
-        console.log(action.payload)
+        console.log("st "+action.payload)
 
         state.statuses = action.payload;
 
@@ -184,6 +194,8 @@ export const createProject = createAsyncThunk(DomainNames.projects.concat('/crea
   }
 
   export function getProjectsResults(state){
+
+
     return state[DomainNames.projects].statuses;
   }
 
@@ -207,8 +219,17 @@ export const createProject = createAsyncThunk(DomainNames.projects.concat('/crea
 
   }
 
+  export function getProjectsLoadedStatus(state){
+    return state[DomainNames.projects].status
+  }
+
   export function getAddedStatus(state){
     return state[DomainNames.projects].added
+  }
+
+  export function getProjectStages(state,projectId){
+    
+    return state[DomainNames.projects].projects.find(project => project.id == projectId).stages
   }
 
   export const { resetCreatedStatus} = projectsSlice.actions

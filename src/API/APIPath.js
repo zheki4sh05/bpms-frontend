@@ -34,7 +34,14 @@ const api={
         statuses:base.concat("assignments/statuses"),
     },
     documents:{
-        reports:base.concat("documents/reports")
+        reports:base.concat("documents/reports"),
+        docs:base.concat("documents/docs"),
+        upload:base.concat("documents/upload")
+    },
+    tasks:{
+        fetchMy:base.concat("tasks/fetchMy"),
+        fetchOther:base.concat("tasks/fetchOther"),
+        task:base.concat("tasks/")
     }
 
    

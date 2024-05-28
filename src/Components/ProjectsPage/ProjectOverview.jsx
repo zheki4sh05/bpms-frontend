@@ -2,11 +2,10 @@ import { Box } from "@mui/material";
 
 import CustomTabPanel from "../CustomTabPanel/CustomTabPanel";
 import ProjectInfo from "./ProjectTabs/ProjectInfo";
-import KanbanProject from './ProjectTabs/KanbanProject';
+import KanbanProject from "./ProjectTabs/KanbanProject";
+import { memo } from "react";
 
-
-
-function ProjectOverview({ project }) {
+const ProjectOverview = memo(({ project })=> {
   return (
     <Box>
       {/* <CustomTabPanel
@@ -14,24 +13,18 @@ function ProjectOverview({ project }) {
           tabNames: ["Инфо", "Статистика", "Участники","Новости"],
         }}
       > */}
-       <CustomTabPanel
+      <CustomTabPanel
         content={{
-          tabNames: ["О проекте","Статистика", "Канбан"],
+          tabNames: ["Канбан", "Статистика", "О проекте"],
         }}
       >
+        <KanbanProject project={project} />
+        <ProjectInfo project={project} />
 
-        <ProjectInfo
-          project={project}
-        />
-        
-        <ProjectInfo
-          project={project}
-        />
-        <KanbanProject/>
-
+        <ProjectInfo project={project} />
       </CustomTabPanel>
     </Box>
   );
-}
+})
 
 export default ProjectOverview;

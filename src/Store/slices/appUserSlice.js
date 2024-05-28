@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
 import DomainNames from '../DomainNames'
 import api from '../../API/APIPath'
 import axios from 'axios';
@@ -16,6 +16,7 @@ const initialState = {
     status:'idle',
     loadedMore:'idle',
     updated:'false',
+    appLoaded:'idle',
     error:null
 }
 
@@ -74,6 +75,12 @@ const appUserSlice = createSlice({
         },
         resetUserUpdatedStatus(state,action){
           state.updated = null;
+        },
+        updateLoadingAppData(state,action){
+          if(state.appLoaded!==action.payload){
+              state.appLoaded = action.payload
+          }
+        
         }
         
     },
@@ -153,17 +160,23 @@ const appUserSlice = createSlice({
   })
 
 
-  export const { userCreate,  userUpdate,resetUserUpdatedStatus} = appUserSlice.actions
+  export const { userCreate,  userUpdate,resetUserUpdatedStatus,updateLoadingAppData} = appUserSlice.actions
   export function getToken(state) {
   return state[DomainNames.app.appUser].user.jwtToken;
 }
 
+export const getTokenRef = createSelector(state=>state[DomainNames.app.appUser].user, (user)=>({user}))
+export function getAuthStatus(state){
+  return state[DomainNames.app.appUser].status
+}
 export function getUserDataStatus(state){
   return state[DomainNames.app.appUser].loadedMore;
 }
 export function getEmail(state){
   return state[DomainNames.app.appUser].user.email;
 }
-
+export function getAppStatus(state){
+  return state[DomainNames.app.appUser].appLoaded
+}
   export default appUserSlice.reducer
 

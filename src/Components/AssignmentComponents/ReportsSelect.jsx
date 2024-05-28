@@ -6,13 +6,13 @@ import { TreeItem } from "@mui/x-tree-view/TreeItem";
 import Typography from "@mui/material/Typography";
 import { useContext, useState } from "react";
 import DialogContext from "../DialogContext";
-import { getAllReports } from "../../Store/slices/documentsSlice";
+import {getReports } from "../../Store/slices/documentsSlice";
 
 function ReportsSelect() {
 
     const { data, setDataHandler } = useContext(DialogContext);  
 
-  const reports = useSelector(getAllReports) | [];
+  const reports = useSelector(getReports) | [];
 
   const [lastSelectedItem, setLastSelectedItem] = useState([]);
 

@@ -6,6 +6,7 @@ import projectSlice from "./slices/projectSlice"
 import notificationSlice from "./slices/notificationSlice"
 import assignmentSlice from "./slices/assignmentSlice"
 import documentsSlice from "./slices/documentsSlice"
+import tasksSlice from "./slices/tasksSlice"
 export default configureStore({
     reducer:{
         appUser:appUserReducer,
@@ -14,7 +15,8 @@ export default configureStore({
         projects:projectSlice,
         notif:notificationSlice,
         assignments:assignmentSlice,
-        documents:documentsSlice
+        documents:documentsSlice,
+        tasks:tasksSlice
     },
    
 })

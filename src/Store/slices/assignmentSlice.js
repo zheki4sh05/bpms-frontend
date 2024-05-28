@@ -1,17 +1,47 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
 import DomainNames from '../DomainNames'
 import api from '../../API/APIPath'
 import axios from 'axios';
 import getRequestConfig from '../../API/requestConfig';
 import addParams from '../../Util/paramsConfig';
 
+
 const initialState = {
-    list:[],
+    list:[{
+          id:1,
+          name:"задача",
+          desc:"описание",
+          start:"16.09.2024",
+          finish:"19.09.2024",
+          assigned_To:"test@mail.ru",
+          status_id:1
+      
+        },
+        {
+          id:2,
+          name:"задача 2",
+          desc:"описание",
+          start:"16.09.2024",
+          finish:"19.09.2024",
+          assigned_To:"test@mail.ru",
+          status_id:2
+      
+        }
+      ],
     statuses:[],
     created:'idle',
     error:null,
     status:'idle',
-    added:'idle'
+    added:'idle',
+    selectedTask:{
+
+      id:0,
+      stage:{
+        id:0,
+        name:""
+      }
+
+    }
 }
 
 export const createAssignment = createAsyncThunk(DomainNames.assignments.concat('/createAssignment')  , async (initialData) => {
@@ -39,6 +69,29 @@ export const getAllUserAssignmnets = createAsyncThunk(DomainNames.assignments.co
     reducers: {
       resetCreatedAssignStatus(state,action){
         state.created = 'idle'
+      },
+      setSelectedTask(state,action){
+        state.selectedTask = action.payload;
+      },
+      changeTaskStatus(state,action){
+      
+
+        state.list = state.list.map((item,index)=>{
+          item=>item.id == state.selectedTask.id ?
+
+          {...item, status_id: state.selectedTask.stage.id}
+          : item
+
+      })
+
+        state.selectedTask = {
+          id:0,
+          stage:{
+            id:0,
+            name:""
+          }
+        }
+
       }
     },
     extraReducers(builder) {
@@ -85,17 +138,23 @@ export const getAllUserAssignmnets = createAsyncThunk(DomainNames.assignments.co
     }
   })
 
-  export const { resetCreatedAssignStatus} = assignmentsSlice.actions
+  export const { resetCreatedAssignStatus,setSelectedTask,changeTaskStatus} = assignmentsSlice.actions
   export default assignmentsSlice.reducer
-  export function getAssignmentsList(state) {
-    console.log(state[DomainNames.assignments])
-    return state[DomainNames.assignments].list;
-  }
+  // export function getAssignmentsList(state) {
+  
+  //   console.log(state[DomainNames.assignments])
+  //   return state[DomainNames.assignments].list;
+  // }
+
+    export const getAssignmentsList = createSelector(state=>state[DomainNames.assignments].list, (list)=>({list}))
 
   export function getCreatedAssignStatus(state){
     return state[DomainNames.assignments].created
   }
   export function getAssignmentsResults(state){
     return state[DomainNames.assignments].statuses
+  }
+  export function getSelectedTask(state){
+    return state[DomainNames.assignments].selectedTask
   }
 

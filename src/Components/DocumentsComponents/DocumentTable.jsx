@@ -1,11 +1,15 @@
 import { Box } from "@mui/material";
+import DialogEntityProvider from "../DialogEntityProvider";
+import CustomTable from "../CustomTable";
+import AsideDrawer from "../AsideBox/AsideDrawer";
+import DocumentOverview from "./DocumentOverview";
 
 function DocumentTable({documents=[]}) {
     return ( 
     <Box>
         <DialogEntityProvider>
         <CustomTable
-          rows={addNew(assignments)}
+          rows={documents}
           tableTitle="Таблица документов"
           tableHeadCells={[
             {
@@ -49,7 +53,7 @@ function DocumentTable({documents=[]}) {
 
         <AsideDrawer
           anchorProp="right"
-          content={<AssignmentOverviewWindow />}
+          content={<DocumentOverview/>}
         />
       </DialogEntityProvider>
     </Box> 

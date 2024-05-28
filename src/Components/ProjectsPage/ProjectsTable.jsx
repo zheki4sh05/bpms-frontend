@@ -13,11 +13,14 @@ function ProjectsTable({projects=[]}) {
   
   const statuses = useSelector(getProjectsResults) || [];
 
-  const addNew = (arr) => {
+  console.log(statuses)
+
+  const addNew = (arr=[], st=[]) => {
     const result = arr.map((el) => {
+      console.log(st.find(status => status.id == el.id))
         return { ...el, 
-          done: statuses.find(status => status.id == el.id).done,
-          workers: statuses.find(status => status.id == el.id).workers.length
+          done: st.find(status => status.id == el.id).done,
+          workers: st.find(status => status.id == el.id).workers.length
          };
     });
     return result;
@@ -29,7 +32,7 @@ function ProjectsTable({projects=[]}) {
 
         <CustomTable
        
-          rows={addNew(projects)}
+          rows={addNew(projects,statuses)}
           tableTitle="Проекты"
           tableHeadCells={[
               {
@@ -82,6 +85,7 @@ function ProjectsTable({projects=[]}) {
           <AsideDrawer
             anchorProp="right"
             content={<ProjectOverviewWindow/>}
+            widthLevel={1}
           />
       </DialogEntityProvider>
    

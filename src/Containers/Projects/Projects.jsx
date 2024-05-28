@@ -23,6 +23,9 @@ import AllProjectsTable from "../../Components/ProjectsPage/AllProjectTable";
 import ActiveProjectsTable from "../../Components/ProjectsPage/ActiveProjectsTable";
 import statusTypes from "../../API/status";
 import OverdueProjects from "./../../Components/ProjectsPage/OverdueProjects";
+import { getProjectsLoadedStatus } from "./../../Store/slices/projectSlice";
+import StatusContent from "../../Util/statusContent";
+import { checkAll } from "../../Util/checkStatuses";
 
 function Projects() {
   const token = useSelector(getToken);
@@ -33,9 +36,33 @@ function Projects() {
 
   const createdStatus = useSelector(getCreatedStatus);
 
+  const projectsStatus = useSelector(getProjectsLoadedStatus);
+
   const addedStatus = useSelector(getAddedStatus);
 
-  function makeRequest(){
+  let content = (
+    <>
+      {projectCount > 0 && addedStatus !== statusTypes.failed ? (
+        <CustomTabPanel
+          content={{
+            tabNames: ["Все", "Активные", "Просроченные"],
+          }}
+        >
+          <AllProjectsTable />
+
+          <ActiveProjectsTable />
+
+          <OverdueProjects />
+        </CustomTabPanel>
+      ) : (
+        <Typography variant="subtitle1" gutterBottom>
+          У Вас нет проектов
+        </Typography>
+      )}
+    </>
+  );
+
+  function makeRequest() {
     dispatch(
       getAllUserProjects({
         data: {
@@ -56,16 +83,25 @@ function Projects() {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    makeRequest(); 
+    makeRequest();
   }, []);
 
   return (
     <div>
       <DialogEntityProvider>
         <>
-          <SearchBox buttonText="Создать"/>
+          <SearchBox buttonText="Создать" />
           <ProjectsPageHeader />
-          {projectCount > 0 && addedStatus === statusTypes.failed ? (
+          {checkAll([projectsStatus, addedStatus]) !== statusTypes.succeeded ? (
+            <StatusContent
+              result={checkAll([projectsStatus, addedStatus])}
+              errorDomain={""}
+              errorCode={""}
+              loadingType={""}
+              successType={"none"}
+              errorType={"primary"}
+            />
+          ) : (projectCount > 0 && addedStatus !== statusTypes.failed) ? (
             <CustomTabPanel
               content={{
                 tabNames: ["Все", "Активные", "Просроченные"],
@@ -82,9 +118,8 @@ function Projects() {
               У Вас нет проектов
             </Typography>
           )}
-          <CreateProject
-            reloadHandler={makeRequest}
-          />
+
+          <CreateProject reloadHandler={makeRequest} />
         </>
       </DialogEntityProvider>
     </div>

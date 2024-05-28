@@ -6,9 +6,13 @@ import getRequestConfig from '../../API/requestConfig';
 import addParams from '../../Util/paramsConfig';
 
 const initialState = {
-    list:[],
+    documents:[],
+    statusDoc:'idle',
+
+    reports:[],
+    statusRep:'idle',
+
     error:null,
-    status:'idle',
     added:'idle'
 }
 
@@ -17,6 +21,12 @@ export const getReportsList = createAsyncThunk(DomainNames.assignments.concat('/
     
       return response.data
   })
+
+  export const getDocList = createAsyncThunk(DomainNames.assignments.concat('/docsList')  , async (initialData) => {
+    const response = await axios.get(api.documents.docs, initialData.data,getRequestConfig(initialData.token));
+    
+      return response.data
+  })  
   
 
 
@@ -30,29 +40,51 @@ export const getReportsList = createAsyncThunk(DomainNames.assignments.concat('/
         builder
             // -----получение форм-отчетов компании--------------------
           .addCase(getReportsList.pending, (state, action) => {
-            state.created = 'loading'
+            state.statusRep = 'loading'
           })
           .addCase(getReportsList.fulfilled, (state, action) => {
-            state.created = 'succeeded';
+            state.statusRep = 'succeeded';
 
-            state.list = action.payload
+            state.reports = action.payload
 
             state.error = null;
           })
           .addCase(getReportsList.rejected, (state, action) => {
-            state.created = 'failed';
+            state.statusRep = 'failed';
             state.error = action.error
           })
           //-------------------------------------------------------
+          // -----получение документов (по умолчанию общедоступные) компании--------------
+          .addCase(getDocList.pending, (state, action) => {
+            state.statusDoc = 'loading'
+          })
+          .addCase(getDocList.fulfilled, (state, action) => {
+            state.statusDoc = 'succeeded';
+
+            state.documents = action.payload
+
+            state.error = null;
+          })
+          .addCase(getDocList.rejected, (state, action) => {
+            state.statusDoc = 'failed';
+            state.error = action.error
+          })
+          //------------------------------------------------------------------------------
      
     }
   })
 
-  export function getAllReports(state){
+  export function getReports(state){
 
-        return state[DomainNames.documents].list;
+        return state[DomainNames.documents].reports;
 
   }
+
+  export function getDocuments(state){
+
+    return state[DomainNames.documents].documents;
+
+}
 
   export default assignmentsSlice.reducer
 
