@@ -40,28 +40,7 @@ function Projects() {
 
   const addedStatus = useSelector(getAddedStatus);
 
-  let content = (
-    <>
-      {projectCount > 0 && addedStatus !== statusTypes.failed ? (
-        <CustomTabPanel
-          content={{
-            tabNames: ["Все", "Активные", "Просроченные"],
-          }}
-        >
-          <AllProjectsTable />
-
-          <ActiveProjectsTable />
-
-          <OverdueProjects />
-        </CustomTabPanel>
-      ) : (
-        <Typography variant="subtitle1" gutterBottom>
-          У Вас нет проектов
-        </Typography>
-      )}
-    </>
-  );
-
+ 
   function makeRequest() {
     dispatch(
       getAllUserProjects({

@@ -193,10 +193,16 @@ EnhancedTableHead.propTypes = {
 function EnhancedTableToolbar(props) {
   const { setDataHandler, openDialogHandler } = useContext(DialogContext);
 
-  const { numSelected, selectedList } = props;
+  const { numSelected, selectedList,data } = props;
 
   const handleOpenDialog = () => {
-    setDataHandler({ list: selectedList });
+    setDataHandler({ list: selectedList, listData:data.filter(item=>{
+      if(selectedList.includes(item.id)){
+      
+        return item
+      }
+
+    }) });
     openDialogHandler();
   };
 
@@ -330,7 +336,7 @@ export default function CustomTable({ rows = [], tableTitle, tableHeadCells }) {
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage
       ),
-    [order, orderBy, page, rowsPerPage]
+    [rows,order, orderBy, page, rowsPerPage]
   );
 
   return (
@@ -340,6 +346,7 @@ export default function CustomTable({ rows = [], tableTitle, tableHeadCells }) {
           selectedList={selected}
           numSelected={selected.length}
           title={tableTitle}
+          data={rows}
         />
         <TableContainer>
           <Table

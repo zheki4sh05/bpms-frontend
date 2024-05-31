@@ -123,7 +123,7 @@ export default function CreateEntity({
             </Box>
           </Toolbar>
         </AppBar>
-        <Box sx={{ p: 5 }}>
+        <Box sx={{ p: 2 }}>
           <Box sx={{ width: "100%" }}>
             <Stepper activeStep={activeStep}>
               {stepsNames.map((label, index) => {

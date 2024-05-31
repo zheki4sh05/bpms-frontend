@@ -15,7 +15,7 @@ import UploadDocument from "../Components/DocumentsComponents/UploadDocument";
 import { useSelector } from "react-redux";
 import { getAllProjectsStatuses, getAllUserProjects, getProjects, getProjectsLoadedStatus } from "../Store/slices/projectSlice";
 import { getDocuments } from "../Store/slices/documentsSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import statusTypes from "../API/status";
 import { useDispatch } from "react-redux";
 import { getToken } from "../Store/slices/appUserSlice";
@@ -24,16 +24,13 @@ import { getCompanyName } from "../Store/slices/companySlice";
 function DocumentsPage() {
   const dispatch = useDispatch();
   const token  = useSelector(getToken)
-  const documents = useSelector(getDocuments);
   const companyName = useSelector(getCompanyName);
-  const projects = useSelector(getProjects);
+
 
   const projectsStatus = useSelector(getProjectsLoadedStatus)
 
-  const [project, setProject] = useState(null);
-  const handleProjectChange = (event) => {
-    setProject(event.target.value);
-  };
+
+
 
   function makeRequest(){
     dispatch(
@@ -54,17 +51,17 @@ function DocumentsPage() {
     );
   }
 
-  if(projectsStatus !== statusTypes.succeeded){
-    makeRequest()
-  }
+ 
 
+  useEffect(() => {
+    if(projectsStatus !== statusTypes.succeeded){
+      makeRequest()
+    }
+  }, []);
 
-  
-
-  
-
-
-
+  // useEffect(() => {
+  //   dispatch()
+  // }, []);
 
   return (
     <DialogEntityProvider>
@@ -103,21 +100,13 @@ function DocumentsPage() {
         ) : (
           <Typography>У вас нет проектов</Typography>
         )} */}
-        <CustomTabPanel
-          content={{
-            tabNames: ["Список", "Плитка"],
-          }}
-        >
-          <DocumentTable documents={documents} />
-          <Box>
-          <Typography variant="h5" gutterBottom>
-            контент 1
-          </Typography>
-          </Box>
+       
+          <DocumentTable/>
+          
         
-        </CustomTabPanel>
+       
 
-        {/* <UploadDocument reloadHandler={makeRequest} /> */}
+        <UploadDocument reloadHandler={makeRequest} /> 
       </Box>
     </DialogEntityProvider>
   );

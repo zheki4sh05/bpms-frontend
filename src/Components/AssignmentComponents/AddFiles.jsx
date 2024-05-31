@@ -12,34 +12,42 @@ import Typography from "@mui/material/Typography";
 import { Container, Stack, TextField } from "@mui/material";
 import DialogContext from "../DialogContext";
 
-function AddFiles() {
+function AddFiles({required=false}) {
   const { data, setDataHandler } = useContext(DialogContext);
 
   const [files, setFiles] = useState([]);
 
-  function saveDocs(list) {
-    setDataHandler({ ...data, files: list });
+  function saveDocs() {
+    console.log(files)
+    setDataHandler({ ...data, files:  files });
   }
 
   function handleChange(event) {
-    setFiles((prevState) => [...prevState, event.target.files]);
-
-    saveDocs(files);
+    
+    setFiles([...files, event.target.files[0]]);
+    console.log(files)
+  
   }
 
   function handleDelete(index) {
-    let name = files[index][0].name;
+    let name = files[index].name;
 
     console.log(name);
 
-    setFiles(files.filter((f) => f[0].name != name));
+    setFiles(files.filter((f) => f.name != name));
 
-    saveDocs(files);
+    saveDocs();
   }
 
   useEffect(() => {
-    saveDocs([]);
+    if(!required){
+      saveDocs([]);
+    }
+   
   }, []);
+  useEffect(() => {
+    saveDocs()
+  }, [files]);
 
   return (
     <Container maxWidth="sm" sx={{ mt: 5 }}>
@@ -70,7 +78,7 @@ function AddFiles() {
                 </Avatar>
               </ListItemAvatar>
 
-              <ListItemText primary={file[0].name} />
+              <ListItemText primary={file.name} />
             </ListItem>
           ))}
         </List>

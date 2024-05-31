@@ -17,7 +17,7 @@ import {
   getAuthStatus,
  
 } from "../../Store/slices/appUserSlice";
-import { getCompanyDataStatus } from "../../Store/slices/companySlice";
+
 import LoadingUserData from "../../Components/LoadingUserData";
 
 const theme = createTheme(ruRU);
@@ -39,9 +39,9 @@ function Layout() {
         {
           //(authStatus===statusTypes.succeeded && userDataStatus===statusTypes.succeeded && companyDataStatus===statusTypes.succeeded) ?
           // !(checkAll([authStatus,userDataStatus,companyDataStatus])===statusTypes.succeeded) ?
-          !(authStatus === statusTypes.succeeded) ? 
+         (authStatus === statusTypes.succeeded) ? 
             <AuthFormComponent />
-           : !(appStatus === statusTypes.succeeded) ? 
+           : (appStatus === statusTypes.succeeded) ? 
             <LoadingUserData  />
            : 
             <Box

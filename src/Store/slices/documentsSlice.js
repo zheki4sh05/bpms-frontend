@@ -4,37 +4,58 @@ import api from '../../API/APIPath'
 import axios from 'axios';
 import getRequestConfig from '../../API/requestConfig';
 import addParams from '../../Util/paramsConfig';
+import statusTypes from '../../API/status';
+import getRequestFormData from '../../API/requestFormData';
 
 const initialState = {
-    documents:[],
+    documents:[{
+      id:1,
+      name:"doc",
+      format:"docx",
+      downloadAt:"14.06.2024",
+      access:"Проект",
+      size:3
+    }],
     statusDoc:'idle',
 
     reports:[],
     statusRep:'idle',
 
     error:null,
-    added:'idle'
+    added:'idle',
+
+    uploaded:'idle'
 }
 
-export const getReportsList = createAsyncThunk(DomainNames.assignments.concat('/reportsList')  , async (initialData) => {
+export const getReportsList = createAsyncThunk(DomainNames.documents.concat('/reportsList')  , async (initialData) => {
     const response = await axios.get(api.documents.reports.concat(addParams(initialData.data)),getRequestConfig(initialData.token));
     
       return response.data
   })
 
-  export const getDocList = createAsyncThunk(DomainNames.assignments.concat('/docsList')  , async (initialData) => {
+  export const getDocList = createAsyncThunk(DomainNames.documents.concat('/docsList')  , async (initialData) => {
     const response = await axios.get(api.documents.docs, initialData.data,getRequestConfig(initialData.token));
     
       return response.data
   })  
+
+  export const uploadDoc =  createAsyncThunk(DomainNames.documents.concat('/upload')  , async (initialData) => {
+
+  
+    const response = await axios.post(api.documents.upload, initialData.data,getRequestFormData(initialData.token));
+    
+      return response.data
+  }) 
   
 
 
-  const assignmentsSlice = createSlice({
+  const documentsSlice = createSlice({
     name: DomainNames.assignments,
     initialState,
     reducers: {
-     
+      resetUploadedStatus(state, action){
+      state.uploaded = statusTypes.idle
+      }
     },
     extraReducers(builder) {
         builder
@@ -70,6 +91,20 @@ export const getReportsList = createAsyncThunk(DomainNames.assignments.concat('/
             state.error = action.error
           })
           //------------------------------------------------------------------------------
+          .addCase(uploadDoc.pending, (state, action) => {
+            state.statusDoc = 'loading'
+          })
+          .addCase(uploadDoc.fulfilled, (state, action) => {
+            state.statusDoc = 'succeeded';
+
+            state.documents.push(action.payload)
+
+            state.error = null;
+          })
+          .addCase(uploadDoc.rejected, (state, action) => {
+            state.statusDoc = 'failed';
+            state.error = action.error
+          })
      
     }
   })
@@ -86,6 +121,14 @@ export const getReportsList = createAsyncThunk(DomainNames.assignments.concat('/
 
 }
 
-  export default assignmentsSlice.reducer
+export function getUploadedStatus(state){
+  return state[DomainNames.documents].uploaded;
+}
+export function getStatusDoc(state){
+  return state[DomainNames.documents].statusDoc
+}
+
+  export default documentsSlice.reducer
 
 
+  export const { resetUploadedStatus} = documentsSlice.actions

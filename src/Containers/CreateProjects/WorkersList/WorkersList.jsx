@@ -11,10 +11,10 @@ import { useState } from "react";
 import ProjectWorkers from './ProjectWorkers';
 import { useContext } from "react";
 import DialogContext from "../../../Components/DialogContext";
+import { useEffect } from "react";
 
 
-export default function WorkersList({ dataMembers=[] }) {
-  console.log(dataMembers)
+export default function WorkersList({ dataMembers=[],addAdmin=true}) {
   const { data, setDataHandler } = useContext(DialogContext);
   const [checked, setChecked] = useState([]);
 
@@ -36,6 +36,22 @@ export default function WorkersList({ dataMembers=[] }) {
     console.log(checked)
   };
 
+  function saveWorkers(){
+            setDataHandler({
+        ...data, members:{
+          ...data.members,
+          workers
+        }
+      })
+    }
+  
+
+  useEffect(() => {
+    if(!addAdmin){
+      saveWorkers()
+    }
+  }, [checked]);
+
   const handleAddWorkers = () => {
     setWorkers(checked);
  
@@ -49,12 +65,17 @@ export default function WorkersList({ dataMembers=[] }) {
   };
 
   const handleSave=()=>{
-    setDataHandler({
-      ...data, members:{
-        leader:lead,
-        workers
-      }
-    })
+
+    if(addAdmin){
+      setDataHandler({
+        ...data, members:{
+          leader:lead,
+          workers
+        }
+      })
+    }
+
+    
   }
 
   return (
@@ -97,8 +118,7 @@ export default function WorkersList({ dataMembers=[] }) {
           );
         })}
       </List>
-
-      <Box>
+        {addAdmin ? <Box>
       <Divider/>
         <ProjectWorkers data={lead} title={"Руководитель"} text={"Руководитель не выбран"} />
 
@@ -112,6 +132,8 @@ export default function WorkersList({ dataMembers=[] }) {
 
 
       </Box>
+      : null}
+      
    
       <Box sx={{mt:1}}>
         <ProjectWorkers data={workers} title={"Сотрудники"} text={"Сотрудники не выбраны"} />
@@ -120,7 +142,7 @@ export default function WorkersList({ dataMembers=[] }) {
         <Button size="small" onClick={handleAddWorkers}>Добавить</Button>
       </Box>
       {
-        lead.length!=0 ?
+        (lead.length!=0 && addAdmin) ?
         <Button sx={{mt:2}} fullWidth variant="contained" size="medium" onClick={handleSave}>
         Сохранить
       </Button>

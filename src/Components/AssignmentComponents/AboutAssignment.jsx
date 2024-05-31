@@ -68,7 +68,7 @@ function AboutAssignment({ assignments,projects=[], specizalizations=[] }) {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={projects.length>0 ? projects[0].name : ""}
+              value={projects.length>0 ? projects[0].name : `0`}
               label="Выбрать проект"
               onChange={handleProjectChange}
             >

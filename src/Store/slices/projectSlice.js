@@ -7,29 +7,29 @@ import addParams from '../../Util/paramsConfig';
 
 
 const initialState = {
-    // projects:[{
-    //   id:1,
-    //   name:"Новый проект",
+    projects:[{
+      id:1,
+      name:"Новый проект",
      
-    //   finish:"14.09.2023",
-    //   role:"admin",
-    //   access:'private',
-    //   stages:[{
-    //     id:1,
-    //     name:"Надо сделать"
-    //     },{
-    //       id:2,
-    //       name:"Готово"
-    //       }]
-    // }],
-    // statuses:[{
-    //   id:1,
-    //   done:90,
-    //   workers:[{}]
+      finish:"14.09.2023",
+      role:"admin",
+      access:'private',
+      stages:[{
+        id:1,
+        name:"Надо сделать"
+        },{
+          id:2,
+          name:"Готово"
+          }]
+    }],
+    statuses:[{
+      id:1,
+      done:90,
+      workers:[{}]
 
-    // }],
-    projects:[],
-    statuses:[],
+    }],
+    // projects:[],
+    // statuses:[],
     error:null,
     status:'idle',
     created:"idle",
