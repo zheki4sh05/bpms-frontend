@@ -20,7 +20,7 @@ export const fetchNotification = createAsyncThunk(DomainNames.company.concat('/f
  //принять приглашение  
  export const acceptInvitation = createAsyncThunk(DomainNames.company.concat('/accept_invitation')  , async (initialData) => {
   console.log(initialData)
-  const response = await axios.post(api.company.acceptInivation.concat(addParams(initialData.data)), getRequestConfig(initialData.token));
+  const response = await axios.post(api.company.acceptInivation,initialData.data, getRequestConfig(initialData.token));
     return response.data
 })
 //удаление уведолмения

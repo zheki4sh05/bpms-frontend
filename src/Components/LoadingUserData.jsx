@@ -28,7 +28,7 @@ const LoadingUserData = () =>{
 
   const dispatch = useDispatch();
 
-  const statusesList = [userDataStatus, companyDataStatus]
+  const statusesList = [userDataStatus]
 
   if (checkAll(statusesList) === statusTypes.succeeded) {
     dispatch(updateLoadingAppData(statusTypes.succeeded));

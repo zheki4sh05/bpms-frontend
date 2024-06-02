@@ -7,10 +7,13 @@ import DialogConfirmation from "./DialogConfirmation";
 import { useDispatch } from "react-redux";
 import DialogAcception from "./DialogAcception";
 import { useSelector } from "react-redux";
-import { getToken } from "../../Store/slices/appUserSlice";
+import { getEmail, getToken } from "../../Store/slices/appUserSlice";
 
 function NotificationBox({ notifData}) {
+
   const [open, setOpen] = useState(false);
+
+  const email = useSelector(getEmail)
 
   const [openAcception, setAcceptionOpen] = useState(false);
 
@@ -33,7 +36,8 @@ function NotificationBox({ notifData}) {
   
         {
           data:{
-            id:notifData.id 
+            id:notifData.id,
+            email:email
           },
           token
         }

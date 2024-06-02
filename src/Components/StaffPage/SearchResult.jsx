@@ -37,6 +37,7 @@ function SearchResult({ user }) {
     setOpenForm(false)
   }
   function submitForm(email,text){
+    console.log(email)
       dispatch(inviteUserToCompany({
         data:{
           email:email,

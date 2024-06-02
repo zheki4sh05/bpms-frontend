@@ -109,7 +109,7 @@ function UserDatePicker({ titleFrom = "", titleTo = "" }) {
           </Box>
         </Box>
         <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-          {isEditedStart && isEditedFinish ? check() : null}
+          {isEditedStart || isEditedFinish ? check() : null}
 
           
         </Box>

@@ -38,7 +38,7 @@ const WorkerSpecControl = memo(({ worker }) => {
       [spec]
     );
   }
-
+  console.log(count)
   const [specInputId, setInput] = useState(typeof spec == "undefined" ? 0 : spec.id);
 
   const handleSelectChange = (event) => {
@@ -118,7 +118,7 @@ const WorkerSpecControl = memo(({ worker }) => {
       {getContent(role)}
     
       <Typography>
-        {typeof spec !== "undefined"
+        {typeof spec != "undefined"
           ? `Данную должность занимают:${count}`
           : ""}
       </Typography>

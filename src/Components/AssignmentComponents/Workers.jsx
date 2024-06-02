@@ -32,7 +32,7 @@ function Workers() {
 
   const relevantWorkers = useSelector(getRelevantWorkers);
 
-  const allWorkers = useSelector(state => getAllProjectMembers(state, data.aboutAssign ? data.aboutAssign.project.id : 0)) | [];
+  const allWorkers = useSelector(state => getAllProjectMembers(state, data.aboutAssign ? data.aboutAssign.projectId : 0)) | [];
 
   const token = useSelector(getToken)
 
