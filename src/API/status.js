@@ -6,7 +6,9 @@ const statusTypes = {
     idle:'idle',
     true:'true',
     false:'false',
-    error:'error'
+    error:'error',
+    mainrole:"admin",
+    role:"participant"
 }
 
 export default statusTypes;

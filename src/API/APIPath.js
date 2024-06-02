@@ -20,6 +20,7 @@ const api={
         updateSpec:base.concat("company/specialization/update"),
         deleteSpec:base.concat("company/specialization/delete"),
         fetchSpec:base.concat("company/specialization/fetch"),
+        changeWorkerSpec:base.concat("company/specialization/change"),
     },
     project:{
         fetch:base.concat("project/fetch"),

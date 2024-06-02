@@ -3,14 +3,17 @@ import WorkerOverviewPage from "./WorkerOverviewPage";
 import DialogEntityProvider from "../DialogEntityProvider";
 import CustomTable from "../CustomTable";
 import AsideDrawer from "../AsideBox/AsideDrawer";
-import { getStaff } from "../../Store/slices/companySlice";
 import { useSelector } from "react-redux";
-import { getWorkersList } from "../../Store/slices/workersSlice";
+import { getWorkersList, getWorkersStatus } from "../../Store/slices/workersSlice";
+import { useMemo } from "react";
+import { getEmail } from "../../Store/slices/appUserSlice";
+import EntityOverviewWindow from "../EntityOverviewWindow";
 
 function StaffTable() {
 
-
-    const staffList = useSelector(getWorkersList)
+  const email = useSelector(getEmail)
+  const list =  useSelector(getWorkersList);
+    const staffList = useMemo(() => list.filter(item=>item.email!=email), [list]);
     console.log(staffList)
   
       return ( 
@@ -61,7 +64,11 @@ function StaffTable() {
   
             <AsideDrawer
               anchorProp="right"
-              content={<WorkerOverviewPage/>}
+              content={<EntityOverviewWindow
+              title={"сотрудники"}
+              accordionBodyType={"staff"}
+              />}
+              widthLevel={1}
             />
         </DialogEntityProvider>
      

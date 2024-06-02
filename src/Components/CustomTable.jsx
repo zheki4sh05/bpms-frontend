@@ -27,6 +27,7 @@ import { Button } from "@mui/material";
 import { useState } from "react";
 import { useContext } from "react";
 import DialogContext from "./DialogContext";
+import { memo } from "react";
 
 function createData(id, name, done, start, workers, role, access) {
   return {
@@ -267,7 +268,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function CustomTable({ rows = [], tableTitle, tableHeadCells }) {
+const CustomTable = memo(({ rows = [], tableTitle, tableHeadCells })=> {
   console.log("CustomTable")
   console.log(rows)
   const [order, setOrder] = React.useState("asc");
@@ -435,4 +436,5 @@ export default function CustomTable({ rows = [], tableTitle, tableHeadCells }) {
       />
     </Box>
   );
-}
+})
+export default CustomTable;

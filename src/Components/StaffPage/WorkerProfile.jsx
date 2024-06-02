@@ -13,12 +13,22 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import LanguageIcon from "@mui/icons-material/Language";
 import LinearProgressWithLabel from "./LinearProgressWithLabel";
+import { useSelector } from "react-redux";
+import { getRoleInCompany } from "../../Store/slices/companySlice";
+import statusTypes from "../../API/status";
+import WorkerSpecControl from "./WorkerSpecControl";
 function WorkerProfile({ worker }) {
   const projects = [];
 
+   
+ 
+
   return (
+    <Box sx={{backgroundColor:"white", borderRadius:"3px", p:1}}>
+
+    
     <Grid container spacing={2}>
-      <Grid xs={4}>
+      <Grid xs={4} item>
         <Box sx={{ display: "flex", flexDirection: "column" }}>
           <Box>
             <img src={""} />
@@ -26,7 +36,7 @@ function WorkerProfile({ worker }) {
           <Box></Box>
         </Box>
       </Grid>
-      <Grid xs={8}>
+      <Grid xs={8} item>
         <List
           sx={{
             width: "100%",
@@ -34,88 +44,116 @@ function WorkerProfile({ worker }) {
             bgcolor: "background.paper",
           }}
         >
-          <ListItem alignItems="flex-start">
-            <ListItemText
-              primary="Отчество"
-              secondary={
+          <ListItem alignItems="flex-start" sx={{borderBottom:"solid 1px #b4b4b4"}}>
+
+
+            <Box sx={{display:"flex",flexDirection:"row"}}>
+            <Typography
+                  sx={{ display: "inline" }}
+                  component="span"
+                  variant="body1"
+                  color="text.primary"
+                >
+                 Имя:&nbsp;
+                </Typography>
                 <Typography
                   sx={{ display: "inline" }}
                   component="span"
-                  variant="body2"
+                  variant="body1"
                   color="text.primary"
                 >
-                  {worker.lastname}
+                    {worker.firstname}
                 </Typography>
-              }
-            />
+            </Box>
+
           </ListItem>
-          <Divider variant="inset" component="li" />
-          <ListItem alignItems="flex-start">
-            <ListItemText
-              primary="Почта"
-              secondary={
+          
+          <ListItem alignItems="flex-start" sx={{borderBottom:"solid 1px #b4b4b4"}}>
+          <Box sx={{display:"flex",flexDirection:"row"}}>
+            <Typography
+                  sx={{ display: "inline" }}
+                  component="span"
+                  variant="body1"
+                  color="text.primary"
+                >
+                 Фамилия:&nbsp;
+                </Typography>
                 <Typography
                   sx={{ display: "inline" }}
                   component="span"
-                  variant="body2"
+                  variant="body1"
                   color="text.primary"
                 >
-                  {worker.email}
+                    {worker.lastname}
                 </Typography>
-              }
-            />
+            </Box>
           </ListItem>
-          <Divider variant="inset" component="li" />
-          <ListItem alignItems="flex-start">
-            <ListItemText
-              primary="Должность"
-              secondary={
+          
+          <ListItem alignItems="flex-start" sx={{borderBottom:"solid 1px #b4b4b4"}}>
+          <Box sx={{display:"flex",flexDirection:"row"}}>
+            <Typography
+                  sx={{ display: "inline" }}
+                  component="span"
+                  variant="body1"
+                  color="text.primary"
+                >
+                 Отчество:&nbsp;
+                </Typography>
                 <Typography
                   sx={{ display: "inline" }}
                   component="span"
-                  variant="body2"
+                  variant="body1"
                   color="text.primary"
                 >
-                  {worker.position}
+                    {worker.surname}
                 </Typography>
-              }
-            />
+            </Box>
           </ListItem>
-          <Divider variant="inset" component="li" />
-          <ListItem alignItems="flex-start">
-            <ListItemText
-              primary="Возраст"
-              secondary={
+         
+          <ListItem alignItems="flex-start" sx={{borderBottom:"solid 1px #b4b4b4"}}>
+          <Box sx={{display:"flex",flexDirection:"row"}}>
+            <Typography
+                  sx={{ display: "inline" }}
+                  component="span"
+                  variant="body1"
+                  color="text.primary"
+                >
+                 Дата рождения:&nbsp;
+                </Typography>
                 <Typography
                   sx={{ display: "inline" }}
                   component="span"
-                  variant="body2"
+                  variant="body1"
                   color="text.primary"
                 >
-                  {worker.age}
+                    {worker.birtday}
                 </Typography>
-              }
-            />
+            </Box>
           </ListItem>
-          <Divider variant="inset" component="li" />
-          <ListItem alignItems="flex-start">
-            <ListItemText
-              primary="Телефон"
-              secondary={
+        
+          <ListItem alignItems="flex-start" sx={{borderBottom:"solid 1px #b4b4b4"}}>
+          <Box sx={{display:"flex",flexDirection:"row"}}>
+            <Typography
+                  sx={{ display: "inline" }}
+                  component="span"
+                  variant="body1"
+                  color="text.primary"
+                >
+                 Телефон:&nbsp;
+                </Typography>
                 <Typography
                   sx={{ display: "inline" }}
                   component="span"
-                  variant="body2"
+                  variant="body1"
                   color="text.primary"
                 >
-                  {worker.phone}
+                    {worker.phone}
                 </Typography>
-              }
-            />
+            </Box>
           </ListItem>
         </List>
       </Grid>
-      <Grid xs={4}>
+      <Grid item xs={4}>
         <Box>
           <Typography variant="subtitle1" gutterBottom>
             Соц. сети
@@ -175,17 +213,22 @@ function WorkerProfile({ worker }) {
           </List> */}
         </Box>
       </Grid>
-      <Grid xs={8}>
+      <Grid item xs={8}>
         <Box>
-          <Box>
+          {/* <Box>
             <Typography variant="subtitle2" gutterBottom>
              Проект 1
             </Typography>
             <LinearProgressWithLabel value={90} />
-          </Box>
+          </Box> */}
+
+          <WorkerSpecControl worker={worker}/>
+         
+
         </Box>
       </Grid>
     </Grid>
+    </Box>
   );
 }
 

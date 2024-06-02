@@ -34,7 +34,7 @@ function WorkerOverviewPage() {
         <div>
           {
             mass.map((item,index)=>(
-              <Accordion expanded={expanded === "panel".concat(index)} onChange={handleChange("panel".concat(index))}>
+              <Accordion expanded={expanded === "panel".concat(index)} onChange={handleChange("panel".concat(index))} key={index}>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls={`panel${index}bh-content`}
@@ -42,9 +42,9 @@ function WorkerOverviewPage() {
                 key={index}
               >
                 <Typography sx={{ width: '33%', flexShrink: 0 }}>
-                  {item.name}
+                  {item.name} {item.lastname}
                 </Typography>
-                <Typography sx={{ color: 'text.secondary' }}>{item.lastname}</Typography>
+                <Typography sx={{ color: 'text.secondary' }}>{item.email}</Typography>
               </AccordionSummary>
               <AccordionDetails>
               <WorkerProfile

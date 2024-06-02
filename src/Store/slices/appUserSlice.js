@@ -50,6 +50,7 @@ export const updateUserData = createAsyncThunk(DomainNames.app.appUser.concat('/
 
 
 
+
 const appUserSlice = createSlice({
     name: DomainNames.app.appUser,
     initialState,

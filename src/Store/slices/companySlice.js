@@ -30,11 +30,11 @@ const initialState = {
     },
 
     specializations:[
-      // {
-      //   id:1,
-      //   name:"Программист",
-      //   count:3
-      // }
+      {
+        id:1,
+        name:"Программист",
+        count:3
+      }
     ],
     specStatus:'idle',
 
@@ -140,6 +140,12 @@ export const deleteSpec= createAsyncThunk(DomainNames.company.concat('/deleteSpe
 
   return response.data
 })
+export const changeUserSpec= createAsyncThunk(DomainNames.company.concat('/changeUserSpec')  , async (initialData) => {
+ 
+  const response = await axios.post(api.company.changeWorkerSpec, initialData.data,getRequestConfig(initialData.token));
+
+  return response.data
+})
 
 
 const companySlice = createSlice({
@@ -161,6 +167,7 @@ const companySlice = createSlice({
         resetInviteStatus(state,action){
           state.searched.invited='idle';
         }
+       
     },
     extraReducers(builder) {
         builder
@@ -322,6 +329,24 @@ const companySlice = createSlice({
                 state.error = action.error
               })
               //----------------------------------------------------
+                  // ---------Изменение должности пользователя------------
+                  .addCase(changeUserSpec.pending, (state, action) => {
+                    state.changeUserSpec = 'loading';
+                  })
+                   .addCase(changeUserSpec.fulfilled, (state, action) => {
+            
+                    state.specStatus = 'succeeded';
+    
+                    state.specializations = action.payload;
+                                
+                    state.error = null;
+                    
+                  })
+                  .addCase(changeUserSpec.rejected, (state, action) => {
+                    state.changeUserSpec = 'failed';
+                    state.error = action.error
+                  })
+                  //----------------------------------------------------
         }
   })
   export const { saveCompany,resetUpdated,resetSearchStatus,resetInviteStatus } = companySlice.actions
@@ -338,7 +363,7 @@ const companySlice = createSlice({
     return state[DomainNames.company].status;
   }
   export function getRoleInCompany(state) {
-    console.log(state)
+
     return state[DomainNames.company].userCompany.currentRole;
   }
 

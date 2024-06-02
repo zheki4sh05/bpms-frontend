@@ -10,6 +10,16 @@ const initialState = {
     relevant:[],
     error:null,
     status:'idle'
+
+    // {
+    //   id:20,
+    //   role:"admin",
+    //   firstname:"Евгений",
+    //   lastname:"Шостак",
+    //   email:"email@mail.ru",
+    //   spec:1
+
+    // }
 }
 
 export const getAllWorkers = createAsyncThunk(DomainNames.workers.concat('/getAllWorkers')  , async (initialUser) => {
@@ -31,7 +41,11 @@ export const getAllWorkers = createAsyncThunk(DomainNames.workers.concat('/getAl
     name: DomainNames.workers,
     initialState,
     reducers: {
-       
+      updateWorkerSpec(state,action){
+        state.workers = state.workers.map(item=>item.id = action.payload.workerId ? {...item, spec:action.payload.specId} : item)
+
+
+      }
     },
     extraReducers(builder) {
         builder
@@ -107,5 +121,5 @@ export const getAllWorkers = createAsyncThunk(DomainNames.workers.concat('/getAl
   //  return  projectMembers(state, id)
   // }
   
-
+  export const { updateWorkerSpec} = workresSlice.actions
   export default workresSlice.reducer 
