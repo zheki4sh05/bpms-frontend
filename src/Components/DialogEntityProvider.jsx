@@ -15,7 +15,7 @@ function DialogEntityProvider({children}) {
   };
   const setDataHandler=(value)=>{
     setData(value)
-    console.log(value)
+    console.log(data)
   }
 
   const getDialogResult=()=>{

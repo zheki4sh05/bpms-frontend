@@ -108,7 +108,7 @@ function DocumentTable() {
             anchorProp="right"
             content={<EntityOverviewWindow
             
-              accordionBody={<DocumentOverview/>}
+              accordionBodyType={"document"}
               title={"документы"}
 
             />}

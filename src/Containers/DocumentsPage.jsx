@@ -14,25 +14,25 @@ import DocumentTable from "../Components/DocumentsComponents/DocumentTable";
 import UploadDocument from "../Components/DocumentsComponents/UploadDocument";
 import { useSelector } from "react-redux";
 import { getAllProjectsStatuses, getAllUserProjects, getProjects, getProjectsLoadedStatus } from "../Store/slices/projectSlice";
-import { getDocuments } from "../Store/slices/documentsSlice";
-import { useEffect, useState } from "react";
+import { getDocList, getDocuments, getReportsList } from "../Store/slices/documentsSlice";
+import { memo, useEffect, useState } from "react";
 import statusTypes from "../API/status";
 import { useDispatch } from "react-redux";
 import { getToken } from "../Store/slices/appUserSlice";
-import { getCompanyName } from "../Store/slices/companySlice";
+import { getCompanyName, getCompanyNameValue } from "../Store/slices/companySlice";
 
-function DocumentsPage() {
+const DocumentsPage = memo(()=> {
   const dispatch = useDispatch();
   const token  = useSelector(getToken)
-  const companyName = useSelector(getCompanyName);
-
+  const {userCompany} = useSelector(getCompanyNameValue);
+  const companyName = userCompany.name;
 
   const projectsStatus = useSelector(getProjectsLoadedStatus)
 
 
 
 
-  function makeRequest(){
+  function makeProjectRequest(){
     dispatch(
       getAllUserProjects({
         data: {
@@ -51,12 +51,32 @@ function DocumentsPage() {
     );
   }
 
- 
+ function makeRequest(){
+  dispatch(getDocList({
+    data:{
+      type:"document",
+      company:companyName,
+     
+    },
+    token:token,
+  }))
+
+  dispatch(getReportsList({
+    data:{
+      type:"report",
+      company:companyName
+    },
+    token:token,
+  }))
+ }
 
   useEffect(() => {
     if(projectsStatus !== statusTypes.succeeded){
-      makeRequest()
+      makeProjectRequest()
     }
+    makeRequest();
+    
+
   }, []);
 
   // useEffect(() => {
@@ -106,10 +126,10 @@ function DocumentsPage() {
         
        
 
-        <UploadDocument reloadHandler={makeRequest} /> 
+        <UploadDocument reloadHandler={makeRequest} company={companyName} token={token}/> 
       </Box>
     </DialogEntityProvider>
   );
-}
+})
 
 export default DocumentsPage;

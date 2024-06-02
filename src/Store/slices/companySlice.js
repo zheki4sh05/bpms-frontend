@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
 import DomainNames from '../DomainNames'
 import api from '../../API/APIPath'
 import axios from 'axios';
@@ -7,6 +7,7 @@ import addParams from './../../Util/paramsConfig';
 
 const initialState = {
     userCompany:{
+      id:0,
       name:"",
       desc:"",
       currentRole:"",
@@ -16,6 +17,7 @@ const initialState = {
       updated:null,
       status:'idle',
     },
+
     updated:null,
     error:null,
     status:'idle',
@@ -25,7 +27,19 @@ const initialState = {
       },
       status:'idle',
       invited:'idle'
-    }
+    },
+
+    specializations:[
+      // {
+      //   id:1,
+      //   name:"Программист",
+      //   count:3
+      // }
+    ],
+    specStatus:'idle',
+
+    fetchStatus:'idle'
+
 }
 
 // const initialState = {
@@ -105,6 +119,29 @@ export const findUser= createAsyncThunk(DomainNames.company.concat('/findUser') 
   return response.data
 })
 
+//обновление специализации
+export const updateSpec= createAsyncThunk(DomainNames.company.concat('/updateSpec')  , async (initialData) => {
+ 
+  const response = await axios.post(api.company.updateSpec,initialData.data,getRequestConfig(initialData.token));
+
+  return response.data
+})
+//создание специализации
+export const createSpec= createAsyncThunk(DomainNames.company.concat('/createSpec')  , async (initialData) => {
+  console.log(api.company.createSpec.concat(addParams(initialData.data)))
+  const response = await axios.post(api.company.createSpec,initialData.data ,getRequestConfig(initialData.token));
+
+  return response.data
+})
+// удаление специализации
+export const deleteSpec= createAsyncThunk(DomainNames.company.concat('/deleteSpec')  , async (initialData) => {
+ 
+  const response = await axios.delete(api.company.deleteSpec.concat(addParams(initialData.data)),getRequestConfig(initialData.token));
+
+  return response.data
+})
+
+
 const companySlice = createSlice({
     name: DomainNames.company,
     initialState,
@@ -129,16 +166,15 @@ const companySlice = createSlice({
         builder
             // -----запрос данных компании--------------------
           .addCase(fetchCompany.pending, (state, action) => {
-            state.status = 'loading'
+            state.fetchStatus = 'loading'
           })
           .addCase(fetchCompany.fulfilled, (state, action) => {
-            state.status = 'succeeded';
-            state.userCompany.name = action.payload.name;
-            state.userCompany.desc = action.payload.desc;
-            state.userCompany.currentRole = action.payload.role
+            state.fetchStatus = 'succeeded';
+            state.specializations = action.payload.specializations;
+
           })
           .addCase(fetchCompany.rejected, (state, action) => {
-            state.status = 'failed';
+            state.fetchStatus = 'failed';
             state.error = action.error
           })
           //-----------------------------------------------
@@ -181,9 +217,11 @@ const companySlice = createSlice({
              .addCase(userCompany.fulfilled, (state, action) => {
               state.status = 'succeeded';
               state.error = null;
+              state.userCompany.id = action.payload.id;
               state.userCompany.name = action.payload.name;
               state.userCompany.desc = action.payload.desc;
               state.userCompany.currentRole = action.payload.role;
+              state.specializations = action.payload.list;
             })
             .addCase(userCompany.rejected, (state, action) => {
               state.status = 'failed';
@@ -222,6 +260,68 @@ const companySlice = createSlice({
                 state.error = action.error
               })
               //----------------------------------------------------
+
+              // ---------Создание спец.------------
+              .addCase(createSpec.pending, (state, action) => {
+                state.specStatus = 'loading';
+              })
+               .addCase(createSpec.fulfilled, (state, action) => {
+                console.log(action.payload)
+                state.specStatus = 'succeeded';
+
+                state.specializations.push(action.payload)
+               
+                state.error = null;
+                
+              })
+              .addCase(createSpec.rejected, (state, action) => {
+                state.specStatus = 'failed';
+                state.error = action.error
+              })
+              //----------------------------------------------------
+               // ---------Обновление спец.------------
+               .addCase(updateSpec.pending, (state, action) => {
+                state.specStatus = 'loading';
+              })
+               .addCase(updateSpec.fulfilled, (state, action) => {
+                console.log(action.payload)
+                state.specStatus = 'succeeded';
+
+                let mass =  state.specializations.filter(item=>item.id!=action.payload.id)
+
+                mass.push(action.payload)
+
+                state.specializations = mass
+               
+                state.error = null;
+                
+              })
+              .addCase(updateSpec.rejected, (state, action) => {
+                state.specStatus = 'failed';
+                state.error = action.error
+              })
+              //----------------------------------------------------
+
+              // ---------Удаление спец.------------
+              .addCase(deleteSpec.pending, (state, action) => {
+                state.specStatus = 'loading';
+              })
+               .addCase(deleteSpec.fulfilled, (state, action) => {
+                console.log(action.payload)
+                state.specStatus = 'succeeded';
+
+                let mass =  state.specializations.filter(item=>item.id!=action.payload)
+
+                state.specializations = mass
+               
+                state.error = null;
+                
+              })
+              .addCase(deleteSpec.rejected, (state, action) => {
+                state.specStatus = 'failed';
+                state.error = action.error
+              })
+              //----------------------------------------------------
         }
   })
   export const { saveCompany,resetUpdated,resetSearchStatus,resetInviteStatus } = companySlice.actions
@@ -229,10 +329,16 @@ const companySlice = createSlice({
     console.log(state[DomainNames.company].userCompany.name)
     return state[DomainNames.company].userCompany.name;
   }
+
+  export const getCompanyNameValue = createSelector(state=>state[DomainNames.company].userCompany, (userCompany)=>({userCompany}))
+
+
+
   export function getCompanyDataStatus(state) {
     return state[DomainNames.company].status;
   }
-  export function   getRoleInCompany(state) {
+  export function getRoleInCompany(state) {
+    console.log(state)
     return state[DomainNames.company].userCompany.currentRole;
   }
 
@@ -258,6 +364,11 @@ export function getInviteStatus(state){
 export function getCreatedStatus(state){
   return state[DomainNames.company].created
 }
+
+export function getSpecializations(state){
+  return state[DomainNames.company].specializations
+}
+
   export default companySlice.reducer
 
  

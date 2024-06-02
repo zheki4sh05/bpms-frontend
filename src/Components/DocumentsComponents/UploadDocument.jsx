@@ -7,25 +7,20 @@ import DocumentSettings from "./DocumentSettings";
 import UploadDocumentPlaceholder from "./UploadDocumentPlaceholder";
 import CreateEntity from "../CreateEntity";
 import DialogContext from "../DialogContext";
-import { getCompanyName } from "../../Store/slices/companySlice";
-import { useContext } from "react";
+import { memo, useContext, useEffect } from "react";
 
 
-function UploadDocument({reloadHandler}) {
+const UploadDocument = memo(({reloadHandler, company, token})=> {
+
     const {data, getDialogResult,resetDialogContext} = useContext(DialogContext);
-
-   
 
     const createdStatus = useSelector(getUploadedStatus);
   
     const dispatch = useDispatch();
   
-    const token = useSelector(getToken)
-
-    const company = useSelector(getCompanyName)
-  
+ 
     const handleSaveUploadedDoc=()=>{
-      console.log(data)
+      console.log(data.members)
    
       const formData = new FormData()
 
@@ -50,27 +45,30 @@ function UploadDocument({reloadHandler}) {
 
       dispatch(uploadDoc({
         data:formData,
-        token
+        token:token
   
       }))
     }
   
-    if(createdStatus===statusTypes.succeeded){
+  
+
+    useEffect(() => {
       reloadHandler();
       resetDialogContext();
       dispatch(resetUploadedStatus())
-    }
+    }, [createdStatus]);
+
   
     return (
       <CreateEntity
       stepsNames={["Настройки", "Загрузить"]}
-      stepsPages={[<DocumentSettings />, <UploadDocumentPlaceholder/>]}
+      stepsPages={[<DocumentSettings alignmentProp={"document"} />, <UploadDocumentPlaceholder/>]}
       name={"Загрузка документа"}
       handleSaveContext={handleSaveUploadedDoc}
       getResult={getDialogResult}
       resetDialog={resetDialogContext}
       />
     );
-}
+})
 
 export default UploadDocument;

@@ -18,7 +18,7 @@ import {
   userCompany,
 } from "../Store/slices/companySlice";
 import { checkAll } from "../Util/checkStatuses";
-import { getStatusDoc } from "../Store/slices/documentsSlice";
+
 
 const LoadingUserData = () =>{
   const {user} = useSelector(getTokenRef);
@@ -45,9 +45,7 @@ const LoadingUserData = () =>{
     if (companyDataStatus === statusTypes.idle) {
       dispatch(userCompany({ token }));
     }
-    if (docStatus === statusTypes.idle) {
-      dispatch(userCompany({ token }));
-    }
+   
 
     //   if(notifStatus===statusTypes.idle && userDataStatus===statusTypes.succeeded){
     //     console.log(email)

@@ -15,7 +15,11 @@ const api={
         invite:base.concat("company/invite"),
         findUser:base.concat("company/findUser"),
         acceptInivation:base.concat("company/accept_invitation"),
-        rejectInivation:base.concat("company/reject_invitation")
+        rejectInivation:base.concat("company/reject_invitation"),
+        createSpec:base.concat("company/specialization/create"),
+        updateSpec:base.concat("company/specialization/update"),
+        deleteSpec:base.concat("company/specialization/delete"),
+        fetchSpec:base.concat("company/specialization/fetch"),
     },
     project:{
         fetch:base.concat("project/fetch"),
@@ -34,9 +38,9 @@ const api={
         statuses:base.concat("assignments/statuses"),
     },
     documents:{
-        reports:base.concat("documents/reports"),
-        docs:base.concat("documents/docs"),
-        upload:base.concat("documents/upload")
+        fetch:base.concat("documents/fetch"),
+        upload:base.concat("documents/upload"),
+        info:base.concat("documents/info")
     },
     tasks:{
         fetchMy:base.concat("tasks/fetchMy"),

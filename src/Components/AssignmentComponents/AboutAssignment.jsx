@@ -9,23 +9,28 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Divider from '@mui/material/Divider';
 import DialogContext from "../DialogContext";
+import { getSpecializations } from "../../Store/slices/companySlice";
+import { useSelector } from "react-redux";
 
 function AboutAssignment({ assignments,projects=[], specizalizations=[] }) {
 
   const { data, setDataHandler } = useContext(DialogContext);
   
 
-  const [project, setProject] = useState(null);
-  const [specizalization, setSpecizalization] = useState("");
+  const [project, setProject] = useState(0);
+  const specList = useSelector(getSpecializations)
+  const [specizalization, setSpecizalization] = useState(0);
   const [show, setShow] = useState(true);
+  const [change,setChange] = useState(false);
 
   const handleProjectChange = (event) => {
     setProject(event.target.value);
     setShow(false);
+    setChange(true)
   };
   const handleSpecializationChange = (event) => {
     setSpecizalization(event.target.value);
-    
+    setChange(true)
   };
 
   // useEffect(() => {
@@ -46,9 +51,10 @@ function AboutAssignment({ assignments,projects=[], specizalizations=[] }) {
   const handleSubmit = ()=>{
 
     setDataHandler({...data, aboutAssign:{
-      projectId: project.id,
+      projectId: project,
       specizalization
     }});
+    setChange(false)
 
   }
 
@@ -65,17 +71,32 @@ function AboutAssignment({ assignments,projects=[], specizalizations=[] }) {
             <InputLabel id="demo-simple-select-label">
               Выбрать проект
             </InputLabel>
-            <Select
+            {/* <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={projects.length>0 ? projects[0].name : `0`}
+              disabled={projects.length<1}
+              value={project || ""}
               label="Выбрать проект"
               onChange={handleProjectChange}
+              
             >
               {projects.map((item, index) => (
-                <MenuItem value={index}>{item.name}</MenuItem>
+                <MenuItem value={item.id} key={index}>{item.name}</MenuItem>
               ))}
-            </Select>
+            </Select> */}
+            <Select
+                labelId="demo-simple-select-helper-label"
+                id="demo-simple-select-helper"
+                value={project || ""}
+                label="Age"
+                onChange={handleProjectChange}
+              >
+                {projects.map((item, index) => (
+                  <MenuItem key={index} value={item.id}>
+                    {item.name}
+                  </MenuItem>
+                ))}
+              </Select>
           </FormControl>
           <Box sx={{ mt: 2, display:"flex",alignItems:"center" }}>
             <Button disabled={show} size="small" variant="contained">Подробнее</Button>
@@ -89,19 +110,33 @@ function AboutAssignment({ assignments,projects=[], specizalizations=[] }) {
             <InputLabel id="demo-simple-select-label">
               Выбрать специализацию
             </InputLabel>
-            <Select
+            {/* <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={specizalizations[0]}
+              disabled={show && !specList>0}
+              value={specizalization  || ""}
               label="Выбрать специализацию"
               onChange={handleSpecializationChange}
 
-              disabled={show}
+             
             >
-              {projects.map((item, index) => (
-                <MenuItem value={index.name} key={index}>{item}</MenuItem>
+              {specList.map((item, index) => (
+                <MenuItem value={index.id} key={index}>{item.name}</MenuItem>
               ))}
-            </Select>
+            </Select> */}
+            <Select
+                labelId="demo-simple-select-helper-label"
+                id="demo-simple-select-helper"
+                value={specizalization || ""}
+                label="Age"
+                onChange={handleSpecializationChange}
+              >
+                {specList.map((item, index) => (
+                  <MenuItem key={index} value={item.id}>
+                    {item.name}
+                  </MenuItem>
+                ))}
+              </Select>
           </FormControl>
           <Box sx={{ mt: 2, display:"flex",alignItems:"center" }}>
             <Button disabled={show} size="small" variant="contained">Подробнее</Button>
@@ -109,17 +144,26 @@ function AboutAssignment({ assignments,projects=[], specizalizations=[] }) {
           
         </Stack>
               <Box>
-              <Button
-            onClick={handleSubmit}
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
 
-              disabled={project==null && specizalization===""}
+                {
 
-          >
-            Сохранить
-          </Button>
+                  !(!change || project==0 ||  specizalization==0) ? 
+                  <Button
+                  onClick={handleSubmit}
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+      
+                    disabled={!change || project==0 ||  specizalization==0}
+      
+                >
+                   Сохранить
+                </Button>
+                :
+                null
+
+                }
+             
               </Box>
         </Stack>
       </Container>

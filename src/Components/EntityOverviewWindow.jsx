@@ -1,14 +1,15 @@
 import { Box } from "@mui/material";
 
 
-import { useContext, useState } from "react";
+import { memo, useContext, useState } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DialogContext from "./DialogContext";
-function EntityOverviewWindow({title, accordionBody }) {
+import DocumentOverview from "./DocumentsComponents/DocumentOverview";
+const EntityOverviewWindow=memo(({title, accordionBodyType })=> {
   const [expanded, setExpanded] = useState(false);
 
   const handleChange = (panel) => (event, isExpanded) => {
@@ -24,6 +25,45 @@ function EntityOverviewWindow({title, accordionBody }) {
 //     }
 //   }
 
+    function getContent(type, data){
+        switch(type){
+            case "project":{
+                
+            }
+            case "document":{
+                return <DocumentOverview doc={data}/>
+            }
+        }
+    }
+    function getAccordionTitle(type, data){
+        switch(type){
+            case "project":{
+                return <>
+                
+                <Typography sx={{ width: "33%", flexShrink: 0 }}>
+                {data.name}
+              </Typography>
+              <Typography sx={{ color: "text.secondary" }}>
+                {data.description}
+              </Typography>
+
+                </>
+            }
+            case "document":{
+                return <>
+                
+                <Typography sx={{ width: "33%", flexShrink: 0 }}>
+                {data.name}.{data.format}
+              </Typography>
+              <Typography sx={{ color: "text.secondary" }}>
+                {data.access}
+              </Typography>
+
+                </>
+            }
+        }
+    }
+
 
   return (
     <Box sx={{ mt: 2, maxWidth: "90%", pl: 2 }}>
@@ -38,6 +78,7 @@ function EntityOverviewWindow({title, accordionBody }) {
             key={index}
             expanded={expanded === "panel".concat(index)}
             onChange={handleChange("panel".concat(index))}
+            sx={{backgroundColor:"#ABD7FF"}}
           >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
@@ -45,19 +86,14 @@ function EntityOverviewWindow({title, accordionBody }) {
               id={`panel${index}bh-header`}
               key={index}
             >
-              <Typography sx={{ width: "33%", flexShrink: 0 }}>
-                {item.name}
-              </Typography>
-              <Typography sx={{ color: "text.secondary" }}>
-                {item.description}
-              </Typography>
+              {getAccordionTitle(accordionBodyType, item)}
             </AccordionSummary>
-            <AccordionDetails>{accordionBody}</AccordionDetails>
+            <AccordionDetails>{getContent(accordionBodyType, item)}</AccordionDetails>
           </Accordion>
         ))}
       </div>
     </Box>
   );
-}
+})
 
 export default EntityOverviewWindow;

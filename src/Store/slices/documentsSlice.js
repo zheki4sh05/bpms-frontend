@@ -16,25 +16,29 @@ const initialState = {
       access:"Проект",
       size:3
     }],
+    // documents:[],
     statusDoc:'idle',
 
     reports:[],
     statusRep:'idle',
 
     error:null,
+
     added:'idle',
 
-    uploaded:'idle'
+    uploaded:'idle',
+
+    docInfo:{}
 }
 
 export const getReportsList = createAsyncThunk(DomainNames.documents.concat('/reportsList')  , async (initialData) => {
-    const response = await axios.get(api.documents.reports.concat(addParams(initialData.data)),getRequestConfig(initialData.token));
+    const response = await axios.get(api.documents.fetch.concat(addParams(initialData.data)),getRequestConfig(initialData.token));
     
       return response.data
   })
 
   export const getDocList = createAsyncThunk(DomainNames.documents.concat('/docsList')  , async (initialData) => {
-    const response = await axios.get(api.documents.docs, initialData.data,getRequestConfig(initialData.token));
+    const response = await axios.get(api.documents.fetch.concat(addParams(initialData.data)),getRequestConfig(initialData.token));
     
       return response.data
   })  
@@ -46,6 +50,12 @@ export const getReportsList = createAsyncThunk(DomainNames.documents.concat('/re
     
       return response.data
   }) 
+
+  export const docInfo = createAsyncThunk(DomainNames.documents.concat('/docInfo')  , async (initialData) => {
+    const response = await axios.get(api.documents.info.concat(addParams(initialData.data)),getRequestConfig(initialData.token));
+    
+      return response.data
+  })  
   
 
 
@@ -75,7 +85,7 @@ export const getReportsList = createAsyncThunk(DomainNames.documents.concat('/re
             state.error = action.error
           })
           //-------------------------------------------------------
-          // -----получение документов (по умолчанию общедоступные) компании--------------
+          // -----получение документов  компании--------------
           .addCase(getDocList.pending, (state, action) => {
             state.statusDoc = 'loading'
           })
@@ -91,21 +101,38 @@ export const getReportsList = createAsyncThunk(DomainNames.documents.concat('/re
             state.error = action.error
           })
           //------------------------------------------------------------------------------
+             // -----получение документов компании--------------
           .addCase(uploadDoc.pending, (state, action) => {
-            state.statusDoc = 'loading'
+            state.uploaded = 'loading'
           })
           .addCase(uploadDoc.fulfilled, (state, action) => {
-            state.statusDoc = 'succeeded';
+            state.uploaded = 'succeeded';
 
-            state.documents.push(action.payload)
+           
 
             state.error = null;
           })
           .addCase(uploadDoc.rejected, (state, action) => {
-            state.statusDoc = 'failed';
+            state.uploaded = 'failed';
             state.error = action.error
           })
-     
+           //------------------------------------------------------------------------------
+           //-----получение подробной информации по документу----------------
+           .addCase(docInfo.pending, (state, action) => {
+            state.added = 'loading'
+          })
+          .addCase(docInfo.fulfilled, (state, action) => {
+            state.added = 'succeeded';
+
+            state.docInfo = action.payload;
+
+            state.error = null;
+          })
+          .addCase(docInfo.rejected, (state, action) => {
+            state.added = 'failed';
+            state.error = action.error
+          })
+           //-----------------------------------------------------------     
     }
   })
 
@@ -126,6 +153,10 @@ export function getUploadedStatus(state){
 }
 export function getStatusDoc(state){
   return state[DomainNames.documents].statusDoc
+}
+
+export function getDocInfo(){
+  return state[DomainNames.documents].docInfo
 }
 
   export default documentsSlice.reducer

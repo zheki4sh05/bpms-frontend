@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { memo, useContext, useEffect, useState } from "react";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -27,33 +27,39 @@ import { useDispatch } from "react-redux";
 import statusTypes from "../../API/status";
 import { getCompanyName } from "../../Store/slices/companySlice";
 import { getToken } from "../../Store/slices/appUserSlice";
-import DialogContext from "../DialogContext";
 
-export default function CheckboxLabels({alignment}) {
 
-  const [state, setState] = useState("");
-  const [project, setProject] = useState(0);
-  const [req, setReq] = useState(false);
+const CheckboxLabels = memo(({ data = {
+  type:"",
+  project:0,
+  req:false,
+  alignment:"document",
+  handleSave:()=>{},
+} }) => {
+
+  console.log(data)
+
+  const [state, setState] = useState(data.type);
+  const [project, setProject] = useState(data.project);
+  const [req, setReq] = useState(data.byRequest);
   const company = useSelector(getCompanyName);
   const projects = useSelector(getProjects);
   const allWorkers = useSelector(getWorkersList);
   const status = useSelector(getWorkersStatus);
   const token = useSelector(getToken);
   const dispatch = useDispatch();
-  const {data, setDataHandler} = useContext(DialogContext)
+  // const { data, setDataHandler } = useContext(DialogContext);
   const handleRadioChange = (event) => {
     setProject(0);
-    setReq(false)
+    setReq(false);
     setState(event.target.value);
   };
   const handleProjectChange = (event) => {
- 
     setProject(event.target.value);
   };
-  const handleChange=()=>{
-   
+  const handleChange = () => {
     setReq((prevState) => (prevState === false ? true : false));
-  }
+  };
 
   function makeRequest() {
     if (status == statusTypes.idle) {
@@ -68,42 +74,50 @@ export default function CheckboxLabels({alignment}) {
     }
   }
 
-  const saveData=()=>{
-    console.log(project)
-    setDataHandler({...data,members:{
-      ...data.members,
-      access:{
-  
-        type: state,
-        project: project,
-        byRequest: req,
-        alignment:alignment,
-    },
-    
-   
-}});
-  console.log(data)
-      if(!data.members.hasOwnProperty("workers")){
-        setDataHandler({...data,members:{
-          ...data.members,
-          workers:[]
-        
-      }})
+  const saveData = () => {
+    console.log(project);
+    // setDataHandler({
+    //   ...data,
+    //   members: {
+    //     ...data.members,
+    //     access: {
+    //       type: state,
+    //       project: project,
+    //       byRequest: req,
+    //       alignment: alignment,
+    //     },
+    //   },
+    // });
+    data.handleSave(state, project, req, data.alignment)
+  };
+  // useEffect(() => {
+  //   console.log(data);
+  //   if (
+  //     data.hasOwnProperty("members") &&
+  //     !data.members.hasOwnProperty("workers")
+  //   ) {
+  //     setDataHandler({
+  //       ...data,
+  //       members: {
+  //         ...data.members,
+  //         workers: [],
+  //       },
+  //     });
+  //   }
+  // }, [data]);
 
-  }
-}
-
-
-  function checkSave(){
-   
-    return (state=="public") || (state=="project" && project!=0) || (state=="user" && data.hasOwnProperty("members"))
+  function checkSave() {
+    return (
+      state == "public" ||
+      (state == "project" && project != 0) ||
+      (state == "user" && data.hasOwnProperty("members"))
+    );
   }
 
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
   function getContent(value) {
     switch (value) {
       case "public": {
-      
         return <></>;
       }
       case "project": {
@@ -143,7 +157,7 @@ export default function CheckboxLabels({alignment}) {
             <Divider />
             <FormControlLabel
               onChange={handleChange}
-              control={<Checkbox {...label} checked={req}/>}
+              control={<Checkbox {...label} checked={req} />}
               label="Сделать для других доступ по запросу"
             />
 
@@ -171,7 +185,7 @@ export default function CheckboxLabels({alignment}) {
               checked={req}
               label="Сделать для других доступ по запросу"
             />
-             <Divider />
+            <Divider />
           </Box>
         );
       }
@@ -181,7 +195,7 @@ export default function CheckboxLabels({alignment}) {
   }
 
   return (
-    <Box sx={{display:"flex", flexDirection:"column"}}>
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
       <FormControl>
         <FormLabel id="demo-radio-buttons-group-label">
           Настройка доступа
@@ -193,7 +207,8 @@ export default function CheckboxLabels({alignment}) {
         >
           <FormControlLabel
             value="public"
-            control={<Radio />}
+            
+            control={<Radio checked={state === "public"}/>}
             label="Общедоступный"
           />
           <FormControlLabel
@@ -211,17 +226,16 @@ export default function CheckboxLabels({alignment}) {
         {getContent(state)}
       </FormControl>
       <Box>
-      <Button
-            disabled={!checkSave()}
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            onClick={saveData}
-          >
-            Сохранить
-          </Button>
+        <Button
+          disabled={!checkSave()}
+          variant="contained"
+          sx={{ mt: 3, mb: 2 }}
+          onClick={saveData}
+        >
+          Сохранить
+        </Button>
       </Box>
-           
-     
     </Box>
   );
-}
+});
+export default CheckboxLabels;
