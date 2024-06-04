@@ -65,17 +65,11 @@ function ProjectsTable({projects=[]}) {
                   disablePadding: false,
                   label: 'Участников',
                 },
-                {
-                  id: 'role',
+                              {
+                  id: 'roleName',
                   numeric: false,
                   disablePadding: false,
                   label: 'Роль',
-                },
-                {
-                  id: 'access',
-                  numeric: false,
-                  disablePadding: false,
-                  label: 'Тип приватности',
                 },
           ]}
       

@@ -27,7 +27,7 @@ const UploadDocument = memo(({reloadHandler, company, token})=> {
       data.files.forEach((file, index) => {
         formData.append(`file[${index}]`, file);
       });
-
+      console.log(data.members.access.alignment)
       formData.append("alignment", data.members.access.alignment)
       formData.append("byRequest", data.members.access.byRequest)
       formData.append("projectId", data.members.access.project)

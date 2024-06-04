@@ -1,5 +1,7 @@
 import { Box } from "@mui/material";
-import AddFiles from "../AssignmentComponents/AddFiles";
+import AddFiles from './../AssignmentComponents/AddFiles';
+
+
 
 function UploadDocumentPlaceholder() {
     return ( 

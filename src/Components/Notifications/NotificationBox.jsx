@@ -2,14 +2,14 @@ import {Box, Button,Grid, Paper, Typography } from "@mui/material";
 import NotifChip from "./NotifChip";
 import { useState } from "react";
 
-import { acceptInvitation, rejInvitation } from "../../Store/slices/notificationSlice";
+import { acceptInvitation, fetchNotification, rejInvitation } from "../../Store/slices/notificationSlice";
 import DialogConfirmation from "./DialogConfirmation";
 import { useDispatch } from "react-redux";
 import DialogAcception from "./DialogAcception";
 import { useSelector } from "react-redux";
 import { getEmail, getToken } from "../../Store/slices/appUserSlice";
 
-function NotificationBox({ notifData}) {
+function NotificationBox({ notifData ,requestHandler}) {
 
   const [open, setOpen] = useState(false);
 
@@ -25,7 +25,8 @@ function NotificationBox({ notifData}) {
 
     switch(type){
       case 'del':{
-        dispatch(rejInvitation({data:notifData.id,token}))
+        dispatch(rejInvitation({data:{id:notifData.id},token}))
+        requestHandler(email,token,"invitation")
         setOpen(false)
         break;
       }
@@ -42,7 +43,7 @@ function NotificationBox({ notifData}) {
           token
         }
       ));
-
+      requestHandler(email,token,"invitation")
         setAcceptionOpen(false)
         break;
       }

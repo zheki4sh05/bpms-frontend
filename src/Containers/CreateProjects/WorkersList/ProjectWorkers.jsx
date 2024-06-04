@@ -2,8 +2,8 @@ import { Avatar, Box, IconButton, List, ListItem, ListItemAvatar, ListItemText, 
 import FolderIcon from '@mui/icons-material/Folder';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-export default function ProjectWorkers({title, data, text }) {
-
+export default function ProjectWorkers({title, data, text,handleDeleteUser }) {
+console.log(data)
   return (
     <Box>
         <Typography variant="subtitle1" gutterBottom>
@@ -15,7 +15,7 @@ export default function ProjectWorkers({title, data, text }) {
             <ListItem
               key={index}
               secondaryAction={
-                <IconButton edge="end" aria-label="delete">
+                <IconButton edge="end" aria-label="delete" onClick={()=>handleDeleteUser(item)}>
                   <DeleteIcon />
                 </IconButton>
               }

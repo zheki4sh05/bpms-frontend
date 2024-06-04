@@ -17,9 +17,9 @@ function AboutAssignment({ assignments,projects=[], specizalizations=[] }) {
   const { data, setDataHandler } = useContext(DialogContext);
   
 
-  const [project, setProject] = useState(0);
+  const [project, setProject] = useState( data.hasOwnProperty("aboutAssign") ? data.aboutAssign.projectId : 0);
   const specList = useSelector(getSpecializations)
-  const [specizalization, setSpecizalization] = useState(0);
+  const [specialization, setSpecizalization] = useState(data.hasOwnProperty("aboutAssign") ? data.aboutAssign.specialization : 0);
   const [show, setShow] = useState(true);
   const [change,setChange] = useState(false);
 
@@ -52,7 +52,7 @@ function AboutAssignment({ assignments,projects=[], specizalizations=[] }) {
 
     setDataHandler({...data, aboutAssign:{
       projectId: project,
-      specizalization
+      specialization
     }});
     setChange(false)
 
@@ -127,7 +127,7 @@ function AboutAssignment({ assignments,projects=[], specizalizations=[] }) {
             <Select
                 labelId="demo-simple-select-helper-label"
                 id="demo-simple-select-helper"
-                value={specizalization || ""}
+                value={specialization || ""}
                 label="Age"
                 onChange={handleSpecializationChange}
               >
@@ -147,14 +147,14 @@ function AboutAssignment({ assignments,projects=[], specizalizations=[] }) {
 
                 {
 
-                  !(!change || project==0 ||  specizalization==0) ? 
+                  !(!change || project==0 ||  specialization==0) ? 
                   <Button
                   onClick={handleSubmit}
                   fullWidth
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
       
-                    disabled={!change || project==0 ||  specizalization==0}
+                    disabled={!change || project==0 ||  specialization==0}
       
                 >
                    Сохранить

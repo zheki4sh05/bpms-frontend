@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { getEmail, getToken } from "../../Store/slices/appUserSlice";
 import DomainNames from "../../Store/DomainNames";
-import { updateWorkerSpec } from "../../Store/slices/workersSlice";
+import { getWorkersList, updateWorkerSpec } from "../../Store/slices/workersSlice";
 
 const WorkerSpecControl = memo(({ worker }) => {
 
@@ -17,7 +17,7 @@ const WorkerSpecControl = memo(({ worker }) => {
       );
 
   
-
+  const workers = useSelector(getWorkersList)
 
   const specList = useSelector(getSpecializations);
 
@@ -34,7 +34,7 @@ const WorkerSpecControl = memo(({ worker }) => {
 
   if (typeof spec !== "undefined") {
     count = useMemo(
-      () => specList.filter((item) => item.id == worker.spec).length,
+      () => workers.filter((item) => item.spec == worker.spec).length,
       [spec]
     );
   }

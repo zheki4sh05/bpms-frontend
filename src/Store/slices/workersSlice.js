@@ -9,7 +9,8 @@ const initialState = {
     workers:[],
     relevant:[],
     error:null,
-    status:'idle'
+    status:'idle',
+    relevantStatus:'idle'
 
     // {
     //   id:20,
@@ -30,7 +31,7 @@ export const getAllWorkers = createAsyncThunk(DomainNames.workers.concat('/getAl
 
  export const fetchRelevantWorkers = createAsyncThunk(DomainNames.workers.concat('/relevant')  , async (initialData) => {
 
-  const response = await axios.get(api.workers.list.concat(addParams(initialData.data)), getRequestConfig(initialData.token));
+  const response = await axios.get(api.workers.relevant.concat(addParams(initialData.data)), getRequestConfig(initialData.token));
   
     return response.data
 })
@@ -42,7 +43,7 @@ export const getAllWorkers = createAsyncThunk(DomainNames.workers.concat('/getAl
     initialState,
     reducers: {
       updateWorkerSpec(state,action){
-        state.workers = state.workers.map(item=>item.id = action.payload.workerId ? {...item, spec:action.payload.specId} : item)
+        state.workers = state.workers.map(item=>item.id == action.payload.workerId ? {...item, spec:action.payload.specId} : item)
 
 
       }
@@ -70,10 +71,10 @@ export const getAllWorkers = createAsyncThunk(DomainNames.workers.concat('/getAl
 
              
               .addCase(fetchRelevantWorkers.pending, (state, action) => {
-              state.status = 'loading'
+              state.relevantStatus = 'loading'
             })
             .addCase(fetchRelevantWorkers.fulfilled, (state, action) => {
-              state.status = 'succeeded';
+              state.relevantStatus = 'succeeded';
               state.error = null;
               
             
@@ -81,7 +82,7 @@ export const getAllWorkers = createAsyncThunk(DomainNames.workers.concat('/getAl
                     
             })
             .addCase(fetchRelevantWorkers.rejected, (state, action) => {
-              state.status = 'failed';
+              state.relevantStatus = 'failed';
               state.error = action.error
             })
 
@@ -109,7 +110,10 @@ export const getAllWorkers = createAsyncThunk(DomainNames.workers.concat('/getAl
   
     return  state[DomainNames.workers].workers.filter(worker => worker.projects.includes(id))
   } 
-
+  
+  export function getRelevantStatus(state){
+    return state[DomainNames.workers].relevantStatus;
+  }
   // const selectWorkers = state => state.workers
   // const projectId = (state, id)  => id
 

@@ -6,8 +6,9 @@ import DialogContext from "../DialogContext";
 const DocumentSettings = memo(({ alignmentProp }) => {
   const [alignment, setAlignment] = useState(alignmentProp);
   const { data, setDataHandler } = useContext(DialogContext);
-  const handleChange = (event, newAlignment) => {
-    setAlignment(newAlignment);
+  const handleChange = (event) => {
+    setAlignment(event.target.value);
+    console.log(event.target.value)
   };
 
   const handleSave = (state, project, req, alignment) => {
@@ -61,7 +62,7 @@ const DocumentSettings = memo(({ alignmentProp }) => {
         type: "",
         project: 0,
         req: false,
-        alignment: "document",
+        alignment: alignment,
         handleSave: handleSave,
       };
     }

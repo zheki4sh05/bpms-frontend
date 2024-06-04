@@ -18,10 +18,10 @@ function UserDatePicker({ titleFrom = "", titleTo = "" }) {
   const [isEditedStart, setEditedStart] = useState(false);
   const [isEditedFinish, setEditedFinish] = useState(false);
   const [startDate, setStartDate] = useState(
-    data.deadline ? data.deadline.startDate : ""
+    data.hasOwnProperty("deadline") ? data.deadline.startDate : ""
   );
   const [finishDate, setFinishDate] = useState(
-    data.deadline ? data.deadline.finishDate : ""
+    data.hasOwnProperty("deadline") ? data.deadline.finishDate : ""
   );
 
   const handleStartDate = (event) => {

@@ -351,8 +351,7 @@ const companySlice = createSlice({
   })
   export const { saveCompany,resetUpdated,resetSearchStatus,resetInviteStatus } = companySlice.actions
   export function getCompanyName(state) {
-    console.log(state[DomainNames.company].userCompany.name)
-    return state[DomainNames.company].userCompany.name;
+      return state[DomainNames.company].userCompany.name;
   }
 
   export const getCompanyNameValue = createSelector(state=>state[DomainNames.company].userCompany, (userCompany)=>({userCompany}))

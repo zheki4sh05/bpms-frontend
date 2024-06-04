@@ -24,8 +24,8 @@ import { getCompanyName, getCompanyNameValue } from "../Store/slices/companySlic
 const DocumentsPage = memo(()=> {
   const dispatch = useDispatch();
   const token  = useSelector(getToken)
-  const {userCompany} = useSelector(getCompanyNameValue);
-  const companyName = userCompany.name;
+  const companyName = useSelector(getCompanyName);
+
 
   const projectsStatus = useSelector(getProjectsLoadedStatus)
 

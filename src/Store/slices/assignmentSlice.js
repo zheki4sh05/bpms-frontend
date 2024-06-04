@@ -4,6 +4,7 @@ import api from '../../API/APIPath'
 import axios from 'axios';
 import getRequestConfig from '../../API/requestConfig';
 import addParams from '../../Util/paramsConfig';
+import getRequestFormData from '../../API/requestFormData';
 
 
 const initialState = {
@@ -45,7 +46,10 @@ const initialState = {
 }
 
 export const createAssignment = createAsyncThunk(DomainNames.assignments.concat('/createAssignment')  , async (initialData) => {
-    const response = await axios.get(api.assignments.create,initialData.data ,getRequestConfig(initialData.token));
+
+  console.log(initialData.assignment)
+ 
+    const response = await axios.post(api.assignments.create,initialData.assignment,getRequestConfig(initialData.token));
     
       return response.data
   })

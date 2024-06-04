@@ -11,14 +11,16 @@ import {
 import { useSelector } from "react-redux";
 import StatusContent from "./../../Util/statusContent";
 import { getCompanyName } from "../../Store/slices/companySlice";
-import { getToken } from "../../Store/slices/appUserSlice";
+import { getEmail, getToken } from "../../Store/slices/appUserSlice";
 
 function WorkersListControl() {
   const company = useSelector(getCompanyName);
 
   const dispatch = useDispatch();
 
-  const allWorkers = useSelector(getWorkersList);
+  const email = useSelector(getEmail)
+
+  const allWorkers = useSelector(getWorkersList).filter(item=>item.email!=email);
 
   const status = useSelector(getWorkersStatus);
 

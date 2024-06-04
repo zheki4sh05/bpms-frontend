@@ -12,28 +12,29 @@ export default function Counter() {
 
   const { data, setDataHandler } = useContext(DialogContext);
 
-  const [count, setCount] = useState(0);
-  const handleChange = (event) => {
-    setCount(Math.max(Number(event.target.value), 0));
+  const [count, setCount] = useState(data.hasOwnProperty("count") ? data.count : 0);
+  const handleChange = () => {
+    //setCount(Math.max(Number(event.target.value), 0));
+console.log(count)
+    setDataHandler({...data, 
 
-    setDataHandler({...data, assignDesc:{
-      ...data.assignDesc,
       count: count,
 
-}});
+});
 
   };
 
+
   useEffect(() => {
-    setCount(typeof data.aboutAssignment!=="undefined" ? data.aboutAssignment.count : 0);
+    handleChange()
    
-  }, [data]);
+  }, [count]);
 
   return (
     <Container>
       <ButtonGroup>
         <Button
-          onClick={() => setCount((prev) => prev - 1)}
+          onClick={() => {setCount((prev) => prev - 1)}}
           disabled={count === 0}
         >
           <RemoveIcon fontSize="small" />

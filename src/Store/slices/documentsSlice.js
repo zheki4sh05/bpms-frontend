@@ -28,8 +28,12 @@ const initialState = {
 
     uploaded:'idle',
 
-    docInfo:{}
-}
+    docInfo:{},
+
+    forAssignment:[],
+    loaded:'idle'
+
+  }
 
 export const getReportsList = createAsyncThunk(DomainNames.documents.concat('/reportsList')  , async (initialData) => {
     const response = await axios.get(api.documents.fetch.concat(addParams(initialData.data)),getRequestConfig(initialData.token));
@@ -56,6 +60,14 @@ export const getReportsList = createAsyncThunk(DomainNames.documents.concat('/re
     
       return response.data
   })  
+
+
+  
+  export const docForAssignment = createAsyncThunk(DomainNames.documents.concat('/docAssign')  , async (initialData) => {
+    const response = await axios.get(api.documents.doc_for_assignment.concat(addParams(initialData.data)),getRequestConfig(initialData.token));
+    
+      return response.data
+  }) 
   
 
 
@@ -132,7 +144,24 @@ export const getReportsList = createAsyncThunk(DomainNames.documents.concat('/re
             state.added = 'failed';
             state.error = action.error
           })
-           //-----------------------------------------------------------     
+           //----------------------------------------------------------- 
+           //------Получение документов для поручения-------------------
+
+           .addCase(docForAssignment.pending, (state, action) => {
+            state.loaded = 'loading'
+          })
+          .addCase(docForAssignment.fulfilled, (state, action) => {
+            state.loaded = 'succeeded';
+
+            state.forAssignment = action.payload;
+
+            state.error = null;
+          })
+          .addCase(docForAssignment.rejected, (state, action) => {
+            state.loaded = 'failed';
+            state.error = action.error
+          })
+           //-------------------------------------------------------    
     }
   })
 
@@ -157,6 +186,10 @@ export function getStatusDoc(state){
 
 export function getDocInfo(){
   return state[DomainNames.documents].docInfo
+}
+
+export function getDocForAssignment(state){
+  return state[DomainNames.documents].forAssignment
 }
 
   export default documentsSlice.reducer

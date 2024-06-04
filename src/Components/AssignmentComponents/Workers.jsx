@@ -1,6 +1,5 @@
 import Container from "@mui/material/Container";
 
-
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
@@ -9,7 +8,7 @@ import ListItemText from "@mui/material/ListItemText";
 import Avatar from "@mui/material/Avatar";
 
 import { useContext, useEffect, useState } from "react";
-import { Divider, TextField } from "@mui/material";
+import { Divider, TextField, Typography } from "@mui/material";
 import { Button } from "@mui/material";
 import { Box } from "@mui/material";
 import { ListItemButton } from "@mui/material";
@@ -17,52 +16,83 @@ import { ListItemButton } from "@mui/material";
 import { useSelector } from "react-redux";
 import DialogContext from "../DialogContext";
 import { getToken } from "../../Store/slices/appUserSlice";
-import { fetchRelevantWorkers, getAllProjectMembers, getRelevantWorkers } from "../../Store/slices/workersSlice";
+import {
+  fetchRelevantWorkers,
+  getAllProjectMembers,
+  getRelevantStatus,
+  getRelevantWorkers,
+} from "../../Store/slices/workersSlice";
 import { useDispatch } from "react-redux";
+import { getProjectsResults } from "../../Store/slices/projectSlice";
+import statusTypes from "../../API/status";
 
 function Workers() {
+  const [save, setSave] = useState(false);
 
-  const [save,setSave] = useState(false);
+  const [showAll, setState] = useState(false);
 
-  const [showAll,setState] = useState(false);
+  
 
-  const [selectedWorkers,setWorker] = useState(new Set());
-
-  const {data,setDataHandler} = useContext(DialogContext);
+  const { data, setDataHandler } = useContext(DialogContext);
 
   const relevantWorkers = useSelector(getRelevantWorkers);
+  const [selectedWorkers, setWorker] = useState( data.hasOwnProperty("workers") ? data.workers : {id:0});
 
-  const allWorkers = useSelector(state => getAllProjectMembers(state, data.aboutAssign ? data.aboutAssign.projectId : 0)) | [];
+  const relevStatus = useSelector(getRelevantStatus);
 
-  const token = useSelector(getToken)
+  const allWorkers = useSelector(getWorkers) | [];
 
-  const dispatch = useDispatch()
+  const projectsStatuses = useSelector(getProjectsResults);
+
+  const token = useSelector(getToken);
+
+  const dispatch = useDispatch();
+
+  function makeRequest() {
+    console.log(data)
+    dispatch(
+      fetchRelevantWorkers(
+      
+        {
+          data: {
+            projectId: data.aboutAssign.projectId,
+            deadline: data.deadline.finishDate,
+            specialization: data.aboutAssign.specialization,
+            start: data.deadline.startDate },
+                token,
+        }
+
+
+    )
+    );
+  }
 
   useEffect(() => {
+    if (relevStatus == statusTypes.succeeded) {
+      setWorker(relevantWorkers);
+    }
+  }, [relevStatus]);
 
-  if(data.aboutAssign){
-    dispatch(fetchRelevantWorkers({data:{
-      projectId: data.aboutAssign.project
-   },
-   token}));
-  }
-
-
+  useEffect(() => {
+    if (data.hasOwnProperty("aboutAssign") && data.hasOwnProperty("deadline")) {
+      makeRequest();
+    }
   }, []);
- 
+  function getWorkers(status) {
 
-  function getWorkers(status){
-      return status ? relevantWorkers.concat(allWorkers) : relevantWorkers
+    return status ? relevantWorkers.concat([]) : relevantWorkers;
   }
 
-  const handleShowAll =()=>{
+  const handleShowAll = () => {
     setState((prevState) => (prevState === false ? true : false));
-  }
+  };
 
-  const setHandler=()=>{
-    setSave(true)
-    setDataHandler({...data, workers:selectedWorkers})
-  }
+  const setHandler = () => {
+    setSave(true);
+    setDataHandler({ ...data, workers: selectedWorkers });
+  };
+  console.log("selectedWorkers")
+  console.log(selectedWorkers)
 
   return (
     <Container maxWidth={"sm"} sx={{ mt: 5 }}>
@@ -107,63 +137,70 @@ function Workers() {
           </List>
         </Stack>
       </Stack> */}
-
-
-      <List
-        dense
-        sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
-      >
-        {getWorkers(showAll).map((value, index) => {
-         
-          return (
-            <ListItem
-              key={index}
-              secondaryAction={
-                // <Checkbox
-                //   edge="end"
-                //   onChange={handleToggle(value)}
-                //   checked={checked.indexOf(value) !== -1}
-                //   inputProps={{ "aria-labelledby": labelId }}
-                // />
-
-                <Button  edge="end" onClick={()=>{setWorker(prevState=>[...prevState, value]);  setSave(false)}}>
-                      Выбрать
-
-                </Button>
-
-              }
-              disablePadding
-            >
-              <ListItemButton>
-                <ListItemAvatar>
-                  <Avatar
-                    alt={`Avatar n°${value + 1}`}
-                    src={`/static/images/avatar/${value + 1}.jpg`}
-                  />
-                </ListItemAvatar>
-                <Box>
-                  <ListItemText
-                    id={index}
-                    primary={value.firstname + " " + value.lastname}
-                  />
-                  <ListItemText id={index} primary={value.email} />
-                </Box>
-              </ListItemButton>
-            </ListItem>
-          );
-        })}
-      </List>
-        <Button onClick={handleShowAll}>Показать всех</Button>
-  
-      <Divider/>
-      <Button
-            disabled={!save}
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            onClick={setHandler}
+      {data.hasOwnProperty("aboutAssign") && data.hasOwnProperty("deadline")? (
+        <>
+          <List
+            dense
+            sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
           >
-            Сохранить
-          </Button>
+            {getWorkers(showAll).map((value, index) => {
+              return (
+                <ListItem
+                  key={index}
+                  secondaryAction={
+                    // <Checkbox
+                    //   edge="end"
+                    //   onChange={handleToggle(value)}
+                    //   checked={checked.indexOf(value) !== -1}
+                    //   inputProps={{ "aria-labelledby": labelId }}
+                    // />
+
+                    <Button
+                      edge="end"
+                      onClick={() => {
+                        setWorker(value);
+                        setSave(false);
+                      }}
+                    >
+                      {selectedWorkers.id == value.id ? "Убрать" : "Выбрать"}
+                    </Button>
+                  }
+                  disablePadding
+                >
+                  <ListItemButton>
+                    <ListItemAvatar>
+                      <Avatar
+                        alt={`Avatar n°${value + 1}`}
+                        src={`/static/images/avatar/${value + 1}.jpg`}
+                      />
+                    </ListItemAvatar>
+                    <Box>
+                      <ListItemText
+                        id={index}
+                        primary={value.firstname + " " + value.lastname}
+                      />
+                      <ListItemText id={index} primary={value.email} />
+                    </Box>
+                  </ListItemButton>
+                </ListItem>
+              );
+            })}
+          </List>
+          <Button onClick={handleShowAll}>Показать всех</Button>
+        </>
+      ) : (
+        <Typography>Не выбраны предыдущие параметры</Typography>
+      )}
+
+      <Divider />
+      <Button
+        disabled={save}
+        variant="contained"
+        sx={{ mt: 3, mb: 2 }}
+        onClick={setHandler}
+      >
+        Сохранить
+      </Button>
     </Container>
   );
 }

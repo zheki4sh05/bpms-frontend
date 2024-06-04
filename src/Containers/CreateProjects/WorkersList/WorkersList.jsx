@@ -16,6 +16,9 @@ import { useEffect } from "react";
 
 export default function WorkersList({ dataMembers=[],addAdmin=true}) {
   const { data, setDataHandler } = useContext(DialogContext);
+
+  const [membersList,setMembers] = useState(dataMembers)
+
   const [checked, setChecked] = useState([]);
 
   const [lead, setLead] = useState([]);
@@ -53,13 +56,42 @@ export default function WorkersList({ dataMembers=[],addAdmin=true}) {
   }, [checked]);
 
   const handleAddWorkers = () => {
-    setWorkers(checked);
+   
+ 
+
+    // if(workers.length!=0){
+    //   setWorkers([...workers, ...checked]);
+    // }else{
+     
+    // } 
+    
+
+    setWorkers([...workers, ...checked]);
+
+    let mass=[];
+
+    membersList.forEach(w=>{
+      checked.forEach(c=>{
+        if(w.id!==c.id){
+          mass.push(w)
+        }
+      })
+    })
+    console.log("mass")
+    console.log(mass)
+   
+    setMembers([...mass])
  
     setChecked([]);
   };
 
   const handleAddAdmin = () => {
-    setLead(checked);
+
+    if(typeof workers.find(item=>item.id==checked[0].id) == "undefined"){
+      setLead([checked[0]]);
+    }
+
+   setMembers([...membersList.filter(item=>item.id!=checked[0].id)])
    
     setChecked([]);
   };
@@ -78,13 +110,29 @@ export default function WorkersList({ dataMembers=[],addAdmin=true}) {
     
   }
 
+  const handleDeleteWorker=(worker)=>{
+  
+        let mass = workers.filter(item=>item.id!==worker.id)
+    
+        setMembers([...membersList, worker])
+
+        setWorkers([...mass])
+      
+  }
+  const handleDeleteLeader=(leader)=>{
+  
+      let mass = lead.filter(item=>item.id!=leader.id)
+      setLead([...mass])
+      setMembers([...membersList, leader])
+  }
+
   return (
     <Box sx={{display:"flex",flexDirection:"column"}}>
       <List
         dense
         sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
       >
-        {dataMembers.map((value, index) => {
+        {membersList.map((value, index) => {
           const labelId = `checkbox-list-secondary-label-${value}`;
           return (
             <ListItem
@@ -120,7 +168,7 @@ export default function WorkersList({ dataMembers=[],addAdmin=true}) {
       </List>
         {addAdmin ? <Box>
       <Divider/>
-        <ProjectWorkers data={lead} title={"Руководитель"} text={"Руководитель не выбран"} />
+        <ProjectWorkers data={lead} title={"Руководитель"} text={"Руководитель не выбран"} handleDeleteUser={handleDeleteLeader}/>
 
         {lead.length == 0? (
           <Button size="small" onClick={handleAddAdmin}>Добавить</Button>
@@ -136,7 +184,7 @@ export default function WorkersList({ dataMembers=[],addAdmin=true}) {
       
    
       <Box sx={{mt:1}}>
-        <ProjectWorkers data={workers} title={"Сотрудники"} text={"Сотрудники не выбраны"} />
+        <ProjectWorkers data={workers} title={"Сотрудники"} text={"Сотрудники не выбраны"} handleDeleteUser={handleDeleteWorker}/>
 
     
         <Button size="small" onClick={handleAddWorkers}>Добавить</Button>

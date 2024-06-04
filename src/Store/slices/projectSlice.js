@@ -232,6 +232,10 @@ export const createProject = createAsyncThunk(DomainNames.projects.concat('/crea
     return state[DomainNames.projects].projects.find(project => project.id == projectId).stages
   }
 
+  export function getProjectById(state,id){
+    return state[DomainNames.projects].projects.find(project => project.id == projectId)
+  }
+
   export const { resetCreatedStatus} = projectsSlice.actions
 
 
