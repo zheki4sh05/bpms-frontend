@@ -5,6 +5,7 @@ import axios from 'axios';
 import getRequestConfig from '../../API/requestConfig';
 const initialState = {
     user: {
+        id:0,
         name:"",
         lastname:"",
         surname:"",
@@ -119,7 +120,7 @@ const appUserSlice = createSlice({
         })
         .addCase(fetchUserData.fulfilled, (state, action) => {
           state.loadedMore = 'succeeded';
-    
+          state.user.id= action.payload.id 
           state.user.name = action.payload.firstname;
           state.user.lastname = action.payload.lastname;
           state.user.surname = action.payload.surname;
@@ -175,6 +176,9 @@ export function getUserDataStatus(state){
 }
 export function getEmail(state){
   return state[DomainNames.app.appUser].user.email;
+}
+export function getId(state){
+  return state[DomainNames.app.appUser].user.id;
 }
 export function getAppStatus(state){
   return state[DomainNames.app.appUser].appLoaded

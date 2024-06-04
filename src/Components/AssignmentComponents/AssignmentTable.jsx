@@ -5,12 +5,15 @@ import AsideDrawer from "../AsideBox/AsideDrawer";
 import { getAssignmentsResults } from "../../Store/slices/assignmentSlice";
 import { useSelector } from "react-redux";
 import AssignmentOverviewWindow from './AssignmentOverviewWindow';
+import EntityOverviewWindow from "../EntityOverviewWindow";
 
 function AssignmentTable({assignments = []}) {
   console.log("assignments");
   console.log(assignments);
 
   const statuses = useSelector(getAssignmentsResults) || [];
+
+
 
 
   const addNew = (arr=[]) => {
@@ -20,7 +23,7 @@ function AssignmentTable({assignments = []}) {
     //       tasks: statuses.find(status => status.id == el.id).workers.length
     //      };
     // });
-    return [];
+    return assignments;
 };
 
   return (
@@ -43,16 +46,16 @@ function AssignmentTable({assignments = []}) {
               label: "Название",
             },
             {
-              id: "done",
+              id: "statusName",
               numeric: true,
               disablePadding: false,
-              label: "Выполнено %",
+              label: "Статус",
             },
             {
               id: "createdAt",
               numeric: false,
               disablePadding: false,
-              label: "Начало",
+              label: "Создано",
             },
             {
               id: "deadline",
@@ -61,17 +64,23 @@ function AssignmentTable({assignments = []}) {
               label: "Дэдлайн",
             },
             {
-              id: "tasks",
+              id: "stageName",
               numeric: false,
               disablePadding: false,
-              label: "Задачи",
+              label: "Стадия",
             },
           ]}
         />
 
         <AsideDrawer
           anchorProp="right"
-          content={<AssignmentOverviewWindow />}
+          widthLevel={1}
+          content={<EntityOverviewWindow
+            
+            accordionBodyType={"assignment"}
+            title={"поручения"}
+
+          />}
         />
       </DialogEntityProvider>
     </Box>

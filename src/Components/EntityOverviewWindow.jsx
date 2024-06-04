@@ -9,6 +9,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DialogContext from "./DialogContext";
 import DocumentOverview from "./DocumentsComponents/DocumentOverview";
 import WorkerProfile from "./StaffPage/WorkerProfile";
+import AssignmentProfile from "./AssignmentComponents/AssignmentProfile";
 const EntityOverviewWindow = memo(({ title, accordionBodyType }) => {
   const [expanded, setExpanded] = useState(false);
 
@@ -34,6 +35,9 @@ const EntityOverviewWindow = memo(({ title, accordionBodyType }) => {
       }
       case "staff": {
         return <WorkerProfile worker={data} />;
+      }
+      case "assignment":{
+          return <AssignmentProfile assignment={data} />
       }
     }
   }
@@ -74,6 +78,21 @@ const EntityOverviewWindow = memo(({ title, accordionBodyType }) => {
             </Typography>
           </>
         );
+      }
+      case "assignment":{
+        return(
+          <>
+          
+          <Typography sx={{ width: "33%", flexShrink: 0 }}>
+              {data.name} {data.stageName}
+            </Typography>
+            <Typography sx={{ color: "text.secondary" }}>
+              {data.statusName}
+            </Typography>
+
+
+          </>
+        )
       }
     }
   }

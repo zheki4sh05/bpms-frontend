@@ -7,29 +7,61 @@ import addParams from '../../Util/paramsConfig';
 import getRequestFormData from '../../API/requestFormData';
 
 
+// {
+//   id: "id",
+//   numeric: true,
+//   disablePadding: true,
+//   label: "ID",
+// },
+// {
+//   id: "name",
+//   numeric: false,
+//   disablePadding: false,
+//   label: "Название",
+// },
+// {
+//   id: "done",
+//   numeric: true,
+//   disablePadding: false,
+//   label: "Выполнено %",
+// },
+// {
+//   id: "createdAt",
+//   numeric: false,
+//   disablePadding: false,
+//   label: "Начало",
+// },
+// {
+//   id: "deadline",
+//   numeric: true,
+//   disablePadding: false,
+//   label: "Дэдлайн",
+// },
+// {
+//   id: "tasks",
+//   numeric: false,
+//   disablePadding: false,
+//   label: "Задачи",
+// },
+
+// {
+//   id:1,
+//   name:"Новое поручение",
+//   desc:"Описание нового поручения",
+//   createdAt:"16.09.2024",
+//   deadline:"19.09.2024",
+//   assigned_To:"test@mail.ru",
+//   status_id:1,
+//   tasks:3,
+//   done:60
+
+// },
+
+
 const initialState = {
-    list:[{
-          id:1,
-          name:"задача",
-          desc:"описание",
-          start:"16.09.2024",
-          finish:"19.09.2024",
-          assigned_To:"test@mail.ru",
-          status_id:1
-      
-        },
-        {
-          id:2,
-          name:"задача 2",
-          desc:"описание",
-          start:"16.09.2024",
-          finish:"19.09.2024",
-          assigned_To:"test@mail.ru",
-          status_id:2
-      
-        }
-      ],
+    list:[],
     statuses:[],
+    assignmentStatuses:{},
     created:'idle',
     error:null,
     status:'idle',
@@ -42,7 +74,11 @@ const initialState = {
         name:""
       }
 
-    }
+    },
+
+    updated:'idle',
+
+    delDoc:'idle'
 }
 
 export const createAssignment = createAsyncThunk(DomainNames.assignments.concat('/createAssignment')  , async (initialData) => {
@@ -65,6 +101,20 @@ export const getAllUserAssignmnets = createAsyncThunk(DomainNames.assignments.co
     
       return response.data
   })
+
+  export const updateAssignment = createAsyncThunk(DomainNames.assignments.concat('/updateAssignment')  , async (initialData) => {
+    const response = await axios.post(api.assignments.update, initialData.data ,getRequestConfig(initialData.token));
+    
+      return response.data
+  })
+
+  export const delDocFromAssignment = createAsyncThunk(DomainNames.assignments.concat('/delDocFromAssignment')  , async (initialData) => {
+    const response = await axios.delete(api.assignments.docDel.concat(addParams(initialData.data)) ,getRequestConfig(initialData.token));
+    
+      return response.data
+  })
+
+
 
 
   const assignmentsSlice = createSlice({
@@ -119,6 +169,9 @@ export const getAllUserAssignmnets = createAsyncThunk(DomainNames.assignments.co
           })
           .addCase(getAllUserAssignmnets.fulfilled, (state, action) => {
             state.status = 'succeeded';
+
+            state.list = action.payload;
+
             state.error = null;
           })
           .addCase(getAllUserAssignmnets.rejected, (state, action) => {
@@ -132,6 +185,7 @@ export const getAllUserAssignmnets = createAsyncThunk(DomainNames.assignments.co
           })
           .addCase(getAllUserAssignmentsStatuses.fulfilled, (state, action) => {
             state.added = 'succeeded';
+            state.assignmentStatuses = action.payload
             state.error = null;
           })
           .addCase(getAllUserAssignmentsStatuses.rejected, (state, action) => {
@@ -139,18 +193,51 @@ export const getAllUserAssignmnets = createAsyncThunk(DomainNames.assignments.co
             state.error = action.error
           })
            //-------------------------------------------------------
+             //-----------Обновление поручение--------------------------
+          .addCase(updateAssignment.pending, (state, action) => {
+            state.updated = 'loading'
+          })
+          .addCase(updateAssignment.fulfilled, (state, action) => {
+            state.updated = 'succeeded';
+           
+            let mass = state.list.filter(item=>item.id!= action.payload.id)
+            mass.push(action.payload)
+            state.list = mass;
+            state.error = null;
+          })
+          .addCase(updateAssignment.rejected, (state, action) => {
+            state.updated = 'failed';
+            state.error = action.error
+          })
+           //-------------------------------------------------------
+
+           //-----------Удаление документа от поручения--------------------------
+          .addCase(delDocFromAssignment.pending, (state, action) => {
+            state.delDoc = 'loading'
+          })
+          .addCase(delDocFromAssignment.fulfilled, (state, action) => {
+            state.delDoc = 'succeeded';
+           
+            state.error = null;
+          })
+          .addCase(delDocFromAssignment.rejected, (state, action) => {
+            state.delDoc = 'failed';
+            state.error = action.error
+          })
+           //-------------------------------------------------------
+           
     }
   })
 
   export const { resetCreatedAssignStatus,setSelectedTask,changeTaskStatus} = assignmentsSlice.actions
   export default assignmentsSlice.reducer
-  // export function getAssignmentsList(state) {
+  export function getAssignmentsList(state) {
   
-  //   console.log(state[DomainNames.assignments])
-  //   return state[DomainNames.assignments].list;
-  // }
+  
+    return state[DomainNames.assignments].list;
+  }
 
-    export const getAssignmentsList = createSelector(state=>state[DomainNames.assignments].list, (list)=>({list}))
+    // export const getAssignmentsList = createSelector(state=>state[DomainNames.assignments].list, (list)=>({list}))
 
   export function getCreatedAssignStatus(state){
     return state[DomainNames.assignments].created
@@ -159,6 +246,15 @@ export const getAllUserAssignmnets = createAsyncThunk(DomainNames.assignments.co
     return state[DomainNames.assignments].statuses
   }
   export function getSelectedTask(state){
-    return state[DomainNames.assignments].selectedTask
+    return state[DomainNames.assignments].selectedTask   
+  }
+  export function getAssignmentsStatuses(state){
+    return state[DomainNames.assignments].assignmentStatuses
+  }
+  export function getAddedAssignmentStatus(state){
+    return state[DomainNames.assignments].added
   }
 
+  export function getDelDocStatus(state){
+    return state[DomainNames.assignments].delDoc
+  }

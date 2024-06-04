@@ -8,14 +8,7 @@ import statusTypes from '../../API/status';
 import getRequestFormData from '../../API/requestFormData';
 
 const initialState = {
-    documents:[{
-      id:1,
-      name:"doc",
-      format:"docx",
-      downloadAt:"14.06.2024",
-      access:"Проект",
-      size:3
-    }],
+    documents:[],
     // documents:[],
     statusDoc:'idle',
 

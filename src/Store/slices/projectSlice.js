@@ -30,7 +30,7 @@ const initialState = {
     }],
     // projects:[],
     // statuses:[],
-    error:null,
+       error:null,
     status:'idle',
     created:"idle",
     added:"idle",
@@ -233,7 +233,7 @@ export const createProject = createAsyncThunk(DomainNames.projects.concat('/crea
   }
 
   export function getProjectById(state,id){
-    return state[DomainNames.projects].projects.find(project => project.id == projectId)
+    return state[DomainNames.projects].projects.find(project => project.id == id)
   }
 
   export const { resetCreatedStatus} = projectsSlice.actions

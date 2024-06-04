@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import SearchBox from "./../Components/SearchBox/SearchBox";
 import CustomTable from "./../Components/CustomTable";
 import CustomTabPanel from "./../Components/CustomTabPanel/CustomTabPanel";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import PageInfo from "../Components/PageInfo";
@@ -11,9 +11,10 @@ import DialogContext from "../Components/DialogContext";
 import DialogEntityProvider from "../Components/DialogEntityProvider";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { getEmail, getToken } from "../Store/slices/appUserSlice";
+import { getEmail, getId, getToken } from "../Store/slices/appUserSlice";
 import { getAllUserAssignmentsStatuses, getAllUserAssignmnets, getAssignmentsList } from "../Store/slices/assignmentSlice";
 import AssignmentTable from './../Components/AssignmentComponents/AssignmentTable';
+import { getRoleInCompany } from "../Store/slices/companySlice";
 
 function AssignmentsPage() {
 
@@ -21,25 +22,33 @@ function AssignmentsPage() {
 
   const token = useSelector(getToken)
 
-  const assignments = useSelector(getAssignmentsList) | []
+  const userId = useSelector(getId);
+
+  const assignmentsResult = useSelector(getAssignmentsList) || []
+
+  const assignments = useMemo(() => assignmentsResult.filter(item=>item.user == userId), [assignmentsResult]);
+
+  const role  = useSelector(getRoleInCompany)
 
   function makeRequest(){
     dispatch(
       getAllUserAssignmnets({
         data: {
-          useremail,
+          userEmail:useremail,
+          role:role,
+          size:""
         },
         token,
       })
     );
-    dispatch(
-      getAllUserAssignmentsStatuses({
-        data: {
-          useremail,
-        },
-        token,
-      })
-    );
+    // dispatch(
+    //   getAllUserAssignmentsStatuses({
+    //     data: {
+    //       useremail,
+    //     },
+    //     token,
+    //   })
+    // );
   }
 
   const dispatch = useDispatch();
@@ -57,23 +66,21 @@ function AssignmentsPage() {
           data={[
             {
               name: "Всего",
-              count: "0",
+              count: `${assignments.length}`,
             },
           ]}
         />
 
         <CustomTabPanel
           content={{
-            tabNames: ["Список", "Плитка", "Календарь", "Канбан"],
+            tabNames: ["Список", "Календарь", "Канбан"],
           }}
         >
           <AssignmentTable assignments={assignments}/>
           <Typography variant="h5" gutterBottom>
             контент 1
           </Typography>
-          <Typography variant="h5" gutterBottom>
-            контент 2
-          </Typography>
+        
           <Typography variant="h5" gutterBottom>
             контент 3
           </Typography>
