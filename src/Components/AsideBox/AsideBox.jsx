@@ -33,6 +33,8 @@ function AsideBox() {
   const token =useSelector(getToken)
 
   const dispatch = useDispatch()
+
+
   useEffect(() => {
     if(notifStatus===statusTypes.idle && userDataStatus===statusTypes.succeeded){
    

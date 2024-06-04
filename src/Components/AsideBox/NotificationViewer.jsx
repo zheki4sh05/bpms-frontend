@@ -1,6 +1,7 @@
 import { Box, Divider, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import {
+  fetchNotification,
   getNotifCount,
   getNotificationAcceptedStatus,
   getNotifications,
@@ -9,6 +10,8 @@ import NotificationBox from "../Notifications/NotificationBox";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { getEmail } from "../../Store/slices/appUserSlice";
 
 function NotificationViewer() {
   const [alignment, setAlignment] = useState("all");
@@ -17,9 +20,6 @@ function NotificationViewer() {
 
   const list = useSelector(getNotifications);
 
-  const status = useSelector(getNotificationAcceptedStatus)
-
- 
 
   // const companyStatus = useSelector(getC)
 
@@ -33,18 +33,43 @@ function NotificationViewer() {
   //   ))
   // }
 
-  function getNotificationsByType(type){
-    switch(type){
-      case "all":{
-        return list;
-      }
-      case "assignments":{
-        return list.filter(item=>item.type===type)
-      }
-      case "invite":{
-        return list.filter(item=>item.type===type)
-      }
+  const dispatch = useDispatch();
+
+  function requestHandler(email,token,type){
+
+    if(type=="invitation"){
+      location.reload();
     }
+    dispatch(fetchNotification(
+  
+      {
+        data:{
+          email:email
+        },
+        token
+      }
+    ));
+  }
+
+  function getNotificationsByType(type){
+
+    if(list.length>0){
+
+      switch(type){
+        case "all":{
+          return list;
+        }
+        case "assignments":{
+          return list.filter(item=>item.type===type)
+        }
+        case "invite":{
+          return list.filter(item=>item.type===type)
+        }
+      }
+    }else{
+      return []
+    }
+
   }
 
   return (
@@ -69,7 +94,7 @@ function NotificationViewer() {
       <Divider />
       <Box sx={{ mt: 3 }}></Box>
       {getNotificationsByType(alignment).map((item, index) => (
-        <NotificationBox notifData={item} key={index} />
+        <NotificationBox notifData={item} key={index} requestHandler={requestHandler}/>
       ))}
     </Box>
   );

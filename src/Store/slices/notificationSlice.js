@@ -25,7 +25,7 @@ export const fetchNotification = createAsyncThunk(DomainNames.company.concat('/f
 })
 //удаление уведолмения
 export const rejInvitation = createAsyncThunk(DomainNames.company.concat('/rejInvitation')  , async (initialData) => {
-  const response = await axios.delete(api.company.rejectInivation,  initialData.data, getRequestConfig(initialData.token));
+  const response = await axios.delete(api.company.rejectInivation.concat(addParams(initialData.data)), getRequestConfig(initialData.token));
     return response.data
 })
 
