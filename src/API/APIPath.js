@@ -31,17 +31,19 @@ const api={
         statuses:base.concat("project/statuses"),
     },
     workers:{
-        list:base.concat("workers/list")
+        list:base.concat("workers/list"),
+        relevant:base.concat("workers/relevant")
     },
     assignments:{
-        create:base.concat("assignments/create"),
-        fetch:base.concat("assignments/fetch"),
-        statuses:base.concat("assignments/statuses"),
+        create:base.concat("assignment/create"),
+        fetch:base.concat("assignment/fetch"),
+        statuses:base.concat("assignment/statuses"),
     },
     documents:{
         fetch:base.concat("documents/fetch"),
         upload:base.concat("documents/upload"),
-        info:base.concat("documents/info")
+        info:base.concat("documents/info"),
+        doc_for_assignment:base.concat("documents/doc_for_assignment")
     },
     tasks:{
         fetchMy:base.concat("tasks/fetchMy"),
