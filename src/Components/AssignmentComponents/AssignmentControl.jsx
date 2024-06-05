@@ -2,12 +2,18 @@ import { Box, Button, Container, Divider, List, ListItem, TextField, Typography,
 import CustomCreateAlert from "../CustomCreateAlert";
 import { useEffect, useState } from "react";
 import statusTypes from "../../API/status";
+import { useSelector } from "react-redux";
+import { getToken } from "../../Store/slices/appUserSlice";
+import { updateAssignment, updateAssignmentTodos } from "../../Store/slices/assignmentSlice";
+import { useDispatch } from "react-redux";
+import ChangeAssignmentWorker from "./ChangeAssignmentWorker";
 
 
 function AssignmentControl({assignment, assignmentStatus}) {
 
+    const token = useSelector(getToken)
  
-
+  const dispatch = useDispatch();
     console.log(assignment.deadline)
     const [isEditedFinish, setEditedFinish] = useState(false);
   
@@ -24,6 +30,21 @@ function AssignmentControl({assignment, assignmentStatus}) {
   
     const setHandler = () => {
       setEditedFinish(false);
+
+      dispatch(
+        updateAssignment({
+            data:{
+                id:assignment.id,
+                name: assignment.name,
+                desc: assignment.description,
+                deadline:finishDate,
+                startAt: assignment.startAt,
+                status:assignment.status,
+                newStage:assignment.stageId
+            },
+            token
+        })
+      )
   
     //   setDataHandler({
     //     ...data,
@@ -70,7 +91,7 @@ function AssignmentControl({assignment, assignmentStatus}) {
     const [todos, setTodos] = useState(assignmentStatus.toDoDTOList);
     const [isEdited, setIsEdited] = useState(false);
     const [editedId, setEditedId] = useState(null);
-  
+    const [idEditedList, setEditedList] = useState(false)
     const onChange = (e) => {
       setInputVal(e.target.value);
     };
@@ -87,7 +108,10 @@ function AssignmentControl({assignment, assignmentStatus}) {
       }
       setInputVal("");
       setIsEdited(false);
-      console.log("LIST "+ todos)
+      console.log("edited ")
+      if(!idEditedList){
+        setEditedList(true)
+      } 
      
     };
   
@@ -98,16 +122,32 @@ function AssignmentControl({assignment, assignmentStatus}) {
     const onDelete = (id) => {
       const newTodos = todos.filter((todo) => todo.id !== id);
       setTodos(newTodos);
+
+  
+      if(!idEditedList){
+        setEditedList(true)
+      }
+
     };
   
     const handleDone = (id) => {
-      const updated = todos.map((todo) => {
-        if (todo.id === id) {
-          todo.isDone = !todo.isDone;
+      const updated = todos.map((item) => {
+        if (item.id === id) {
+          
+
+          let newTodo={
+            ...item,
+            isDone:!item.isDone
+          }
+          return newTodo;
+
+        }else{
+          return item;
         }
-        return todo;
+       
       });
       setTodos(updated);
+     
     };
   
     const handleEdit = (id) => {
@@ -118,9 +158,18 @@ function AssignmentControl({assignment, assignmentStatus}) {
       setTodos(newTodos);
       setIsEdited(true);
     };
-  
 
-
+    const handleSaveTodos=()=>{
+      setEditedList(false)
+      dispatch(updateAssignmentTodos({
+        data:{
+          assignmentId:assignment.id,
+          todos:todos
+        },
+        token
+      }))
+    }
+ 
 
   return (
     <Box>
@@ -213,6 +262,22 @@ function AssignmentControl({assignment, assignmentStatus}) {
           );
         })}
       </List>
+      <Button
+             
+              
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              disabled={!idEditedList}
+              onClick = {handleSaveTodos}
+            >
+              Сохранить
+            </Button>
+
+            
+        <Typography sx={{mt:2}}>Исполнители</Typography>
+        <Divider/>
+
+        <ChangeAssignmentWorker assignment={assignment} assignmentStatus={assignmentStatus}/>
 
       </Container>
     </Box>

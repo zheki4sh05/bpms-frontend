@@ -78,7 +78,9 @@ const initialState = {
 
     updated:'idle',
 
-    delDoc:'idle'
+    delDoc:'idle',
+
+    updateTodos:'idle'
 }
 
 export const createAssignment = createAsyncThunk(DomainNames.assignments.concat('/createAssignment')  , async (initialData) => {
@@ -110,6 +112,18 @@ export const getAllUserAssignmnets = createAsyncThunk(DomainNames.assignments.co
 
   export const delDocFromAssignment = createAsyncThunk(DomainNames.assignments.concat('/delDocFromAssignment')  , async (initialData) => {
     const response = await axios.delete(api.assignments.docDel.concat(addParams(initialData.data)) ,getRequestConfig(initialData.token));
+    
+      return response.data
+  })
+
+  export const updateAssignmentTodos = createAsyncThunk(DomainNames.assignments.concat('/updateAssignmentTodos')  , async (initialData) => {
+    const response = await axios.post(api.assignments.updateTodos, initialData.data ,getRequestConfig(initialData.token));
+    
+      return response.data
+  })
+
+  export const updateAssignmentWorker = createAsyncThunk(DomainNames.assignments.concat('/updateAssignmentWorker')  , async (initialData) => {
+    const response = await axios.post(api.assignments.updateAssignmentWorker, initialData.data ,getRequestConfig(initialData.token));
     
       return response.data
   })
@@ -222,6 +236,38 @@ export const getAllUserAssignmnets = createAsyncThunk(DomainNames.assignments.co
           })
           .addCase(delDocFromAssignment.rejected, (state, action) => {
             state.delDoc = 'failed';
+            state.error = action.error
+          })
+           //-------------------------------------------------------
+
+           //-----------Обновление чек-листа--------------------------
+          .addCase(updateAssignmentTodos.pending, (state, action) => {
+            state.updateTodos = 'loading'
+          })
+          .addCase(updateAssignmentTodos.fulfilled, (state, action) => {
+            state.updateTodos = 'succeeded';
+
+            state.assignmentStatuses.toDoDTOList = action.payload
+           
+            state.error = null;
+          })
+          .addCase(updateAssignmentTodos.rejected, (state, action) => {
+            state.updateTodos = 'failed';
+            state.error = action.error
+          })
+           //-------------------------------------------------------
+           .addCase(updateAssignmentWorker.pending, (state, action) => {
+            state.updateWorker = 'loading'
+          })
+          .addCase(updateAssignmentWorker.fulfilled, (state, action) => {
+            state.updateWorker = 'succeeded';
+
+            state.assignmentStatuses.viewUserAsWorker = action.payload
+           
+            state.error = null;
+          })
+          .addCase(updateAssignmentWorker.rejected, (state, action) => {
+            state.updateWorker = 'failed';
             state.error = action.error
           })
            //-------------------------------------------------------

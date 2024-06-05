@@ -39,7 +39,9 @@ const api={
         fetch:base.concat("assignment/fetch"),
         update:base.concat("assignment/update"),
         statuses:base.concat("assignment/assignment_statuses"),
-        docDel:base.concat("assignment/docDel")
+        docDel:base.concat("assignment/docDel"),
+        updateTodos:base.concat("assignment/updateTodos"),
+        updateAssignmentWorker:base.concat("assignment/updateAssignmentWorker"),
     },
     documents:{
         fetch:base.concat("documents/fetch"),

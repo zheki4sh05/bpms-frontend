@@ -32,7 +32,6 @@ function Workers() {
   const [showAll, setState] = useState(false);
 
   
-
   const { data, setDataHandler } = useContext(DialogContext);
 
   const relevantWorkers = useSelector(getRelevantWorkers);
