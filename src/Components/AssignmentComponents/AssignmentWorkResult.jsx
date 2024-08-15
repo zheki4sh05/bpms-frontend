@@ -1,5 +1,7 @@
-import { Box, Container, Divider, MenuItem, Select, Typography } from "@mui/material";
+import { Box, Button, Container, Divider, MenuItem, Select, Typography } from "@mui/material";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { getProjects } from "../../Store/slices/projectSlice";
 
 function AssignmentWorkResult({assignment, assignmentStatus}) {
 
@@ -17,6 +19,9 @@ function AssignmentWorkResult({assignment, assignmentStatus}) {
             case "done" : {
                 return "Выполнено";
             }
+            case "accepted" : {
+              return "Принято";
+          }
             default : {
                 return "Приостановлено";
             }
@@ -28,7 +33,9 @@ function AssignmentWorkResult({assignment, assignmentStatus}) {
 
     const statuses = assignmentStatus.statusNames.map(item=>getStatusName(item));
 
-    console.log(assignmentStatus.statusNames)
+    const projectStages = useSelector(getProjects).find(pr=>pr.id == assignment.projectId).stages;
+
+
 
     function getIndex(){
         for(let i=0; i < assignmentStatus.statusNames.length;i++){
@@ -43,12 +50,20 @@ function AssignmentWorkResult({assignment, assignmentStatus}) {
 
     const [status,setStatus] = useState(getIndex());
 
-    console.log(assignment.status)
-
-    const handleStatusChange=()=>{
+    const[stageId,setStageId] = useState(projectStages[0].id);
 
 
-        console.log(event.target.value)
+
+    const handleStatusChange=(event)=>{
+
+
+       
+
+        setStatus(event.target.value)
+    }
+
+    const handleStageChange=(event)=>{
+      setStageId(event.target.value)
     }
 
  
@@ -72,8 +87,35 @@ function AssignmentWorkResult({assignment, assignmentStatus}) {
                 ))}
               </Select>
 
+            
+
+
+         
+        <Typography sx={{mt:2}}>Стадия выполнения</Typography>
+        <Divider /> 
+        
+        <Select
+                labelId="demo-simple-select-helper-label"
+                id="demo-simple-select-helper"
+                value={stageId}
+                label="Age"
+                onChange={handleStageChange}
+              >
+                {projectStages.map((item, index) => (
+                  <MenuItem key={index} value={item.id}>
+                    №{item.order} - {item.name} 
+                  </MenuItem>
+                ))}
+            </Select>
+
+        
+
+
+
+
         <Typography sx={{mt:2}}>Прикреплено файлов</Typography>
         <Divider />
+       
 
 
 

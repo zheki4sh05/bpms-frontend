@@ -63,7 +63,7 @@ function UserProfile() {
             <CustomTabPanel
                
                  content={{
-                    tabNames: ["Мои личные данные", "Моё место работы", "Моя производительность"],
+                    tabNames: ["Мои личные данные", "Моё место работы"],
                   }}
             >
                 <Box>
@@ -72,9 +72,7 @@ function UserProfile() {
                 <Box>
                     <AboutCompany/>
                 </Box>
-                <Box>
-                    3
-                </Box>
+              
 
             </CustomTabPanel>
             </Grid>

@@ -61,6 +61,7 @@ import getRequestFormData from '../../API/requestFormData';
 const initialState = {
     list:[],
     statuses:[],
+    addedDocuments:[],
     assignmentStatuses:{},
     created:'idle',
     error:null,
@@ -80,12 +81,14 @@ const initialState = {
 
     delDoc:'idle',
 
-    updateTodos:'idle'
+    updateTodos:'idle',
+
+    updateStatus:'idle',
+
+    addedDoc:"idle"
 }
 
 export const createAssignment = createAsyncThunk(DomainNames.assignments.concat('/createAssignment')  , async (initialData) => {
-
-  console.log(initialData.assignment)
  
     const response = await axios.post(api.assignments.create,initialData.assignment,getRequestConfig(initialData.token));
     
@@ -128,6 +131,19 @@ export const getAllUserAssignmnets = createAsyncThunk(DomainNames.assignments.co
       return response.data
   })
 
+  export const changeAssignmentStatus =  createAsyncThunk(DomainNames.assignments.concat('/changeAssignmentStatus')  , async (initialData) => {
+    const response = await axios.post(api.assignments.changeAssignmentStatus, initialData.data ,getRequestConfig(initialData.token));
+    
+      return response.data
+  })
+  export const uploadDocForAssignment =  createAsyncThunk(DomainNames.assignments.concat('/upload')  , async (initialData) => {
+
+  
+    const response = await axios.post(api.assignments.upload, initialData.data,getRequestFormData(initialData.token));
+    
+      return response.data
+  }) 
+
 
 
 
@@ -140,6 +156,12 @@ export const getAllUserAssignmnets = createAsyncThunk(DomainNames.assignments.co
       },
       setSelectedTask(state,action){
         state.selectedTask = action.payload;
+      },
+      addDocuments(state,action){
+        state.addedDocuments = action.payload;
+      },
+      resetAddedDocuments(state,action){
+        state.addedDocuments = []
       },
       changeTaskStatus(state,action){
       
@@ -160,6 +182,9 @@ export const getAllUserAssignmnets = createAsyncThunk(DomainNames.assignments.co
           }
         }
 
+      },
+      resetAddedDocsStatus(state,action){
+        state.addedDoc = 'idle'
       }
     },
     extraReducers(builder) {
@@ -271,11 +296,49 @@ export const getAllUserAssignmnets = createAsyncThunk(DomainNames.assignments.co
             state.error = action.error
           })
            //-------------------------------------------------------
+          //-----------Обновление статуса поручения--------------------------
+          .addCase(changeAssignmentStatus.pending, (state, action) => {
+            state.updateStatus = 'loading'
+          })
+          .addCase(changeAssignmentStatus.fulfilled, (state, action) => {
+            state.updateStatus = 'succeeded';
+
+
+            let mass =  state.list.filter(item=>item.id != action.payload.id)
+            mass.push(action.payload)
+            
+
+            state.list = mass;
+           
+            state.error = null;
+          })
+          .addCase(changeAssignmentStatus.rejected, (state, action) => {
+            state.updateStatus = 'failed';
+            state.error = action.error
+          })
+          //  -------------------------------------------------------
+           //-----сохранение документов для поручения--------------
+           .addCase(uploadDocForAssignment.pending, (state, action) => {
+            state.addedDoc = 'loading'
+          })
+          .addCase(uploadDocForAssignment.fulfilled, (state, action) => {
+            state.addedDoc = 'succeeded';
+
+            state.assignmentStatuses = action.payload
+
+              state.error = null;
+          })
+          .addCase(uploadDocForAssignment.rejected, (state, action) => {
+            state.addedDoc = 'failed';
+            state.error = action.error
+          })
+
+           //----------------------------------------------------
            
     }
   })
 
-  export const { resetCreatedAssignStatus,setSelectedTask,changeTaskStatus} = assignmentsSlice.actions
+  export const { resetCreatedAssignStatus,setSelectedTask,changeTaskStatus,addDocuments,resetAddedDocsStatus} = assignmentsSlice.actions
   export default assignmentsSlice.reducer
   export function getAssignmentsList(state) {
   
@@ -303,4 +366,10 @@ export const getAllUserAssignmnets = createAsyncThunk(DomainNames.assignments.co
 
   export function getDelDocStatus(state){
     return state[DomainNames.assignments].delDoc
+  }
+  export function getAddedDocuments(state){
+    return state[DomainNames.assignments].addedDocuments
+  }
+  export function getAddedDocsStatus(state){
+    return state[DomainNames.assignments].addedDoc
   }

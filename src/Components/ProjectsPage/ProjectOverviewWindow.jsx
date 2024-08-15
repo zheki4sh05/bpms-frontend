@@ -65,7 +65,7 @@ function ProjectOverviewWindow() {
                   tabNames: ["Канбан", "Статистика", "О проекте"],
                 }}
               >
-                <KanbanProject project={item} />
+                {/* <KanbanProject project={item} /> */}
                 <ProjectInfo project={item} />
 
                 <ProjectInfo project={item} />

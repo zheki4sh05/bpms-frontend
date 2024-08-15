@@ -40,7 +40,7 @@ export default function Header() {
               TaskWise
             </Typography>
 
-            <SearchBar />
+            {/* <SearchBar /> */}
           </Stack>
           <Box
             sx={{
@@ -58,7 +58,7 @@ export default function Header() {
             >
               {new Date().toLocaleDateString()}
             </Typography>
-            <IconButton
+            {/* <IconButton
               size="large"
               edge="start"
               color="inherit"
@@ -66,7 +66,7 @@ export default function Header() {
               sx={{ mr: 2, ml: 2 }}
             >
               <Settings />
-            </IconButton>
+            </IconButton> */}
           </Box>
 
           <Box sx={{ flexGrow: 1 }} />

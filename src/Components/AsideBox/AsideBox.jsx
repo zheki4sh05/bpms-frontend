@@ -121,16 +121,7 @@ function AsideBox() {
               <NotificationsIcon color="action" />
             </Badge>
           </IconButton>
-          <IconButton>
-            <Badge badgeContent={0} color="primary">
-              <PersonIcon color="action" />
-            </Badge>
-          </IconButton>
-          <IconButton>
-            <Badge badgeContent={0} color="primary">
-              <NotificationsIcon color="action" />
-            </Badge>
-          </IconButton>
+    
           <IconButton sx={{ mt: "40px" }}>
             <Badge badgeContent={0} color="primary">
               <HelpIcon color="action" />

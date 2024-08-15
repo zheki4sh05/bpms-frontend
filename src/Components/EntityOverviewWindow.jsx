@@ -10,6 +10,7 @@ import DialogContext from "./DialogContext";
 import DocumentOverview from "./DocumentsComponents/DocumentOverview";
 import WorkerProfile from "./StaffPage/WorkerProfile";
 import AssignmentProfile from "./AssignmentComponents/AssignmentProfile";
+import MyTasksProfile from "./MyTasksComponents/MyTasksProfile";
 const EntityOverviewWindow = memo(({ title, accordionBodyType }) => {
   const [expanded, setExpanded] = useState(false);
 
@@ -38,6 +39,9 @@ const EntityOverviewWindow = memo(({ title, accordionBodyType }) => {
       }
       case "assignment":{
           return <AssignmentProfile assignment={data} />
+      }
+      case "myTasks":{
+        return <MyTasksProfile task = {data} />
       }
     }
   }
@@ -80,6 +84,21 @@ const EntityOverviewWindow = memo(({ title, accordionBodyType }) => {
         );
       }
       case "assignment":{
+        return(
+          <>
+          
+          <Typography sx={{ width: "33%", flexShrink: 0 }}>
+              {data.name} {data.stageName}
+            </Typography>
+            <Typography sx={{ color: "text.secondary" }}>
+              {data.statusName}
+            </Typography>
+
+
+          </>
+        )
+      }
+      case "myTasks" :{
         return(
           <>
           

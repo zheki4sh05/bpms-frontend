@@ -14,7 +14,7 @@ import DocumentTable from "../Components/DocumentsComponents/DocumentTable";
 import UploadDocument from "../Components/DocumentsComponents/UploadDocument";
 import { useSelector } from "react-redux";
 import { getAllProjectsStatuses, getAllUserProjects, getProjects, getProjectsLoadedStatus } from "../Store/slices/projectSlice";
-import { getDocList, getDocuments, getReportsList } from "../Store/slices/documentsSlice";
+import { getDocList, getDocsCount, getDocuments, getReportsList } from "../Store/slices/documentsSlice";
 import { memo, useEffect, useState } from "react";
 import statusTypes from "../API/status";
 import { useDispatch } from "react-redux";
@@ -29,7 +29,7 @@ const DocumentsPage = memo(()=> {
 
   const projectsStatus = useSelector(getProjectsLoadedStatus)
 
-
+  const count = useSelector(getDocsCount)
 
 
   function makeProjectRequest(){
@@ -93,7 +93,7 @@ const DocumentsPage = memo(()=> {
           data={[
             {
               name: "Доступно",
-              count: "0",
+              count: `${count}`,
             },
           ]}
         />

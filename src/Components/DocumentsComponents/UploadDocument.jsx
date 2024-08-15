@@ -20,29 +20,27 @@ const UploadDocument = memo(({reloadHandler, company, token})=> {
   
  
     const handleSaveUploadedDoc=()=>{
-      console.log(data.members)
    
       const formData = new FormData()
 
       data.files.forEach((file, index) => {
         formData.append(`file[${index}]`, file);
       });
-      console.log(data.members.access.alignment)
+    
       formData.append("alignment", data.members.access.alignment)
       formData.append("byRequest", data.members.access.byRequest)
       formData.append("projectId", data.members.access.project)
       formData.append("type", data.members.access.type)
-      console.log(data.members.workers)
-      data.members.workers.forEach((worker,index)=>{
+         data.members.workers.forEach((worker,index)=>{
         formData.append(`workers[${index}].id`, worker.id)
         formData.append(`workers[${index}].role`, worker.role)
         formData.append(`workers[${index}].firstname`, worker.firstname)
         formData.append(`workers[${index}].lastname`, worker.lastname)
         formData.append(`workers[${index}].email`, worker.email)
       })
-     
+      
       formData.append("companyName", company)
-
+      formData.append("assignmentId", 0)
       dispatch(uploadDoc({
         data:formData,
         token:token

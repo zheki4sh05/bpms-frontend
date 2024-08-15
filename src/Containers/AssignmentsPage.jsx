@@ -26,7 +26,7 @@ function AssignmentsPage() {
 
   const assignmentsResult = useSelector(getAssignmentsList) || []
 
-  const assignments = useMemo(() => assignmentsResult.filter(item=>item.user == userId), [assignmentsResult]);
+  const assignments = assignmentsResult.filter(item=>item.user == userId)
 
   const role  = useSelector(getRoleInCompany)
 

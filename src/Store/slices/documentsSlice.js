@@ -9,7 +9,6 @@ import getRequestFormData from '../../API/requestFormData';
 
 const initialState = {
     documents:[],
-    // documents:[],
     statusDoc:'idle',
 
     reports:[],
@@ -183,6 +182,10 @@ export function getDocInfo(){
 
 export function getDocForAssignment(state){
   return state[DomainNames.documents].forAssignment
+}
+
+export function getDocsCount(state){
+  return state[DomainNames.documents].documents.length + state[DomainNames.documents].reports.length
 }
 
   export default documentsSlice.reducer

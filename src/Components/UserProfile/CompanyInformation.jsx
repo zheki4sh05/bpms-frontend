@@ -17,10 +17,10 @@ function CompanyInformation() {
           <ListItem alignItems="flex-start">
             <EditCompanyDesc />
           </ListItem>
-          <Divider variant="inset" component="li" />
+          {/* <Divider variant="inset" component="li" />
           <ListItem alignItems="flex-start">1</ListItem>
           <Divider variant="inset" component="li" />
-          <ListItem alignItems="flex-start">2</ListItem>
+          <ListItem alignItems="flex-start">2</ListItem> */}
         </List>
 
         <CompanySpecializations/>
