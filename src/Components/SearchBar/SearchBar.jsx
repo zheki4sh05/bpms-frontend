@@ -13,7 +13,7 @@ export default function SearchBar({
   placeHolder = "Поиск",
   handleSearch,
 }) {
-  console.log(" placeHolder" + placeHolder);
+  
   return (
     <Paper
       component="form"
@@ -21,28 +21,25 @@ export default function SearchBar({
       sx={{
         display: "flex",
         alignItems: "center",
-        width: 300,
+        width: "100%",
+        height:40,
         bgcolor: "white",
+        borderRadius:"10px",
+        padding:"10px",
+        boxSizing:"border-box",
+       
       }}
       onSubmit={handleSearch}
     >
-      {/* <InputBase
+      <InputBase
        id="input"
 
-        sx={{ ml: 1, flex: 1 }}
+        sx={{ ml: 1, flex: 1,fontSize:"16px" }}
         placeholder={placeHolder} 
         inputProps={{ 'aria-label': 'Поиск' }}
        
-      /> */}
-      <TextField
-        id="input"
-        name="input"
-        sx={{ flex: 1 }}
-        
-        siz="small"
-        variant="standard"
-       
       />
+   
       <IconButton type="submit" sx={{ p: "5px" }} aria-label="search">
         <SearchIcon />
       </IconButton>

@@ -34,8 +34,6 @@ function Projects() {
 
   const projectCount = useSelector(getProjectsCount);
 
-  const createdStatus = useSelector(getCreatedStatus);
-
   const projectsStatus = useSelector(getProjectsLoadedStatus);
 
   const addedStatus = useSelector(getAddedStatus);

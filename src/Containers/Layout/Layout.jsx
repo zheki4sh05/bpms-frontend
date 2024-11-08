@@ -19,6 +19,7 @@ import {
 } from "../../Store/slices/appUserSlice";
 
 import LoadingUserData from "../../Components/LoadingUserData";
+import Grid from '@mui/material/Grid2';
 
 const theme = createTheme(ruRU);
 
@@ -39,34 +40,44 @@ function Layout() {
         {
           //(authStatus===statusTypes.succeeded && userDataStatus===statusTypes.succeeded && companyDataStatus===statusTypes.succeeded) ?
           // !(checkAll([authStatus,userDataStatus,companyDataStatus])===statusTypes.succeeded) ?
-         (authStatus === statusTypes.succeeded) ? 
+         !(authStatus === statusTypes.succeeded) ? 
             <AuthFormComponent />
-           : (appStatus === statusTypes.succeeded) ? 
+           : !(appStatus === statusTypes.succeeded) ? 
             <LoadingUserData  />
            : 
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
+          <>
               <Header />
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                }}
-              >
-                <UserDrawer />
+              
+              <Box sx={{width:"100%", p:1}} ></Box>
 
+              
+               <Box sx={{display:"flex", flex:"row nowrap", height:"100%", paddingBottom:"10px"}} >
+                 <Box sx={{paddingLeft:"30px", paddingRight:"54px"}} >
+                  <UserDrawer />
+                 </Box>
+                
+               
+                
                 <MainBody>
                   <Outlet />
                 </MainBody>
-
-                <WidgetsToolBar />
+               
+                {/* <Grid size={0} >
+                  <WidgetsToolBar />
+                </Grid> */}
+                <Box sx={{marginLeft:"52px", paddingRight:"28px"}}>
                 <AsideBox />
-              </Box>
-            </Box>
+
+                </Box>
+              
+                
+                
+
+             
+
+                        </Box>
+                        
+                        </>
           
         }
       </div>

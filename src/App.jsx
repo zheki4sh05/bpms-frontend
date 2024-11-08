@@ -34,13 +34,6 @@ function App() {
           element:<MyTasksPage/>
         },
         {
-          path:PathConstants.CALENDAR,
-          element:<CalendarPage/>
-        },
-        {
-          path:PathConstants.PROCESSES,
-          element:<ProcessesPage/>
-        },{
           path:PathConstants.DOCUMENTS,
           element:<DocumentsPage/>
         },{

@@ -97,29 +97,6 @@ const DocumentsPage = memo(()=> {
             },
           ]}
         />
-
-        {/* {projects.length > 0 ? (
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">
-              Выбрать область
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={projects[0].name}
-              label="Выбрать специализацию"
-              onChange={handleProjectChange}
-            >
-              {projects.map((item, index) => (
-                <MenuItem value={index.name} key={index}>
-                  {item}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        ) : (
-          <Typography>У вас нет проектов</Typography>
-        )} */}
        
           <DocumentTable/>
           

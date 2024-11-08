@@ -27,6 +27,7 @@ import TimelineIcon from '@mui/icons-material/Timeline';
 import DescriptionIcon from '@mui/icons-material/Description';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import Diversity3Icon from '@mui/icons-material/Diversity3';
+import { Typography } from "@mui/material";
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -86,16 +87,6 @@ const menu_items = [
     icon: <AssignmentReturnedIcon />
   },
   {
-    path:PathConstants.CALENDAR,
-    name:"Календарь",
-    icon: <CalendarMonthIcon/>
-  },
-  {
-    path:PathConstants.PROCESSES,
-    name:"Процессы",
-    icon: <TimelineIcon />
-  },
-  {
     path:PathConstants.DOCUMENTS,
     name:"Документы",
     icon: <DescriptionIcon />
@@ -128,14 +119,11 @@ export default function UserDrawer() {
   };
 
   return (
-    <Box sx={{
-      height:"100%",
-     
-    }}>
+ 
       <Drawer
         variant="permanent"
         open={open}
-        sx={{ position: "relative", mt: 2, height:"100%",marginLeft:"10px",borderRadius:"10px" }}
+        sx={{ position: "relative", height:"100%",borderRadius:"10px",maxWidth:"240px"}}
         PaperProps={{ sx: { position: "relative", height:"100%", bgcolor:"#6495ED" } }}
       >
         <Box sx={{ display: "flex", alignItems: "center", width: "100%" }}>
@@ -176,10 +164,13 @@ export default function UserDrawer() {
                
                     {item.icon}
                     </ListItemIcon>
+                
                     <ListItemText
                       
-                      primary={item.name}
-                      sx={{ opacity: open ? 1 : 0, color:"white" }}
+                      primary={(<Typography variant="h6" sx={{textDecoration:"none"}} >
+                      {item.name}
+                      </Typography>)}
+                      sx={{ opacity: open ? 1 : 0, color:"white",textDecoration:"none" }}
                     />
                   </ListItemButton>
                 </Link>
@@ -188,6 +179,6 @@ export default function UserDrawer() {
           )}
         </List>
       </Drawer>
-    </Box>
+  
   );
 }

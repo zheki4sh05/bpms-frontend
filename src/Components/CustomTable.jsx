@@ -269,8 +269,6 @@ EnhancedTableToolbar.propTypes = {
 };
 
 const CustomTable = memo(({ rows = [], tableTitle, tableHeadCells })=> {
-  console.log("CustomTable")
-  console.log(rows)
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
   const [selected, setSelected] = React.useState([]);
@@ -398,13 +396,6 @@ const CustomTable = memo(({ rows = [], tableTitle, tableHeadCells })=> {
                         {row[cell.id]}
                       </TableCell>
                     ))}
-
-                    {/* <TableCell align="left">{row.name}</TableCell>
-                    <TableCell align="left">{row.done}</TableCell>
-                    <TableCell align="left">{row.start}</TableCell>
-                    <TableCell align="left">{row.workers}</TableCell>
-                    <TableCell align="left">{row.role}</TableCell>
-                    <TableCell align="left">{row.access}</TableCell> */}
                   </TableRow>
                 );
               })}

@@ -1,9 +1,12 @@
-@import "/src/assets/style-variables.scss";
+
 
 .main{
-    background-color: $basic_color;
+    background-color:#F0F8FF;
     width: 100vw;
     height:100vh;
     overflow-x: hidden;
     overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    
 }

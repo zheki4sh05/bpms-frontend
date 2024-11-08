@@ -12,7 +12,7 @@ import {
 import { useEffect, useState } from "react";
 
 function ToDoList({handleTodos, initialList=[]}) {
-  console.log(initialList)
+
   const [inputVal, setInputVal] = useState("");
   const [todos, setTodos] = useState(initialList);
   const [isEdited, setIsEdited] = useState(false);

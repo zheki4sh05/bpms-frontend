@@ -7,8 +7,17 @@ import addParams from '../../Util/paramsConfig';
 import statusTypes from '../../API/status';
 import getRequestFormData from '../../API/requestFormData';
 
+
 const initialState = {
-    documents:[],
+    documents:[{
+      id:1,
+      name:"документ",
+      format:"docx",
+      downloadAt:"15.04.2023",
+      access:"Общедоступный",
+      size:"10"
+
+    }],
     statusDoc:'idle',
 
     reports:[],

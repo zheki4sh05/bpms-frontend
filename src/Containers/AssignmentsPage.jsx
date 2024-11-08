@@ -1,10 +1,6 @@
 import { Box } from "@mui/material";
 import SearchBox from "./../Components/SearchBox/SearchBox";
-import CustomTable from "./../Components/CustomTable";
-import CustomTabPanel from "./../Components/CustomTabPanel/CustomTabPanel";
 import { useEffect, useMemo, useState } from "react";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
 import PageInfo from "../Components/PageInfo";
 import CreateAssignment from "../Components/CreateAssignment";
 import DialogContext from "../Components/DialogContext";
@@ -71,23 +67,7 @@ function AssignmentsPage() {
           ]}
         />
 
-        <CustomTabPanel
-          content={{
-            tabNames: ["Список", "Календарь", "Канбан"],
-          }}
-        >
-          <AssignmentTable assignments={assignments}/>
-          <Typography variant="h5" gutterBottom>
-            контент 1
-          </Typography>
-        
-          <Typography variant="h5" gutterBottom>
-            контент 3
-          </Typography>
-          <Typography variant="h5" gutterBottom>
-            контент 4
-          </Typography>
-        </CustomTabPanel>
+        <AssignmentTable assignments={assignments}/>
 
         <CreateAssignment 
         

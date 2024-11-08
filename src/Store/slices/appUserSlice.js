@@ -6,10 +6,10 @@ import getRequestConfig from '../../API/requestConfig';
 const initialState = {
     user: {
         id:0,
-        name:"",
-        lastname:"",
+        name:"evgeniy",
+        lastname:"shostak",
         surname:"",
-        email:"",
+        email:"evgeniy.shostak.04@mail.ru",
         phone:"",
         bDay:"",
         jwtToken:"",

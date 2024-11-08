@@ -98,7 +98,7 @@ function AsideBox() {
 
   return (
     <>
-      <Box sx={{ pt: 2,mr:1 }}>
+      <Box >
         <Box
           sx={{
             display: "flex",
@@ -109,6 +109,8 @@ function AsideBox() {
             boxSizing: "border-box",
             height: "auto",
             boxShadow: 2,
+            maxWidth:"80px",
+            margin:"0 auto"
           }}
         >
           <IconButton onClick={toggleDrawer("right", true, "chat")}>
