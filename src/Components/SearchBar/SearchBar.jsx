@@ -1,18 +1,22 @@
-import * as React from "react";
+import {useState} from "react";
 import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
-import Divider from "@mui/material/Divider";
+
 import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
+
 import SearchIcon from "@mui/icons-material/Search";
-import DirectionsIcon from "@mui/icons-material/Directions";
-import { TextField } from "@mui/material";
+
 
 export default function SearchBar({
   elevation,
   placeHolder = "Поиск",
   handleSearch,
 }) {
+
+  const [state,setState]= useState("")
+  const onClick=()=>{
+    handleSearch(state)
+  }
   
   return (
     <Paper
@@ -29,7 +33,7 @@ export default function SearchBar({
         boxSizing:"border-box",
        
       }}
-      onSubmit={handleSearch}
+      onSubmit={onClick}
     >
       <InputBase
        id="input"
@@ -37,10 +41,11 @@ export default function SearchBar({
         sx={{ ml: 1, flex: 1,fontSize:"16px" }}
         placeholder={placeHolder} 
         inputProps={{ 'aria-label': 'Поиск' }}
-       
+        value={state}
+        onChange={(event)=>setState(event.target.value)}
       />
    
-      <IconButton type="submit" sx={{ p: "5px" }} aria-label="search">
+      <IconButton onClick={onClick} sx={{ p: "5px" }} aria-label="search">
         <SearchIcon />
       </IconButton>
     </Paper>

@@ -8,10 +8,9 @@ import AsideDrawer from "../AsideBox/AsideDrawer";
 import ProjectOverviewWindow from "./ProjectOverviewWindow";
 
 function ProjectsTable({projects=[]}) {
-  console.log("ProjectsTable")
-  console.log(projects)
+
   
-  const statuses = useSelector(getProjectsResults) || [];
+  const statuses = useSelector(getProjectsResults)
 
   console.log(statuses)
 
@@ -66,7 +65,7 @@ function ProjectsTable({projects=[]}) {
                   label: 'Участников',
                 },
                               {
-                  id: 'roleName',
+                  id: 'role',
                   numeric: false,
                   disablePadding: false,
                   label: 'Роль',

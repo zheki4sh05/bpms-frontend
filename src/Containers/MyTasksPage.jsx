@@ -4,17 +4,21 @@ import CustomTabPanel from "../Components/CustomTabPanel/CustomTabPanel";
 import CustomTable from "../Components/CustomTable";
 import { useSelector } from "react-redux";
 import MyTaskTable from "../Components/MyTasksComponents/MyTaskTable";
-import { useMemo } from "react";
-import { getAssignmentsList } from "../Store/slices/assignmentSlice";
-import { getId } from "../Store/slices/appUserSlice";
+import { useEffect, useMemo } from "react";
+import { getAllUserAssignmnets, getAssignmentsList } from "../Store/slices/assignmentSlice";
+import { getEmail, getId, getToken } from "../Store/slices/appUserSlice";
 import PageInfo from "../Components/PageInfo";
+import { getRoleInCompany } from "../Store/slices/companySlice";
+import { useDispatch } from "react-redux";
 
 function MyTasksPage() {
 
   const userId = useSelector(getId)
 
-  
+  const useremail = useSelector(getEmail)
 
+  const token = useSelector(getToken)
+  const role  = useSelector(getRoleInCompany)
     const tasksResult = useSelector(getAssignmentsList) || []
     
   const myTasks = useMemo(() => tasksResult.filter(item=>item.worker == userId), [tasksResult]);
@@ -25,6 +29,33 @@ function MyTasksPage() {
     const stopCount = useMemo(()=>{return myTasks.filter(item=>item.status=="stop").length},[myTasks])
     const doneCount = useMemo(()=>{return myTasks.filter(item=>item.status=="done").length},[myTasks])
 
+
+    function makeRequest(){
+      dispatch(
+        getAllUserAssignmnets({
+          data: {
+            userEmail:useremail,
+            role:role,
+            size:""
+          },
+          token,
+        })
+      );
+      // dispatch(
+      //   getAllUserAssignmentsStatuses({
+      //     data: {
+      //       useremail,
+      //     },
+      //     token,
+      //   })
+      // );
+    }
+  
+    const dispatch = useDispatch();
+    useEffect(() => {
+      makeRequest(); 
+    }, []);
+  
 
 
     return ( 
@@ -60,24 +91,10 @@ function MyTasksPage() {
           ]}
         />
         
-        <CustomTabPanel
-          content={{
-            tabNames: ["Список", "Календарь", "Канбан"],
-          }}
-        >
-       
+     
+
           <MyTaskTable/>
-          <Typography variant="h5" gutterBottom>
-           контент 1
-          </Typography>
-          <Typography variant="h5" gutterBottom>
-           контент 2
-          </Typography>
-         
-              
-       
-          
-        </CustomTabPanel>
+  
         
         </>: <Typography sx={{mt:2}}>У Вас нет задач</Typography>}
       

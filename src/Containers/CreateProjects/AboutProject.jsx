@@ -72,7 +72,7 @@ function AboutProject() {
             value={inputValueDesc} 
             onChange={handleInputChangeDesc}
           />
-          <ColorInput />
+          {/* <ColorInput /> */}
           <Button
             type="submit"
             fullWidth

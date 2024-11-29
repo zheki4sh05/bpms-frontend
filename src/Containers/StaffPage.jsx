@@ -25,10 +25,10 @@ function StaffPage() {
   const token = useSelector(getToken)
   const dispatch = useDispatch()
   useEffect(() => {
-    if (status === statusTypes.idle) {
+   
       dispatch(getAllWorkers({ data: {companyName:company}, token }));
-    }
-  }, [status, dispatch]);
+    
+  }, []);
 
   return (
     <DialogEntityProvider>

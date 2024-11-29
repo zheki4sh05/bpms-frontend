@@ -5,84 +5,104 @@ import axios from 'axios';
 import getRequestConfig from '../../API/requestConfig';
 import addParams from './../../Util/paramsConfig';
 
-const initialState = {
-    userCompany:{
-      id:0,
-      name:"",
-      desc:"",
-      currentRole:"",
-    },
-    staff:{
-      list:[],
-      updated:null,
-      status:'idle',
-    },
-
-    updated:null,
-    error:null,
-    status:'idle',
-    created:'idle',
-    searched:{
-      user:{
-      },
-      status:'idle',
-      invited:'idle'
-    },
-
-    specializations:[
-      {
-        id:1,
-        name:"Программист",
-        count:3
-      }
-    ],
-    specStatus:'idle',
-
-    fetchStatus:'idle'
-
-}
-
 // const initialState = {
-//   userCompany:{
-//       name:"Новая компания",
-//       desc:"Описание новой компании",
-//       currentRole:"admin",
-//   },
-//   staff:{
-//     list:[{
-//       id:"1",
-//       name:"Олег",
-//       surname:"Петрович",
-//       lastname:"Иванов",
-//       age:24,
-//       email:"example@maio.ru",
-//       position:"Дизайнер",
-//       role:"Отв. за проект",
-//       social:{
-//         inst:"hsiasa",
-//         teleg:"@hyess",
-//         site:"www.sdpcm.com"
-//       }
-//     }],
+//     userCompany:{
+//       id:0,
+//       name:"",
+//       desc:"",
+//       currentRole:"",
+//     },
+//     staff:{
+//       list:[],
+//       updated:null,
+//       status:'idle',
+//     },
+
 //     updated:null,
+//     error:null,
 //     status:'idle',
-//   },
-//   updated:null,
-//   error:null,
-//   status:'succeeded',
-//   searched:{
-//     user:{
-//       firstname:"petr",
+//     created:'idle',
+//     searched:{
+//       user:{
+//       },
+//       status:'idle',
+//       invited:'idle'
+//     },
+
+//     specializations:[
+//       {
+//         id:1,
+//         name:"Программист",
+//         count:3
+//       }
+//     ],
+//     specStatus:'idle',
+
+//     fetchStatus:'idle'
+
+// }
+
+
+// name:"Новая компания",
+// desc:"Описание новой компании",
+// currentRole:"admin",
+
+
+// firstname:"petr",
 //       lastname:"sergey",
 //       surname:"sdmvms",
 //       email:"test@mail.ru",
 //       phone:"29375723",
 //       birthDay:"15.04.2000"
-//     },
-//     status:'succeeded',
-//     invited:'idle'
+
+
+// {
+//   id:1,
+//   name:"Программист",
+//   count:3
+// }
+
+// {
+//   id:"1",
+//   name:"Олег",
+//   surname:"Петрович",
+//   lastname:"Иванов",
+//   age:24,
+//   email:"example@maio.ru",
+//   position:"Дизайнер",
+//   role:"Отв. за проект",
+//   social:{
+//     inst:"hsiasa",
+//     teleg:"@hyess",
+//     site:"www.sdpcm.com"
 //   }
 // }
+
+const initialState = {
+  userCompany:{
+    name:"",
+    desc:"",
+    currentRole:"",
+    },
+  staff:{
+    list:[],
+    updated:null,
+    status:'idle',
+  },
+  updated:null,
+  error:null,
+  status:'idle',
+  searched:{
+    user:{
+      
+    },
+    status:'idle',
+    invited:'idle'
+  },
+  specializations:[
+  
+],
+}
 
 //получение подробных данных компании
 export const fetchCompany = createAsyncThunk(DomainNames.company.concat('/fetchCompany')  , async (initialCompany) => {
@@ -113,7 +133,7 @@ export const inviteUserToCompany= createAsyncThunk(DomainNames.company.concat('/
 })
 
 export const findUser= createAsyncThunk(DomainNames.company.concat('/findUser')  , async (initialCompany) => {
-  console.log(initialCompany)
+ 
   const response = await axios.get(api.company.findUser.concat(addParams(initialCompany.data)),getRequestConfig(initialCompany.token));
 
   return response.data

@@ -71,11 +71,11 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const menu_items = [
-  {
-    path:PathConstants.HOME,
-    name:"Новости",
-    icon: <MailIcon />
-  },
+  // {
+  //   path:PathConstants.HOME,
+  //   name:"Новости",
+  //   icon: <MailIcon />
+  // },
   {
     path:PathConstants.PROJECTS,
     name:"Мои проекты",

@@ -16,7 +16,6 @@ function AllProjectsTable() {
    
 
     console.log(projects)
-
     // function getRows(data=[]){
     //   return data.forEach(project => {
     //         return {

@@ -23,16 +23,14 @@ function InviteControl() {
 
   const dispatch = useDispatch();
 
-  function makeRequest(event) {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
+  function makeRequest(data) {
 
-    console.log(data.get("input"))
+
     
     dispatch(
       findUser({
         data: {
-          email: data.get("input"),
+          email: data,
         },
         token,
       })

@@ -94,9 +94,9 @@ function CreateAssignment({ reloadHandler }) {
   };
 
   if (createdStatus === statusTypes.succeeded) {
-    //reloadHandler();
-    //resetDialogContext();
-    //dispatch(resetCreatedAssignStatus())
+    reloadHandler();
+    resetDialogContext();
+    dispatch(resetCreatedAssignStatus())
   }
 
   return (

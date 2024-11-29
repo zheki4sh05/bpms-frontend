@@ -14,7 +14,7 @@ function StaffTable() {
   const email = useSelector(getEmail)
   const list =  useSelector(getWorkersList);
     const staffList = useMemo(() => list.filter(item=>item.email!=email), [list]);
-    console.log(staffList)
+ 
   
       return ( 
       <Box>

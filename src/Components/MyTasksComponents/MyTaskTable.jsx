@@ -37,7 +37,7 @@ function MyTaskTable() {
               <DialogEntityProvider>
               <CustomTable
                 rows={myTasks}
-                tableTitle="Таблица документов"
+                tableTitle="Таблица задач"
                 tableHeadCells={[
                   {
                     id: "id",

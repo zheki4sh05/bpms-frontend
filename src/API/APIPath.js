@@ -43,6 +43,7 @@ const api={
         upload:base.concat("assignment/addDocsAssignment"),
         updateAssignmentWorker:base.concat("assignment/updateAssignmentWorker"),
         changeAssignmentStatus:base.concat("assignment/changeAssignmentStatus"),
+        updateTodos:base.concat("assignment/updateTodos")
        
     },
     documents:{

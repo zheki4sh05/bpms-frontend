@@ -1,7 +1,7 @@
 
 import { getUploadedStatus, resetUploadedStatus, uploadDoc } from "../../Store/slices/documentsSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { getToken } from "../../Store/slices/appUserSlice";
+import { getId, getToken } from "../../Store/slices/appUserSlice";
 import statusTypes from "../../API/status";
 import DocumentSettings from "./DocumentSettings";
 import UploadDocumentPlaceholder from "./UploadDocumentPlaceholder";
@@ -17,7 +17,7 @@ const UploadDocument = memo(({reloadHandler, company, token})=> {
     const createdStatus = useSelector(getUploadedStatus);
   
     const dispatch = useDispatch();
-  
+    const userId = useSelector(getId)
  
     const handleSaveUploadedDoc=()=>{
    
@@ -41,6 +41,7 @@ const UploadDocument = memo(({reloadHandler, company, token})=> {
       
       formData.append("companyName", company)
       formData.append("assignmentId", 0)
+      formData.append("uploadedUser", userId)
       dispatch(uploadDoc({
         data:formData,
         token:token

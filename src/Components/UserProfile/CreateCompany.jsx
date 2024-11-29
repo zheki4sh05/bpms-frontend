@@ -73,12 +73,13 @@ if(status===statusTypes.loading){
     handleCreate();
 
     }else if(status===statusTypes.failed){
-
-      authResultContent=<CustomCreateAlert
-      messageText={"Не удалось создать компанию. ".concat(getErrorName('company', error.code))}
-       duration={4000}
-       userSeverity={"error"}
-      />
+     
+      // authResultContent=<CustomCreateAlert
+      // messageText={"Не удалось создать компанию. ".concat(getErrorName('company', error.code))}
+      //  duration={4000}
+      //  userSeverity={"error"}
+      // />
+      authResultContent=<></>
 
     }
 

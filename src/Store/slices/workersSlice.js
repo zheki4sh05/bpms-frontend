@@ -5,22 +5,25 @@ import axios from 'axios';
 import getRequestConfig from '../../API/requestConfig';
 import addParams from '../../Util/paramsConfig';
 
+
+// {
+//   id:20,
+//   role:"admin",
+//   firstname:"Евгений",
+//   lastname:"Шостак",
+//   email:"email@mail.ru",
+//   spec:1
+  
+// }
+
 const initialState = {
-    workers:[],
+    workers:[
+      ],
     relevant:[],
     error:null,
     status:'idle',
     relevantStatus:'idle'
 
-    // {
-    //   id:20,
-    //   role:"admin",
-    //   firstname:"Евгений",
-    //   lastname:"Шостак",
-    //   email:"email@mail.ru",
-    //   spec:1
-
-    // }
 }
 
 export const getAllWorkers = createAsyncThunk(DomainNames.workers.concat('/getAllWorkers')  , async (initialUser) => {

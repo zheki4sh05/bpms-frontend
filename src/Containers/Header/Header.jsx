@@ -104,7 +104,7 @@ export default function Header() {
                   aria-label="menu"
                   sx={{ mr: 2, ml: 2 }}
                 >
-                  <Settings />
+                  {/* <Settings /> */}
                 </IconButton>
               </Box>
               </Box>

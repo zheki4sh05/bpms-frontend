@@ -12,9 +12,10 @@ import { getProjects } from "../../Store/slices/projectSlice";
 import { getToken } from "../../Store/slices/appUserSlice";
 import { changeAssignmentStatus } from "../../Store/slices/assignmentSlice";
 import { useDispatch } from "react-redux";
+import { getStages } from './../../Store/slices/appUserSlice';
 
 function MyTaskProgress({ task, assignmentStatus }) {
-
+  console.log(assignmentStatus)
   const token = useSelector(getToken)
 
   const dispatch = useDispatch()
@@ -46,9 +47,7 @@ function MyTaskProgress({ task, assignmentStatus }) {
     getStatusName(item)
   );
 
-  const projectStages = useSelector(getProjects).find(
-    (pr) => pr.id == task.projectId
-  ).stages;
+  const projectStages = useSelector(getStages)
 
 
 
@@ -63,7 +62,7 @@ function MyTaskProgress({ task, assignmentStatus }) {
   }
 
   const [status, setStatus] = useState(getIndex());
-
+  console.log(status)
   const [stageId, setStageId] = useState(projectStages[0].id);
 
   const handleStatusChange = (event) => {
@@ -97,6 +96,7 @@ function MyTaskProgress({ task, assignmentStatus }) {
   useEffect(()=>{
 
     if(isDone){
+      console.log("save")
       dispatch(changeAssignmentStatus({data:{
         assignmentId:task.id,
         curStatus:task.status,
@@ -136,7 +136,7 @@ function MyTaskProgress({ task, assignmentStatus }) {
 
         {}
 
-        <Button variant="contained" color="success" disabled={isDone} onCLick={handleDoneTask}>
+        <Button variant="contained" color="success" disabled={isDone} onClick={handleDoneTask}>
           Выполнить поручение
         </Button>
       </Box>;
@@ -147,7 +147,7 @@ function MyTaskProgress({ task, assignmentStatus }) {
     }
   }
 
-  function getStages() {
+  function getStages2() {
 
     if (assignmentStatus.statusNames[status] == "create") {
       return (
@@ -159,12 +159,15 @@ function MyTaskProgress({ task, assignmentStatus }) {
         </Box>
       );
     } else if (assignmentStatus.statusNames[status] == "accepted") {
+      return (
       <Box>
        <Typography>
+        
             {projectStages.find((item) => item.id == stageId).name}
         </Typography>
         
-      </Box>;
+      </Box>
+        );
     } else if (assignmentStatus.statusNames[status] == "done") {
       <Box>
         <Select
@@ -208,7 +211,7 @@ function MyTaskProgress({ task, assignmentStatus }) {
 
       <Typography sx={{ mt: 2 }}>Стадия выполнения</Typography>
       <Divider />
-      {getStages()}
+      {getStages2()}
 
       {/* <Select
         labelId="demo-simple-select-helper-label"

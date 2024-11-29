@@ -13,13 +13,13 @@ import {
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { getId, getToken } from "../../Store/slices/appUserSlice";
+import { getEmail, getId, getToken } from "../../Store/slices/appUserSlice";
 import { useEffect, useState } from "react";
-import { addDocuments, getAddedDocsStatus, resetAddedDocsStatus, updateAssignmentTodos, uploadDocForAssignment } from "../../Store/slices/assignmentSlice";
+import { addDocuments, getAddedDocsStatus, getAllUserAssignmnets, getAssignmentsStatuses, resetAddedDocsStatus, updateAssignmentTodos, uploadDocForAssignment } from "../../Store/slices/assignmentSlice";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FolderIcon from "@mui/icons-material/Folder";
-import { getCompanyName, getCompanyNameValue } from './../../Store/slices/companySlice';
+import { getCompanyName, getCompanyNameValue, getRoleInCompany } from './../../Store/slices/companySlice';
 import { getDocuments, getUploadedStatus, resetUploadedStatus, uploadDoc } from './../../Store/slices/documentsSlice';
 import statusTypes from "../../API/status";
 
@@ -32,12 +32,13 @@ function MyTaskWork({ task, assignmentStatus }) {
   const uploadedDocsStatus = useSelector(getAddedDocsStatus);
 
   const userId = useSelector(getId)
-
+  const useremail = useSelector(getEmail)
+  const role = useSelector(getRoleInCompany)
   const docs = useSelector(getDocuments).filter(item=>item.accessType=="user")
-
+  const docsList = useSelector(getAssignmentsStatuses).addedDocuments
   const [todos, setTodos] = useState(assignmentStatus.toDoDTOList);
   const [idEditedList, setEditedList] = useState(false);
-
+console.log(docsList)
   const handleDone = (id) => {
 
     if(task.status=="accepted"){
@@ -59,18 +60,41 @@ function MyTaskWork({ task, assignmentStatus }) {
 
   };
 
-  const handleSaveTodos = () => {
-    if(task.status=="accepted"){
-    setEditedList(false);
+  function makeRequest(){
     dispatch(
-      updateAssignmentTodos({
+      getAllUserAssignmnets({
         data: {
-          assignmentId: task.id,
-          todos: todos,
+          userEmail:useremail,
+          role:role,
+          size:""
         },
         token,
       })
     );
+    // dispatch(
+    //   getAllUserAssignmentsStatuses({
+    //     data: {
+    //       useremail,
+    //     },
+    //     token,
+    //   })
+    // );
+  }
+
+  const handleSaveTodos = () => {
+    if(task.status=="accepted"){
+      
+        setEditedList(false);
+        dispatch(
+          updateAssignmentTodos({
+            data: {
+              assignmentId: task.id,
+              todos: todos,
+            },
+            token,
+          })
+        );
+        makeRequest()
 }
   };
 
@@ -105,6 +129,7 @@ function MyTaskWork({ task, assignmentStatus }) {
     token
    }))
     setFilesEdited(false);
+    makeRequest()
   }
 
   function handleChange(event) {
@@ -117,11 +142,11 @@ function MyTaskWork({ task, assignmentStatus }) {
     
   }
 
-  function handleDelete(index) {
+  function handleDelete(id) {
     if(task.status=="accepted"){
-    let name = files[index].name;
+   
 
-    setFiles(files.filter((f) => f.name != name));
+    setFiles(files.filter((f) => f.id != id));
 
     setFilesEdited(true);
     }
@@ -175,14 +200,14 @@ function MyTaskWork({ task, assignmentStatus }) {
         </Box>
 
         <List>
-          {files.map((file, index) => (
+          {[...docsList, ...files].map((file, index) => (
             <ListItem
               key={index}
               secondaryAction={
                 <IconButton
                   edge="end"
                   aria-label="delete"
-                  onClick={() => handleDelete(index)}
+                  onClick={() => handleDelete(file.id)}
                 >
                   <DeleteIcon />
                 </IconButton>

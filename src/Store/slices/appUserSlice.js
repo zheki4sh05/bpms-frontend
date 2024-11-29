@@ -3,17 +3,49 @@ import DomainNames from '../DomainNames'
 import api from '../../API/APIPath'
 import axios from 'axios';
 import getRequestConfig from '../../API/requestConfig';
+
+// {
+//   id:32,
+//   name:"Евгений",
+//   lastname:"Шостак",
+//   surname:null,
+//   email:"evgeniy.shostak.04@mail.ru",
+//   phone:null,
+//   bDay:null,
+//   jwtToken:""
+// }
+
+const initState={
+
+  user:"",
+  status:'idle',
+  loadedMore:'idle',
+  updated:'false',
+  appLoaded:'idle',
+  error:null
+}
+
 const initialState = {
     user: {
-        id:0,
-        name:"evgeniy",
-        lastname:"shostak",
-        surname:"",
-        email:"evgeniy.shostak.04@mail.ru",
-        phone:"",
-        bDay:"",
-        jwtToken:"",
+        
     },
+    stages:[
+      {
+        id:1,
+        name:"Надо сделать",
+        order:1
+      },
+      {
+        id:2,
+        name:"В процессе",
+        order:2
+      },
+      {
+        id:3,
+        name:"Готово",
+        order:3
+      }
+    ],
     status:'idle',
     loadedMore:'idle',
     updated:'false',
@@ -182,6 +214,10 @@ export function getId(state){
 }
 export function getAppStatus(state){
   return state[DomainNames.app.appUser].appLoaded
+}
+
+export function getStages(state){
+  return state[DomainNames.app.appUser].stages
 }
   export default appUserSlice.reducer
 

@@ -22,7 +22,7 @@ function App() {
       children: [
         {
           path: PathConstants.HOME,
-          element: <NewsPage />,
+          element: <Projects />,
         },
 
         {

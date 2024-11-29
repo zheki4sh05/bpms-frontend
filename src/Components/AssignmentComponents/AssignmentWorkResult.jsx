@@ -2,6 +2,7 @@ import { Box, Button, Container, Divider, MenuItem, Select, Typography } from "@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { getProjects } from "../../Store/slices/projectSlice";
+import { getStages } from "../../Store/slices/appUserSlice";
 
 function AssignmentWorkResult({assignment, assignmentStatus}) {
 
@@ -33,7 +34,7 @@ function AssignmentWorkResult({assignment, assignmentStatus}) {
 
     const statuses = assignmentStatus.statusNames.map(item=>getStatusName(item));
 
-    const projectStages = useSelector(getProjects).find(pr=>pr.id == assignment.projectId).stages;
+    const projectStages = useSelector(getStages)
 
 
 

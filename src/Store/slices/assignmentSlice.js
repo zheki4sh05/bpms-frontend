@@ -44,22 +44,14 @@ import getRequestFormData from '../../API/requestFormData';
 //   label: "Задачи",
 // },
 
-// {
-//   id:1,
-//   name:"Новое поручение",
-//   desc:"Описание нового поручения",
-//   createdAt:"16.09.2024",
-//   deadline:"19.09.2024",
-//   assigned_To:"test@mail.ru",
-//   status_id:1,
-//   tasks:3,
-//   done:60
 
-// },
 
 
 const initialState = {
-    list:[],
+    list:[
+
+
+    ],
     statuses:[],
     addedDocuments:[],
     assignmentStatuses:{},
@@ -324,7 +316,7 @@ export const getAllUserAssignmnets = createAsyncThunk(DomainNames.assignments.co
           .addCase(uploadDocForAssignment.fulfilled, (state, action) => {
             state.addedDoc = 'succeeded';
 
-            state.assignmentStatuses = action.payload
+            state.addedDocuments = action.payload
 
               state.error = null;
           })
@@ -367,9 +359,7 @@ export const getAllUserAssignmnets = createAsyncThunk(DomainNames.assignments.co
   export function getDelDocStatus(state){
     return state[DomainNames.assignments].delDoc
   }
-  export function getAddedDocuments(state){
-    return state[DomainNames.assignments].addedDocuments
-  }
+
   export function getAddedDocsStatus(state){
     return state[DomainNames.assignments].addedDoc
   }

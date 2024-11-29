@@ -7,7 +7,9 @@ import {
   getAddedStatus,
   getAllProjectsStatuses,
   getAllUserProjects,
+  getProjects,
   getProjectsCount,
+  getProjectsResults,
 } from "../../Store/slices/projectSlice";
 import { useSelector } from "react-redux";
 import {
@@ -32,11 +34,20 @@ function Projects() {
 
   const companyName = useSelector(getCompanyName);
 
-  const projectCount = useSelector(getProjectsCount);
+  // const projectCount = useSelector(getProjectsCount);
 
-  const projectsStatus = useSelector(getProjectsLoadedStatus);
+  // const projectsStatus = useSelector(getProjectsLoadedStatus);
 
-  const addedStatus = useSelector(getAddedStatus);
+  // const addedStatus = useSelector(getAddedStatus);
+
+  const projectCount = useSelector(getProjects).length
+
+  const statusesCount = useSelector(getProjectsResults).length
+
+  const projectsStatus = statusTypes.succeeded;
+
+  const addedStatus = statusTypes.succeeded;
+
 
  
   function makeRequest() {
@@ -78,7 +89,7 @@ function Projects() {
               successType={"none"}
               errorType={"primary"}
             />
-          ) : (projectCount > 0 && addedStatus !== statusTypes.failed) ? (
+          ) : (projectCount > 0 && statusesCount>0 && addedStatus !== statusTypes.failed) ? (
             <CustomTabPanel
               content={{
                 tabNames: ["Все", "Активные", "Просроченные"],

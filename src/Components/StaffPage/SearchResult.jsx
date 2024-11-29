@@ -53,9 +53,7 @@ function SearchResult({ user }) {
       <Divider />
       <Paper elevation={2} sx={{maxWidth:"300px", mt:1}}>
       <Box sx={{ display: "flex", p: 1, justifyContent: "flex-start" }}>
-        <Box>
-          <img src="" alt="avatar" />
-        </Box>
+       
         <Box sx={{ display: "flex", flexDirection: "column" }}>
           <Box sx={{ display: "flex", flexDirection: "row" }}>
             <Typography variant="body1" gutterBottom>
